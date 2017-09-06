@@ -1,27 +1,21 @@
 /app/bootstrap.php.cache
 /app/cache/*
-<<<<<<< HEAD
-=======
 /app/config/config.yml
 /app/config/parameters.yml
 /app/config/services.yml
 /app/config/services.dist.yml
 /app/config/security.yml
 /app/config/routing.yml
->>>>>>> e3de10842b189545912b830229657f11fbf2970a
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 /app/phpunit.xml
 /build/
-/vendor/
-<<<<<<< HEAD
+/vendor/*
 /bin/*
 /web/uploads/*
-=======
 /bin/
 /web/uploads
->>>>>>> e3de10842b189545912b830229657f11fbf2970a
 /composer.phar
 /LICENSE
 /UPGRADE-2.2.md

@@ -1,0 +1,29 @@
+{% extends is_granted('ROLE_FRONTEND') 
+    ? 'appBundle:dev:index.html.twig' 
+    : 'attBundle:Default:index.html.twig' %}
+
+
+{% block content %}
+
+
+    {% if is_granted('ROLE_ADMIN')%}
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Attendance{% endtrans %} </a></li>
+            <li><a href="#">{% trans %} Notification{% endtrans %} </a></li>    
+            <li class="active">{% trans %} Confirmation {% endtrans %} </li>
+        </ol>   
+    {% endif %}    
+
+
+    <div class="row">
+        <div class="alert alert-success col-md-6 col-md-offset-3" style="">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h4 class="text-success">La notificacion de ausencia a sido enviada </h4>
+            <p class="text-center">    
+                Su codigo de transaccion es:<br>
+                <kbd style="font-size: 18px;">{{ id }}.{{ code }}</kdb>
+            </p>
+        </div>
+    </div>
+{% endblock %}    

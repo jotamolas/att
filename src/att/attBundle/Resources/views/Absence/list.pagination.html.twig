@@ -1,0 +1,131 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Abscence{% endtrans %}</a></li>                                
+        <li class="active">{% trans %}List{% endtrans %}</li>
+    </ol>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Absences{% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead>                     
+                            <tr>
+                                <th>{{ sorter_link(abss, "p.date", "Date") }}</th>                        
+                                <th>{{ sorter_link(abss, "e.surname", "Surname") }}</th>
+                                <th>{{ sorter_link(abss, "e.name", "Names")}}</th> 
+                                <th>Actions</th>
+                            </tr>
+
+                            <tr>                          
+                                <td>{{ filter_search(abss, "p.date")}}</td>
+                                <td>{{ filter_search(abss, "e.surname")}}</td>
+                                <td>{{ filter_search(abss, "e.name")}}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for abs in abss %}
+                                <tr>
+                                    <td>{{ abs.attendance.plan.date | date('Y-m-d') }}</td>
+                                    <td>{{ abs.attendance.plan.employee.surname }}</td>
+                                    <td>{{ abs.attendance.plan.employee.name }}</td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group" >
+                                            <button type="button" class="btn btn-xs btn-default"  data-toggle="modal" data-target="#modal_absence_show" id="show" data-id="{{ abs.id }}">
+                                                <span class="fa fa-play-circle"></span>
+                                            </button>  
+                                            <button type="button" data-toggle="modal" data-target="#modal_absence_manage" class="btn btn-xs btn-default" data-id="{{ abs.id }}" id="edit">
+                                                <span class="fa fa-cogs"></span>
+                                            </button>    
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="text-center">
+                    {{ pagination(abss) }}
+                </div> 
+            </div>  
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_absence_manage" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Absence Manage{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal_body_absence_manage">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_call_employee" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                        <i class="fa fa-phone-square">  </i>
+                        {%trans%} Call Employee{% endtrans %}
+                    </h4>
+                </div>
+                <div class="modal-body" id="modal_body_call_employee">
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent()}}
+    <script>
+        $('#modal_absence_manage').on('show.bs.modal', function (e) {
+
+            var absence_id = $(e.relatedTarget).data('id');
+            $('#modal_body_absence_manage').load(Routing.generate('att_absence_manage',
+                    {
+                        mode: '{{app.security.token.providerKey}}',
+                        id: absence_id
+                    }));
+            $('#button_absence').attr('data-absence-id', absence_id);
+        });
+    </script>
+
+    <script>
+        $('#modal_call_employee').on('show.bs.modal', function (e) {
+
+            var employee_id = $(e.relatedTarget).data('id');
+            $('#modal_body_call_employee').load(Routing.generate('att_employee_contact_info',
+                    {
+                        mode: '{{app.security.token.providerKey}}',
+                        employee: employee_id
+                    }));
+
+        });
+    </script>
+
+
+
+{% endblock %}

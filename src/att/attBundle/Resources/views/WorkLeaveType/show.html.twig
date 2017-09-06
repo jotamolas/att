@@ -1,0 +1,43 @@
+{% extends "attBundle:Default:index.html.twig"%}
+{% block content %}
+    <h1>Atworkleavetype</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Maxday</th>
+                <td>{{ atworkleavetype.maxday }}</td>
+            </tr>
+            <tr>
+                <th>Maxdaysseq</th>
+                <td>{{ atworkleavetype.maxdaysseq }}</td>
+            </tr>
+            <tr>
+                <th>Is_justifiable</th>
+                <td>{{ atworkleavetype.isjustifiable }}</td>
+            </tr>
+            <tr>
+                <th>Is_payable</th>
+                <td>{{ atworkleavetype.ispayable }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ atworkleavetype.description }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ atworkleavetype.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('att_workleavetype_index',{ 'mode':app.security.token.providerKey}) }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('att_workleavetype_edit', { 'id': atworkleavetype.id , 'mode':app.security.token.providerKey }) }}">Edit</a>
+        </li>
+
+    </ul>
+{% endblock %}

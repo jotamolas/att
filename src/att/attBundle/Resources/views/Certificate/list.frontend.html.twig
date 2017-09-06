@@ -1,0 +1,54 @@
+{% extends 'attBundle:Certificate:front.html.twig' %}
+
+
+{% block content_certificate %}
+    {% include 'attBundle:Certificate:list.content.html.twig' with {'certificates':certificates}%}
+{% endblock content_certificate %} 
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function showIt(id) {
+            $('#content').load(Routing.generate('att_certificate_show',
+                    {
+                        mode: '{{app.security.token.providerKey}}',
+                        id: id
+                    })
+                    );
+        }
+        function editIt(id) {
+            $('#content').load(Routing.generate('att_certificate_edit',
+                    {
+                        mode: '{{app.security.token.providerKey}}',
+                        id: id
+                    })
+                    );
+        }
+
+        function removeIt(id) {
+
+            var isGood = confirm("Esta seguro de eliminar el registro");
+            if (isGood)
+            {
+
+                $.ajax({
+                    cache: false,
+                    url: Routing.generate('att_certificate_delete', {mode: '{{app.security.token.providerKey}}'}),
+                    type: 'POST',
+                    data: {"id": id},
+                    dataType: 'json',
+                    success: function (data) {
+                        alert(data.message);
+                    },
+                    error: function (data) {
+                        alert(data.message);
+                    }
+                });
+
+            }
+
+        }
+
+    </script>
+{% endblock javascripts %}

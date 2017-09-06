@@ -1,0 +1,130 @@
+{% block content %}
+    <!-- Breadcrumbs -->
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+        <li><a href="#">{% trans %} Certificate{% endtrans %} </a></li>
+        <li class="active">{% trans %} Workflow List{% endtrans %} </li>
+    </ol>    
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>   
+                <span>{% trans %}List of Certificate Workflow{% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Id</th>
+                                <th class="text-center">{% trans %}State{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Certificate{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Employee{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Id Person{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Create{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Last View{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Actions{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for wf in wfs %}
+                                <tr>    
+
+                                    <td class="text-center">{{ wf.id }}</td>
+                                    <td class="text-center">{{ wf.statekey }}</td>
+                                    {{ render(controller('attBundle:Certificate:showInRow', {'id': wf.entityid})) }} 
+                                    <td class="text-center">{{ wf.createAt | date('Y-m-d')}}</td>
+                                    <td class="text-center">{% if wf.modifiedAt %}  {{ wf.modifiedAt | date('Y-m-d') }} {% else %} - {% endif %}</td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group" >
+                                            <button type="button" class="btn btn-xs btn-default" data-toggle="modal" data-target="#wf_timeline" id="timeline" data-id="{{ wf.id }}" data-mode="{{ app.security.token.providerKey }}">
+                                                <span class="fa fa-bar-chart"></span>
+                                            </button>  
+                                            <button type="button" class="btn btn-xs btn-default" data-toggle="modal" data-target="#wf_certificate_show" id="show" data-id="{{ wf.id }}" data-mode="{{ app.security.token.providerKey }}" >
+                                                <span class="fa fa-cogs-o"></span>
+                                            </button>
+
+                                        </div>
+                                    </td>
+                                </tr> 
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="wf_timeline" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="title-wf-timeline"></h4>
+                </div>
+                <div class="modal-body" id="content-wf-timeline">
+
+                </div>
+                <div class="modal-footer">    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="wf_certificate_show" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="title-certificate-show"></h4>
+                </div>
+                <div class="modal-body" id="content-certificate-show">
+
+                </div>
+                <div class="modal-footer">    
+                </div>
+            </div>
+        </div>
+    </div>   
+
+
+</div>
+
+<script>
+
+    $('#wf_certificate_show').on('show.bs.modal', function (e) {
+        var mode = $(e.relatedTarget).data('mode');
+        var id = $(e.relatedTarget).data('id');
+        $('#title-certificate-show').html('{%trans%}Workflow Detail{%endtrans%} ' + id + mode);
+        $('#content-certificate-show').load(Routing.generate('att_workflow_certificate_show',
+                {
+                    mode: mode,
+                    id: id
+                }));
+    });
+
+
+    $('#wf_timeline').on('shown.bs.modal', function (e) {
+        var id = $(e.relatedTarget).data('id');
+        var mode = $(e.relatedTarget).data('mode');
+        $('#title-wf-timeline').html('{%trans%}Certificate Timeline{%endtrans%} ' + id);
+        $('#content-wf-timeline').load(Routing.generate('att_certificate_timeline',
+                {
+                    mode: mode,
+                    id: id
+                }));
+    });
+
+
+</script>
+
+{% endblock %}

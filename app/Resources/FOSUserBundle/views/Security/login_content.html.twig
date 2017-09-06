@@ -1,0 +1,69 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container container-fluid">
+    <section class="login-block">
+        <div class="container">
+
+            {% if error %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            <div class="row logo-sec">
+                <div class="col-md-4">
+                    <img class="img-responsive" src="{{ asset('bundles/app/images/att_logo.png')}}" width="140" height="75">
+                </div>
+                <div class="col-md-4 offset-md-4">
+                    <div class="pull-right">
+                        <img class="img-responsive" style="position: absolute; right: 0; bottom: 0;"src="{{ asset('bundles/app/images/att_logo_leyend.png')}}" width="200" height="45">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4 login-sec">
+                    <h2 class="text-center">{% trans %}Login Now {% endtrans %} </h2>
+                    <form class="login-form" action="{{ path("att_backend_check") }}" method="POST">
+
+                        {% if csrf_token %}
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="text-uppercase">{{ 'security.login.username'|trans }}</label>
+                            <input type="username"  name="_username" class="form-control" placeholder="" value="{{ last_username }}">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="text-uppercase">{{ 'security.login.password'|trans }}</label>
+                            <input type="password"  name="_password" class="form-control" placeholder="">
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" value="on">
+                                <small>{{ 'security.login.remember_me'|trans }}</small>
+                            </label>
+                            <button type="submit" name="_submit" value="{{ 'security.login.submit'|trans }}" class="btn btn-login float-right">
+                                {% trans %}
+                                Sign In
+                                {% endtrans %}
+                            </button>
+                        </div>
+                    </form>                        
+                </div>
+                <div class="col-md-8 banner-sec">
+                    <div class="banner-text">
+                        <h2>Backend Desk</h2>
+                        <p>{% trans %}Welcome to company management space {% endtrans %}</p>
+                    </div>		   
+                </div>
+            </div>
+        </div>
+    </section>    
+</div>

@@ -1,0 +1,99 @@
+    {{ form_start(form,{'attr':{'id':'employee-addressing-form' , 'novalidate': 'novalidate'} }) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ form_errors(form.autocomplete) }}
+                {{ form_label(form.autocomplete) }}
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </div>
+                    {{ form_widget(form.autocomplete,{'id' : 'autocomplete'})}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ form_errors(form.address) }}
+                {{ form_label(form.address) }}
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-home"></span>
+                    </div>
+                    {{ form_widget(form.address,{'id' : 'formated_address'})}} 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_errors(form.city) }}
+                {{ form_label(form.city) }}
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-text-width"></span>
+                    </div>
+                    {{ form_widget(form.city,{'id' : 'locality'})}} 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_errors(form.state) }}
+                {{ form_label(form.state) }}
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-text-width"></span>
+                    </div>
+                    {{ form_widget(form.state,{'id' : 'administrative_area_level_1'})}} 
+                </div>
+            </div>
+        </div>
+    </div>   
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_errors(form.addresslat) }}
+                {{ form_label(form.addresslat) }}
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-text-width"></span>
+                    </div>
+                    {{ form_widget(form.addresslat,{'id' : 'lat'})}} 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_errors(form.addresslng) }}
+                {{ form_label(form.addresslng) }}
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-text-width"></span>
+                    </div>
+                    {{ form_widget(form.addresslng,{'id' : 'lng'})}} 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+{% extends "appBundle:app:index.html.twig"%}
+{% block sidebar %}
+    <li>
+        <a href="#" class="active"><i class="fa fa-ambulance  fa-fw"></i> 
+            <span class="masked">
+                {% trans %} Medical Module{% endtrans %}
+            </span>    
+        </a>
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-user-md fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Medical Service {% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="list_medical_service" href="{{ path("medical_service_list",{"mode":app.security.token.providerKey}) }}"> 
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="new_medical_servic" href="{{ path("medical_service_new",{"mode":app.security.token.providerKey}) }}">
+                    <i class="fa fa-floppy-o fa-fw"></i>
+                    {% trans %}New{% endtrans %}
+                </a>
+            </li>
+
+        </ul>
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-sticky-note-o fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Medical Order {% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+                
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="list_medical_service" href="{{ path("medical_order_list",{"mode":app.security.token.providerKey}) }}"> 
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans %}Medical Service{% endtrans %} <small>{% trans %} Module{% endtrans %}</small></h1>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "attBundle:Default:index.html.twig"%}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Attendance{% endtrans %} </a></li>   
+            <li><a href="#">{% trans %} Work Leave{% endtrans %} </a></li>    
+            <li class="active">{% trans %} New {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} New Work Leave{% endtrans %}</span>
+            </div>
+            <div class="panel-body"> 
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input type="submit" value="Create" />
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

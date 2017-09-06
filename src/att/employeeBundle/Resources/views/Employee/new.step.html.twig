@@ -1,0 +1,135 @@
+
+<link href="{{asset('bundles/employee/css/form.steps.css') }}" type="text/css" rel="stylesheet" >
+<script src="{{ asset('bundles/employee/js/form.step.employee.js') }}" ></script>
+
+
+
+<div class="row">
+    <section>
+        <div class="wizard">
+
+            <div class="wizard-inner text-center">
+                <div class="connecting-line"></div>
+                <ul class="nav nav-tabs" role="tablist">
+
+                    <li role="presentation" class="active">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Personal">
+                            <span class="round-tab">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Contact">
+                            <span class="round-tab">
+                                <i class="glyphicon glyphicon-folder-close"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="disabled">
+                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Addressing">
+                            <span class="round-tab">
+                                <i class="glyphicon glyphicon-globe"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
+                            <span class="round-tab">
+                                <i class="glyphicon glyphicon-ok"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-8 col-md-offset-2">
+                <div class="tab-content">
+
+                    <div class="tab-pane active" role="tabpanel" id="step1">
+                        <div class="row>">
+                            <div class="col-md-12"> 
+                                <h2>Step 1</h2>
+                                <h4 class="text-muted">Complete Personal Information</h4>
+                            </div>
+                        </div>
+                        <div id="formStep1" class="row">
+                            {% include 'employeeBundle:Employee:form.personal.html.twig' with {'form': formStep1} %}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="list-inline pull-right">
+                                    <li><button type="button" class="btn btn-primary next-step-validate-step-1">Next</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" role="tabpanel" id="step2">
+                        <div class="row>">
+                            <div class="col-md-12"> 
+                                <h2>Step 2</h2>
+                                <h4 class="text-muted">Complete Contact Information</h4>
+                            </div>
+                        </div>
+
+                        <div id="formStep2" class="row">
+                        </div>
+
+                        <div class="row>">
+                            <div class="col-md-12"> 
+                                <ul class="list-inline pull-right">
+                                    <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_new_step',{'mode':app.security.token.providerKey}) }}">Skip</button></li>
+                                    <li><button type="button" class="btn btn-primary next-step-validate-step-2">Next</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>  
+
+                    <div class="tab-pane" role="tabpanel" id="step3">
+                        <div class="row>">
+                            <div class="col-md-12"> 
+                                <h2>Step 3</h2>
+                                <h4 class="text-muted">Complete Address Information</h4>
+                            </div>
+                        </div>
+
+                        <div id="formStep3" class="row">
+                            
+                        </div>
+
+                        <div class="row>">
+                            <div class="col-md-12">                        
+                                <ul class="list-inline pull-right">
+                                    <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_new_step',{'mode':app.security.token.providerKey}) }}">Skip</button></li>
+                                    <li><button type="button" class="btn btn-primary next-step-validate-step-3">Next</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane" role="tabpanel" id="complete">
+                        <div class="row>">
+                            <div class="col-md-12"> 
+                                <h2>Complete</h2>
+                            </div>
+
+                            <div id="show" class="row">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div> 
+
+
+
+
+
+

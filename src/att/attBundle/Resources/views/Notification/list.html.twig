@@ -1,0 +1,146 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Attendance{% endtrans %}</a></li>
+        <li><a href="#">{% trans %}Notification{% endtrans %}</a></li>
+        <li class="active">{% trans %}List{% endtrans %}</li>
+    </ol>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Notifications{% endtrans %}</span>
+                <div class="dropdown pull-right">
+                    <div class="btn-group pull-right" role="group">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="strikes">
+                            <li style="width: 400px; font-size: 12px">
+                                <form  style="display:block;">
+                                    <div class="row">
+                                        <div class="form-group col-md-5 col-md-offset-1">
+                                            <label for="filter">{% trans %}Search by Date{% endtrans %}</label>
+
+                                            {{ filter_search(notifications, "n.date")}}
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label for="filter">{% trans %}Search by Absence Type{% endtrans %}</label>
+
+                                            {{ filter_search(notifications, "t.description")}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-5 col-md-offset-1">
+                                            <label for="contain">{% trans %}Last Name{% endtrans %}</label>
+                                            {{ filter_search(notifications, "e.surname")}}
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label for="contain">{% trans %}Name{% endtrans %}</label>
+                                            {{ filter_search(notifications, "e.name")}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-5 col-md-offset-1">
+                                            <label for="contain">{% trans %}From Date{% endtrans %}</label>
+                                            {{ filter_search(notifications, "n.fromdate")}}
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label for="contain">{% trans %}To Date{% endtrans %}</label>
+                                            {{ filter_search(notifications, "n.todate")}}
+                                        </div>
+                                    </div>    
+                                </form>   
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>  
+            </div>
+
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th class="text-center">Id</th>
+                                <th class="text-center">{%trans%}Employee{%endtrans%}</th>
+                                <th class="text-center">{%trans%}Prestation Date{%endtrans%}</th>
+                                <th class="text-center">{%trans%}Date From{%endtrans%}</th>
+                                <th class="text-center">{%trans%}Date To{%endtrans%}</th>
+                                <th class="text-center">{%trans%}Days{%endtrans%}</th>
+                                <th class="text-center">{%trans%}Type{%endtrans%}</th>
+                                <th class="text-center">{%trans%}Code{%endtrans%}</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for notification in notifications %}
+                                <tr>
+                                    <td id="notificationId" class="text-center">{{ notification.id }}</td>
+                                    <td class="text-center">{{ notification.employee.surname }}, {{ notification.employee.name }}</td>
+                                    <td class="text-center">{% if notification.date %}{{ notification.date |date('Y-m-d H:i:s') }}{% endif %}</td>
+                                    <td class="text-center">{% if notification.fromdate %}{{ notification.fromdate |date('Y-m-d') }}{% endif %}</td>
+                                    <td class="text-center">{% if notification.todate %}{{ notification.todate | date('Y-m-d') }}{% endif %}</td>
+                                    <td class="text-center">{{ notification.days}}</td>
+                                    <td class="text-center"> {{ notification.absencetype.description }} </td>
+                                    <td class="text-center"> {{ notification.code }} </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group" >
+
+                                            <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{app.security.token.providerKey}}" class="btn btn-xs btn-default" data-id="{{ notification.id }}" id="edit">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+
+                                            <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ notification.id }}" data-mode="{{app.security.token.providerKey}}">
+                                                <span class="fa fa-remove"></span>
+                                            </button> 
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="text-center">
+                    {{ pagination(notifications) }}
+                </div> 
+            </div>  
+        </div> 
+    </div>
+
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Edit Notification{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-edit">
+                </div>   
+            </div>
+        </div>
+    </div> 
+{% endblock %}
+{% block javascripts %}
+    {{ parent()}}
+    <script>
+        $('#editModal').on('show.bs.modal', function (e) {
+            //get data-id attribute of the clicked element
+            var notification_id = $(e.relatedTarget).data('id');
+            var mode = $(e.relatedTarget).data('mode');
+            $('#modal-body-edit').load(Routing.generate('att_notification_edit',
+                    {
+                        mode: mode,
+                        id: notification_id
+                    }));
+
+
+
+        });
+    </script>
+{% endblock %}

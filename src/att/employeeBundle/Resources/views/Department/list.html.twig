@@ -1,0 +1,89 @@
+{% extends "employeeBundle:Default:index.html.twig"%}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Employee{% endtrans %}</a></li>  
+        <li><a href="#">{% trans %}Department{% endtrans %}</a></li>  
+        <li class="active"><a href="#">{% trans %}List{% endtrans %}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12" id="successMsg"></div>
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Department{% endtrans %}</span>
+                <!-- button group --> 
+                <button id="new" data-toggle="modal"  data-target="#newDepartmentModal" type="button" class="btn btn-default pull-right">
+                    <span class="fa fa-plus"></span>
+                </button> 
+                <div class="clearfix"></div>                     
+            </div>
+
+            <div class="panel-body">
+                <div class="panel-body">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-hover" style="font-size: 12px;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>{% trans %}Name{% endtrans %}</th>
+                                    <th>{% trans %}Business{% endtrans %}</th>
+                                    <th>{% trans %}Company{% endtrans %}</th>
+                                    <th>{% trans %}Actions{% endtrans %}</th>
+                                </tr>
+                                </tr>                    
+                            </thead>
+                            <tbody>
+                                {% for department in departments %}  
+                                    <tr>
+                                        <td>{{ department.id }}</td>
+                                        <td>{{ department.name }}</td>
+                                        <td>{{ department.business.description }}</td>
+                                        <td>{{ department.business.company.description }}</td>
+
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group" >
+                                                <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{mode}}" class="btn btn-xs btn-default" data-id="{{ department.id }}" id="edit">
+                                                    <span class="fa fa-edit"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ department.id }}" data-mode="{{mode}}">
+                                                    <span class="fa fa-remove"></span>
+                                                </button>     
+                                            </div>           
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div> 
+            </div>        
+        </div>
+    </div>
+
+    <div class="modal fade" id="newDepartmentModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}New Department{% endtrans %}</h4>
+                </div>
+                <div class="modal-body"  id="modal-body-Department-new" >
+                    {{ render(controller('employeeBundle:Department:new' )) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+
+

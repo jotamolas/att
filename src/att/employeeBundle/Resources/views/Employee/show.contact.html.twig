@@ -1,0 +1,6 @@
+<p><span class="text-muted">Phone:</span>{% if(employee.phone) %}{{ employee.phone|phone_number_format(2) }}{% endif %}</p>
+<p><span class="text-muted">Cell Phone:</span> : {% if(employee.celphone) %}{{ employee.celphone|phone_number_format(2) }}{% endif %}</p>
+<p><span class="text-muted">Email:</span> : {{ employee.email }}</p>
+<a class="btn btn-default" href="{{ path('att_notification_new_w_employee', {'employee': employee.id ,'mode': mode}) }}">
+    {% trans %}Register Notification{% endtrans %}
+</a>

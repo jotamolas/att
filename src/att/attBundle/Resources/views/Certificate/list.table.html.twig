@@ -1,0 +1,57 @@
+{% if is_granted('ROLE_ADMIN') %} 
+    <table class="table table-bordered table-hover" style="font-size: 11px;">
+    {% else %}
+        <table class="table table-bordered" style="font-size: 14px;">
+        {% endif %}
+        <thead>
+            <tr>
+                <th class="text-center">Id</th>
+                <th class="text-center">{% trans %}Employee{% endtrans %}</th>
+                <th class="text-center">{% trans %}Presentation Date{% endtrans %}</th>
+                <th class="text-center">{% trans %}From{% endtrans %}</th>
+                <th class="text-center">{% trans %}To{% endtrans %}</th>
+                <th class="text-center">{% trans %}Approved{% endtrans %}</th>
+                <th class="text-center">{% trans %}Type{% endtrans %}</th>
+                <th class="text-center">{% trans %}Actions{% endtrans %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for certificate in certificates %}
+                <tr>
+                    <td id="certificateId" class="text-center">{{ certificate.id }}</td>
+                    <td class="text-center">{{ certificate.employee.surname |capitalize}}, {{certificate.employee.name|capitalize}}</td>
+                    <td class="text-center">{% if certificate.date %}{{ certificate.date |date('Y-m-d') }}{% endif %}</td>
+                    <td class="text-center">{% if certificate.datefrom %}{{ certificate.datefrom|date('Y-m-d') }}{% endif %}</td>
+                    <td class="text-center">{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d') }}{% endif %}</td>
+                    <td class="text-center">{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                    <td class="text-center">{{ certificate.type.description }}</td>
+
+                    <td class="text-center">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item">
+                                <a href="#" id="show" onclick="showIt({{ certificate.id }});
+                                    return false;">
+                                    <span class="fa fa-play" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#" id="edit" onclick="editIt({{ certificate.id }});
+                                    return false;">
+                                    <span class="fa fa-edit" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#" id="remove" onclick="removeIt({{ certificate.id }});
+                                    return false;">
+                                    <span class="fa fa-remove" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+

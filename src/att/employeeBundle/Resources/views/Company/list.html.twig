@@ -1,0 +1,35 @@
+<div class="table table-responsive">
+    <table class="table table-bordered table-hover" style="font-size: 12px;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>{% trans %}Observations{% endtrans %}</th>
+                <th>{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            </tr>                    
+        </thead>
+        <tbody>
+            {% for company in companies %} 
+                <tr>
+                    <td>{{ company.id }}</td>
+                    <td>{{ company.description }}</td>
+                    <td>{{ company.obs }}</td>
+
+                    <td class="text-center">
+                        <div class="btn-group" role="group" >
+                            <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{mode}}" class="btn btn-xs btn-default" data-id="{{ company.id }}" id="edit">
+                                <span class="fa fa-edit"></span>
+                            </button>
+                            <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ company.id }}" data-mode="{{mode}}">
+                                <span class="fa fa-remove"></span>
+                            </button>     
+                        </div>           
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+

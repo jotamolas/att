@@ -1,0 +1,84 @@
+{
+    "name": "jotalabs/att",
+    "license": "MIT",
+    "type": "project",
+    "description": "Att Software",
+    "autoload": {
+        "psr-4": { "": "src/" },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
+    },
+    "require": {
+        "php": ">=5.3.9",
+        "symfony/symfony": "2.8.*",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.4",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "~5.0",
+        "sensio/framework-extra-bundle": "^3.0.2",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "leaseweb/doctrine-pdo-dblib": "^1.0",
+        "gmorel/state-workflow-bundle": "~1.0",
+        "besimple/soap":   "0.2.*@dev",
+        "besimple/soap-bundle":"0.2.*@dev",
+        "besimple/soap-common":"0.2.*@dev",
+        "besimple/soap-wsdl": "0.2.*@dev",
+        "besimple/soap-server":"0.2.*@dev",
+        "ass/xmlsecurity": "dev-master",
+        "misd/phone-number-bundle": "^1.1",
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "genemu/form-bundle": "^2.3",
+        "jms/security-extra-bundle": "^1.6",
+        "friendsofsymfony/user-bundle": "^2.0",
+        "league/csv":"^8.0",
+        "data-dog/pager-bundle":"^0.2.7",
+        "friendsofsymfony/jsrouting-bundle":"^1.6",
+        "vich/uploader-bundle":"^1.4.2",
+        "jms/serializer-bundle":"^2.0",
+        "symfony/var-dumper": "^3.3"      
+        
+
+        
+        
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "~3.0",
+        "symfony/phpunit-bridge": "~2.7"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin",
+        "platform": {
+            "php": "5.6.30"
+        }
+    },
+    "extra": {
+        "minimum-stability":"dev",
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "symfony-assets-install": "relative",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
+        "branch-alias": {
+            "dev-master": "2.8-dev"
+        }
+    }
+}

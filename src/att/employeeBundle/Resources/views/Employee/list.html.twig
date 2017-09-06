@@ -1,0 +1,46 @@
+{% extends 'attBundle::base.html.twig' %}
+
+{% block body %}
+    
+ 
+  <div class="col-md-6 col-md-offset-3">
+    <h1>Lista de Empleados Nuevos</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>State</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for atempleado in employees %}
+            <tr>                
+
+                <td>{{ atempleado.name }}</td>
+                <td>{{ atempleado.surname }}</td>
+                <td>{{ atempleado.province }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{#{ path('employee_show', { 'id': atempleado.id }) }#}">View</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+ </div>   
+{% endblock %}
+
+
+
+
+
+
+
+

@@ -1,0 +1,118 @@
+{% extends "appBundle:app:index.html.twig"%}
+{% block sidebar %}
+    <li>
+        <a href="#" class="active"><i class="fa fa-users fa-fw"></i> 
+            <span class="masked">
+                {% trans %} Certificate Module{% endtrans %}
+            </span>    
+        </a>
+    </li>
+
+    {% if is_granted('ROLE_FRONTEND') %}
+        <li class="">
+            <a href="#">
+                <i class="fa fa-floppy-o fa-fw"></i>
+                <span class="masked">
+                    <span>
+                        {% trans %}Register {% endtrans %}
+                    </span>
+                    <span class="fa arrow"></span>
+                </span>
+            </a>
+            <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                <li>
+                    <a id="new_certificate">
+                        <i class="fa fa-cube fa-fw"></i>
+                        {% trans %}Other{% endtrans %}
+                    </a>
+                </li>
+                <li> 
+                    <a  id="new_certificate_medical">
+                        <i class="fa fa-medkit fa-fw"></i>
+                        {% trans %}Medical{% endtrans %}
+                    </a>
+                </li>
+                <li> 
+                    <a  id="new_certificate_stude">
+                        <i class="fa fa-university fa-fw"></i>
+                        {% trans %}Stude{% endtrans %}
+                    </a>
+                </li>
+            </ul>
+            <!-- /.nav-second-level -->
+        </li>
+    {% endif %}
+    <li class="">
+        <a href="{{ path('att_certificate_list',{"mode":app.security.token.providerKey}) }}" id="list_certificate">
+            <i class="fa fa-list fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}List{% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>   
+    </li>
+    <li class="">
+        
+        <a href="#">
+            <i class="fa fa-code-fork fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Certification Workflow{% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            {% if is_granted('ROLE_FRONTEND') %}
+            <li>
+                <a id="authorize_certificate">
+                    <i class="fa fa-check fa-fw"></i>
+                    {% trans %}Authorize{% endtrans %}
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a id="list_workflow_certificate">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+        </ul> 
+        <!-- /.nav-second-level -->
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans %}Certificate{% endtrans %} <small>{% trans %} Module{% endtrans %}</small></h1>
+        </div>
+    </div>
+{% endblock %}
+{%  block javascripts %}
+    {{ parent()}}
+    <script type="text/javascript">
+
+        //MENUS MODULES FUNCTIONS
+        $('#new_certificate').click(function () {
+            $('#content').load('{{ path('att_certificate_new',{"mode":app.security.token.providerKey}) }}');
+        });
+
+        $('#new_certificate_medical').click(function () {
+            $('#content').load('{{ path('att_certificate_new_medical',{"mode":app.security.token.providerKey}) }}');
+        });
+
+        $('#new_certificate_stude').click(function () {
+            $('#content').load('{{ path('att_certificate_new_stude',{"mode":app.security.token.providerKey}) }}');
+        });
+
+        $('#authorize_certificate').click(function () {
+            $('#content').load('{{ path('att_workflow_certificate_start',{"mode":app.security.token.providerKey}) }}');
+        });
+        $('#list_workflow_certificate').click(function () {
+            $('#content').load('{{ path('att_certificate_list_wf',{"mode":app.security.token.providerKey}) }}');
+        });
+
+    </script>
+{%endblock%}

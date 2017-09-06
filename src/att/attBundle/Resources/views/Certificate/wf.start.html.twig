@@ -1,0 +1,66 @@
+<ol class="breadcrumb">
+    <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li><a href="#">{% trans %}Certificate{% endtrans %}</a></li>
+    <li><a href="#">{% trans %} Authorize{% endtrans %} </a></li>
+    <li class="active">{% trans %} Step{% endtrans %}1 </li>
+</ol>    
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-cogs"></i>   
+            <span>{% trans %}Select a Certificate to Authorize{% endtrans %}</span>
+        </div>
+
+        <div class="panel-body">            
+            {% if form %}
+                {{ form_start(form) }}
+                <div class="custom-controls-stacked">
+                    {{ form_widget(form.certificates) }}
+                </div>
+                {{ form_end(form) }}
+                <button type="button" id="selectCert" class="btn btn-sm btn-success ">{% trans %}Start{% endtrans %}</button>
+            {% else %}
+                <div class="alert alert-danger">
+                    {% trans %}There are no registered certificates{% endtrans %}.                    
+                </div>
+            {% endif %}  
+        </div>
+    </div>
+</div>    
+
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        $('#selectCert').click(function () {
+            if ($("form")[0].checkValidity()) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('att_workflow_certificate_validate', {mode: '{{app.security.token.providerKey}}'}),
+                    data: {"id": $("input[type='radio']:checked").val()},
+                    dataType: "json"
+
+                }).done(function (data) {
+                    $('#content').html(data);
+                });
+
+            } else {
+                $('.panel-title').html('<p class="bg-danger">You must select any certificate</p>');
+            }
+        });
+
+        $('#click').click(function () {
+            $('#content').load('{{ path('att_certificate_new',{'mode': app.security.token.providerKey}) }}');
+        });
+    });
+</script>    
+
+
+
+
+
+
+
+
+

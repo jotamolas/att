@@ -1,0 +1,39 @@
+<div class="table table-responsive">
+    <table class="table table-bordered table-hover" style="font-size: 12px;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>{% trans %}State{% endtrans %}</th>
+                <th>{% trans %}Country{% endtrans %}</th>
+                <th>{% trans %}Company{% endtrans %}</th>
+                <th>{% trans %}Observations{% endtrans %}</th>
+                <th>{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            </tr>                    
+        </thead>
+        <tbody>
+            {% for bus in business %}  
+                <tr>
+                    <td>{{ bus.id }}</td>
+                    <td>{{ bus.description }}</td>
+                    <td>{{ bus.state }}</td>
+                    <td>{{ bus.country }}</td>
+                    <td>{{ bus.company.description }}</td>
+                    <td>{{ bus.obs }}</td>
+
+                    <td class="text-center">
+                        <div class="btn-group" role="group" >
+                            <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{mode}}" class="btn btn-xs btn-default" data-id="{{ bus.id }}" id="edit">
+                                <span class="fa fa-edit"></span>
+                            </button>
+                            <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ bus.id }}" data-mode="{{mode}}">
+                                <span class="fa fa-remove"></span>
+                            </button>     
+                        </div>           
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

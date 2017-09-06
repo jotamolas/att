@@ -1,0 +1,30 @@
+{% extends 'appBundle:dev:index.html.twig' %}
+
+
+{% block content %}
+    <!-- Breadcrumbs -->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#"> Sync </a>
+        </li>
+        <li class="breadcrumb-item active"> New </li>
+    </ol>  
+    {{ form_start(form,{'attr':{'class':'syncExternSystemForm', 'id':'syncExternSystemForm', 'novalidate': 'novalidate'} }) }}
+    <div id="form_body">
+        {% include formPath with {'form': form} %}
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}   
+
+
+{% block javascripts %}
+
+    <script src="{{ asset('bundles/sync/js/syncExternSystemForm.js') }}" ></script> 
+    <script>
+        $(document).ready(function () {
+            initForm();
+        });
+    </script>   
+
+{% endblock %}

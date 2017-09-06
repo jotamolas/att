@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.maxday) }}
+                    {{ form_widget(form.maxday) }} 
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.maxdaysseq) }}
+                    {{ form_errors(form.maxdaysseq) }}
+                    {{ form_widget(form.maxdaysseq)}} 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.is_payable) }}
+                    {{ form_widget(form.is_payable) }} 
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.is_justifiable) }}
+                    {{ form_errors(form.is_justifiable) }}
+                    {{ form_widget(form.is_justifiable)}} 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.description) }}
+                    {{ form_errors(form.description) }}
+                    {{ form_widget(form.description)}} 
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.agreement) }}
+                    {{ form_errors(form.agreement) }}
+                    {{ form_widget(form.agreement)}} 
+                </div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-md-8">
+            {{ form_row(form.save)}}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>        
+

@@ -1,0 +1,46 @@
+{% extends is_granted('ROLE_FRONTEND') 
+    ? 'appBundle:dev:index.html.twig' 
+    : 'attBundle:Default:index.html.twig' %}
+
+{% block content %}    
+
+    {% if is_granted('ROLE_ADMIN')%}
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Attendance{% endtrans %} </a></li>
+            <li><a href="#">{% trans %} Notification{% endtrans %} </a></li>    
+            <li class="active">{% trans %} New {% endtrans %} </li>
+        </ol>   
+    {% endif %}
+    <div class="row">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} New Notification{% endtrans %}</span>
+            </div>
+            <div class="panel-body">  
+                {% if is_granted('ROLE_ADMIN')%}
+                    <div class="col-md-4 col-md-offset-4" >
+                    {% else %}
+                        <div>
+                        {% endif %}
+                        {% include 'attBundle:Notification:form.html.twig' with {'form': form} %}
+                    </div>
+                </div>     
+            </div>  
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+        {{ parent()}}
+
+        <script>
+            $('.input-daterange').datepicker({
+                language: "es",
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+
+        </script>   
+    {% endblock %}

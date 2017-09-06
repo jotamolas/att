@@ -1,0 +1,133 @@
+{% extends "medicalsrvBundle:Default:index.html.twig"%}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Medical Services{% endtrans %} </a></li>    
+            <li class="active">{% trans %} List {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} List of Medical Services{% endtrans %}</span>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">{% trans %}Name{% endtrans %}</th>
+                        <th class="text-center">{% trans %}Cuit{% endtrans %}</th>
+                        <th class="text-center">{% trans %}Token{% endtrans %}</th>
+                        <th class="text-center">{% trans %}External System{% endtrans %}</th>
+                        <th class="text-center">{% trans %}State{% endtrans %}</th>
+                        <th class="text-center">{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                    </tr>                    
+                </thead>
+                <tbody>
+                    {% for ms in mds %}  
+                        <tr>
+                            <td class="text-center">{{ ms.id }}</td>
+                            <td class="text-center">{{ ms.name }}</td>
+                            <td class="text-center">{{ ms.cuit }}</td>
+                            <td class="text-center">{{ ms.token }}</td>
+                            <td class="text-center">{% if ms.externalsystem %}{{ ms.externalsystem.name }}{% else %}-{% endif %}</td>
+                            <td class="text-center">
+                                {% if ms.state == true %}
+                                    <span class="label label-success"> {%trans%}Active{%endtrans%} </span>
+                                {% else %}
+                                    <span class="label label-danger">{%trans%}Down{%endtrans%}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {#<ul class="list-unstyled list-inline">
+                                            <li class="list-inline-item">
+                                                <a href="{{ path('medical_service_edit',{'mode':app.security.token.providerKey, 'id':ms.id})}}" id="edit">
+                                                    <span class="fa fa-edit" aria-hidden="true"></span>
+                                                </a>
+                                            </li>
+                                </ul>#}
+                                <div class="btn-group" role="group" >
+                                    <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{app.security.token.providerKey}}" class="btn btn-xs btn-default" data-id="{{ ms.id }}" id="edit">
+                                        <span class="fa fa-edit"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-default"  id="remove" data-id="{{ ms.id }}" data-mode="{{app.security.token.providerKey}}">
+                                        <span class="fa fa-remove"></span>
+                                    </button>     
+                                </div>           
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Edit Medical Service{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-edit">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{%  block javascripts %}
+    {{ parent()}}
+
+    <script>
+
+        $('#editModal').on('show.bs.modal', function (e) {
+            //get data-id attribute of the clicked element
+            var medical_service = $(e.relatedTarget).data('id');
+            var mode = $(e.relatedTarget).data('mode');
+            $('#modal-body-edit').load(Routing.generate('medical_service_edit',
+                    {
+                        mode: mode,
+                        id: medical_service
+                    }));
+
+            $('#save').attr('data-medical_service-id', medical_service);
+
+        });
+
+
+        $(document).on('click', '#remove', function (e) {
+            var medical_service = $(this).data('id');
+            var mode = $(this).data('mode');
+            var row = $(this).closest('tr');
+            bootbox.confirm({
+                size: "small",
+                message: "Are you sure?",
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: Routing.generate('medical_service_delete',
+                                    {
+                                        'id': medical_service,
+                                        'mode': mode
+                                    }),
+                            type: 'delete'
+                        }).done(function (data) {
+                            row.css("background-color", "#FF3700");
+                            row.fadeOut(4000, function () {
+                                row.remove();
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

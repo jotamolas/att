@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Estados</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Description</th>
+                <td>{{ state.description }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ state.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

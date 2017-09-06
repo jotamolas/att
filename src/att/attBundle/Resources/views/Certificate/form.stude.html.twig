@@ -1,0 +1,49 @@
+{% embed 'attBundle:Certificate:form.html.twig'  with { 'form': form.certificate, 'formStude': form } %}
+
+    {% block subFormErrors %}
+        <div id="formErrors">
+            {{ form_errors(formStude) }}
+        </div>
+    {% endblock %}
+
+
+
+    {% block subForm %}
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>{% trans %}Exam date{% endtrans %}</label>
+                    {{ form_widget(formStude.dateexam)}}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>{% trans %}Institute{% endtrans %}</label>
+
+                    {{ form_widget(formStude.institute)}}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>{% trans %}Subject{% endtrans %}</label>
+                    {{ form_widget(formStude.subject)}}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block formSumbit %}
+        <div class="row">
+            <div class="col-md-3 col-md-offset-5">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">
+                        {% trans %}Save{% endtrans %}
+                    </button>
+                    {{form_rest(formStude)}}
+                </div>    
+            </div>
+        </div>
+    {% endblock %}
+
+{% endembed %}  

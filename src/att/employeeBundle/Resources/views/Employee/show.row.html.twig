@@ -1,0 +1,32 @@
+
+<td class="text-center">{{ employee.id }}</td>
+<td class="text-center">{{ employee.dni }}</td>
+<td class="text-center">{% if employee.sex == 'M'%}Male{% else %} Female {% endif %}</td>
+<td class="text-center">{{ employee.surname | title }}</td>
+<td class="text-center">{{ employee.name | title }}</td>
+<td class="text-center">{% if employee.birthday %}{{ employee.birthday | date('Y-m-d')}}{% else %} {% endif %}</td>
+<td class="text-center">{{ employee.email }}</td>
+<td class="text-center">{% if(employee.phone)%}{{ employee.phone|phone_number_format(2) }} {% endif %}</td>
+<td class="text-center">
+    <div class="btn-group" role="group" >
+        <button type="button" data-toggle="modal" data-target="#addressModal" class="btn btn-xs btn-default" id="address" data-id="{{ employee.id }}" data-mode="{{mode}}">
+            <span class="fa fa-home"></span>
+        </button>
+        <button type="button" data-toggle="modal" data-target="#addresseditModal" class="btn btn-xs btn-default" id="addressEdit" data-id="{{ employee.id }} " data-mode="{{mode}}">
+            <span class="fa fa-edit"></span>
+        </button>    
+    </div>
+</td>
+<td class="text-center">
+    <div class="btn-group" role="group" >
+        <button type="button" class="btn btn-xs btn-default"  data-toggle="modal" data-target="#employeeshowModal" id="show" data-id="{{ employee.id }}" data-mode="{{mode}}">
+            <span class="fa fa-play-circle"></span>
+        </button>  
+        <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{mode}}" class="btn btn-xs btn-default" data-id="{{ employee.id }}" id="edit">
+            <span class="fa fa-edit"></span>
+        </button>
+        <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ employee.id }}" data-mode="{{mode}}">
+            <span class="fa fa-remove"></span>
+        </button>     
+    </div>
+</td>

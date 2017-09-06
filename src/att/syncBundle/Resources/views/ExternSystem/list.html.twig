@@ -1,0 +1,26 @@
+{% extends 'appBundle:dev:index.html.twig' %}
+
+
+{% block content %}
+    <!-- Breadcrumbs -->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">
+                    Sync
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">
+                    ExternalSystem
+            </a>
+        </li>
+        <li class="breadcrumb-item active">
+                List
+        </li>
+    </ol>
+    {% if ess %}
+        <div>
+            {% include 'syncBundle:ExternSystem:table.list.html.twig' with {'ess' : ess} %}
+        </div>
+    {% endif %}       
+{% endblock %}

@@ -1,0 +1,42 @@
+
+{% block listAtt %}
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table fa-adjust"></i>
+            List of External Systems
+        </div>
+        <div class="card-block">
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Id</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Ip</th>
+                            <th class="text-center">Port</th>
+                            <th class="text-center">Module</th>
+                            <th class="text-center">Type</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for es in ess %}
+                            <tr>
+                                <td class="text-center">{{ es.id }}</td>
+                                <td class="text-center">{{ es.name }}</td>
+                                <td class="text-center">{{ es.ip }}</td>
+                                <td class="text-center">{{ es.port }}</td>
+                                <td class="text-center">{{ es.module }}</td>
+                                <td class="text-center">{{ es.type.description }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

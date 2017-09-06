@@ -1,0 +1,251 @@
+<?php
+
+namespace att\attBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Atlicense
+ *
+ * @ORM\Table(name="AtLicense", indexes={@ORM\Index(name="absenceType", columns={"absenceType"}), @ORM\Index(name="FK_lagr_idx", columns={"agreement"})})
+ * @ORM\Entity
+ */
+class Atlicense
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="maxDay", type="integer", nullable=false)
+     */
+    private $maxday;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="maxDayCons", type="integer", nullable=true)
+     */
+    private $maxdaycons;
+
+    /**
+     * @var binary
+     *
+     * @ORM\Column(name="certification", type="binary", nullable=false)
+     */
+    private $certification;
+
+    /**
+     * @var binary
+     *
+     * @ORM\Column(name="payment", type="binary", nullable=false)
+     */
+    private $payment;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=50, nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \att\attBundle\Entity\Atabsencetype
+     *
+     * @ORM\ManyToOne(targetEntity="\att\attBundle\Entity\Atabsencetype")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="absenceType", referencedColumnName="id")
+     * })
+     */
+    private $absencetype;
+
+    /**
+     * @var \att\employeeBundle\Entity\Atagreement
+     *
+     * @ORM\ManyToOne(targetEntity="\att\employeeBundle\Entity\Atagreement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="agreement", referencedColumnName="id")
+     * })
+     */
+    private $agreement;
+
+
+
+    /**
+     * Set maxday
+     *
+     * @param integer $maxday
+     * @return Atlicense
+     */
+    public function setMaxday($maxday)
+    {
+        $this->maxday = $maxday;
+
+        return $this;
+    }
+
+    /**
+     * Get maxday
+     *
+     * @return integer 
+     */
+    public function getMaxday()
+    {
+        return $this->maxday;
+    }
+
+    /**
+     * Set maxdaycons
+     *
+     * @param integer $maxdaycons
+     * @return Atlicense
+     */
+    public function setMaxdaycons($maxdaycons)
+    {
+        $this->maxdaycons = $maxdaycons;
+
+        return $this;
+    }
+
+    /**
+     * Get maxdaycons
+     *
+     * @return integer 
+     */
+    public function getMaxdaycons()
+    {
+        return $this->maxdaycons;
+    }
+
+    /**
+     * Set certification
+     *
+     * @param binary $certification
+     * @return Atlicense
+     */
+    public function setCertification($certification)
+    {
+        $this->certification = $certification;
+
+        return $this;
+    }
+
+    /**
+     * Get certification
+     *
+     * @return binary 
+     */
+    public function getCertification()
+    {
+        return $this->certification;
+    }
+
+    /**
+     * Set payment
+     *
+     * @param binary $payment
+     * @return Atlicense
+     */
+    public function setPayment($payment)
+    {
+        $this->payment = $payment;
+
+        return $this;
+    }
+
+    /**
+     * Get payment
+     *
+     * @return binary 
+     */
+    public function getPayment()
+    {
+        return $this->payment;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Atlicense
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set absencetype
+     *
+     * @param \att\attBundle\Entity\Atabsencetype $absencetype
+     * @return Atlicense
+     */
+    public function setAbsencetype(\att\attBundle\Entity\Atabsencetype $absencetype = null)
+    {
+        $this->absencetype = $absencetype;
+
+        return $this;
+    }
+
+    /**
+     * Get absencetype
+     *
+     * @return \att\attBundle\Entity\Atabsencetype 
+     */
+    public function getAbsencetype()
+    {
+        return $this->absencetype;
+    }
+
+    /**
+     * Set agreement
+     *
+     * @param \att\employeeBundle\Entity\Atagreement $agreement
+     * @return Atlicense
+     */
+    public function setAgreement(\att\employeeBundle\Entity\Atagreement $agreement = null)
+    {
+        $this->agreement = $agreement;
+
+        return $this;
+    }
+
+    /**
+     * Get agreement
+     *
+     * @return \att\employeeBundle\Entity\Atagreement 
+     */
+    public function getAgreement()
+    {
+        return $this->agreement;
+    }
+}

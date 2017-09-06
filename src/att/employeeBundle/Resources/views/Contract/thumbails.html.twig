@@ -1,0 +1,25 @@
+<div class="row">
+
+{% for contract in contracts %} 
+    <div id="error">
+
+    </div>
+    <div class="col-sm-8 col-md-6">
+
+        {% if contract.status.description == 'Down' %}
+            <div class="thumbnail  alert alert-danger">
+            {% else %}
+                <div class="thumbnail  alert alert-success">
+                {% endif %}
+                <div class="caption">
+                    <h4>File Number: {{ contract.filenumber }}</h4>
+                    <p>Business: {{ contract.business.description }}</p>
+                    <p>Company: {{ contract.business.company.description }}</p>
+                    <p>Status: {{contract.status.description}}</p>
+                    <p><a href="#" class="btn btn-info btn-xs" role="button">Edit</a></p>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>    

@@ -1,0 +1,32 @@
+<div class="table table-responsive">
+    <table class="table table-bordered table-hover" style="font-size: 12px;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            </tr>                    
+        </thead>
+        <tbody>
+            {% for u in unions %}  
+                <tr>
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.description }}</td>
+
+
+                    <td class="text-center">
+                        <div class="btn-group" role="group" >
+                            <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{mode}}" class="btn btn-xs btn-default" data-id="{{ u.id }}" id="edit">
+                                <span class="fa fa-edit"></span>
+                            </button>
+                            <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ u.id }}" data-mode="{{mode}}">
+                                <span class="fa fa-remove"></span>
+                            </button>     
+                        </div>           
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

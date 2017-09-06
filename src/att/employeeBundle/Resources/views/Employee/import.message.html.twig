@@ -1,0 +1,58 @@
+{% extends 'employeeBundle:Default:index.html.twig' %}
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li>{% trans %}Dashboard{% endtrans %}</li>
+        <li>{% trans %} Employee{% endtrans %} </li>
+        <li>{% trans %} Import{% endtrans %}</li>  
+        <li class="active">{% trans %} Result {% endtrans %} </li>
+    </ol> 
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-file-archive-o"></i>   
+                <span>{% trans %} Employees Imported From File {% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6 col-md-offset-3">
+                    
+                    <div class="alert alert-success" role="alert">
+                        {% trans %}Employees imported: {% endtrans %} {{ row_insterted }}
+                    </div>
+                    
+                    <div class="alert alert-success" role="alert">
+                        {% trans %}Rows updated {% endtrans %} {{ row_updated }}
+                    </div>
+
+                    <div class="alert alert-danger" role="alert">
+                        {% trans %}Errors in rows{% endtrans %}:
+                        <ul>
+                            {% for error in errors_setting_entity %}
+                                <li> {{error | trans}} </li>
+                                {% endfor %}   
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-danger" role="alert">
+                        {% trans %}Contraint Validation Errors {% endtrans %}:
+                        <ul>
+                            {% for error in errors_constraint_violation %}
+                                <li> {{error | trans}} </li>
+                                {% endfor %}   
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-danger" role="alert">
+                        {% trans %}Exceptions{% endtrans %}:
+                        <ul>
+                            {% for error in error_exceptions %}
+                                <li> {{error | trans}} </li>
+                                {% endfor %}   
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

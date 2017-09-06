@@ -1,0 +1,39 @@
+{% extends 'attBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Tipos de Ausencias</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Descripcion</th>                
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attipoausencium in attipoausencias %}
+            <tr>
+                <td><a href="{{ path('att_tipoaus_show', { 'id': attipoausencium.id }) }}">{{ attipoausencium.id }}</a></td>
+                <td>{{ attipoausencium.destipoausencia }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('att_tipoaus_show', { 'id': attipoausencium.id }) }}">Mostrar</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('att_tipoaus_edit', { 'id': attipoausencium.id }) }}">Editar</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('att_tipoaus_new') }}">Registrar</a>
+        </li>
+    </ul>
+{% endblock %}

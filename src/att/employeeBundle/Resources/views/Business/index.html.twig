@@ -1,0 +1,60 @@
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Employee{% endtrans %}</a></li>                                
+        <li class="active"><a href="#">{% trans %}Business{% endtrans %}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12" id="successMsg"></div>
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Business{% endtrans %}</span>
+                <!-- button group --> 
+                <button id="new" data-toggle="modal" data-target="#newBusinessModal" type="button" class="btn btn-default pull-right">
+                    <span class="fa fa-plus"></span>
+                </button> 
+                <div class="clearfix"></div>                     
+            </div>
+
+            <div class="panel-body">
+                {{ render(controller('employeeBundle:Business:list' )) }}
+            </div>        
+        </div>
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart"></i>
+                <span>{% trans %}Statics{% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                
+            </div>        
+        </div>
+    </div>  
+            
+        
+
+    <div class="modal fade" id="newBusinessModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}New Business{% endtrans %}</h4>
+                </div>
+                <div class="modal-body"  id="modal-body-business-new" >
+                    {{ render(controller('employeeBundle:Business:new' )) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

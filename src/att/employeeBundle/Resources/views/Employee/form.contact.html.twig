@@ -1,0 +1,23 @@
+<div class="col-md-8 col-md-offset-2">
+    {{ form_start(form,{'attr':{'id':'employee-contact-form'} }) }}                                        
+
+    {{ form_errors(form.email)}}
+    <div class="form-group input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+            {{ form_widget(form.email)}}
+    </div>
+
+    {{ form_errors(form.celphone)}}
+    <div class="form-group input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+            {{ form_widget(form.celphone)}}
+    </div>
+
+    {{ form_errors(form.phone)}}
+    <div class="form-group input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
+            {{ form_widget(form.phone)}}
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>

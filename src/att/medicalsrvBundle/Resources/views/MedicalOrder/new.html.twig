@@ -1,0 +1,47 @@
+{% extends "medicalsrvBundle:Default:index.html.twig"%}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Medical Order{% endtrans %} </a></li>    
+            <li class="active">{% trans %} New {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} New Medical Order{% endtrans %}</span>
+            </div>
+            <div class="panel-body"> 
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="border: none">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" colspan="2">
+                                            <h4><span class="text-muted">Employee : </span> {{ medicalorder.employee.surname}}, {{ medicalorder.employee.name}}</h5>
+                                        </td>                                            
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            <h4><span class="text-muted left">Date : </span> {{ medicalorder.date | date('Y-m-d')}}</h5>
+                                        </td>
+                                        <td class="text-center">
+                                            <h4><span class="text-muted left">Status : </span> {{ medicalorder.status.description}}</h5>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% include 'medicalsrvBundle:MedicalOrder:form.html.twig' with {'form': form} %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

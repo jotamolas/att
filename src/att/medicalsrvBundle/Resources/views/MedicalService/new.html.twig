@@ -1,0 +1,21 @@
+{% extends "medicalsrvBundle:Default:index.html.twig"%}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Medical Services{% endtrans %} </a></li>    
+            <li class="active">{% trans %} New {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} New Medical Service{% endtrans %}</span>
+            </div>
+            <div class="panel-body"> 
+                {% include 'medicalsrvBundle:MedicalService:form.html.twig' with {'form': form} %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

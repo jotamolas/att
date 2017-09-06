@@ -1,0 +1,13 @@
+{% block content_data %}
+    <p> {{ workflow }} </p>
+    <p> {{ certificate }}</p>
+
+            {% if absences %}
+                {% for absence in absences %}
+                    <p>{{ absence }}</p>
+                {% endfor %}
+            {% endif %}
+{% endblock %}
+
+{% block attjavascripts %}
+{% endblock %}

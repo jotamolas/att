@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-md-12">
+        {{ form_start(form,{'attr':{'class':'attForm', 'id':'attForm'} }) }}
+
+        <div class="row">
+            <div class="form-group">
+                <label for="datepicker" class="col-md-2 offset-md-2 col-form-label">{%trans%}Date Range{%endtrans%}</label>
+                <div class="col-md-6">
+                    <div class="input-group input-daterange" id="datepicker">
+                        {{ form_widget(form.fromdate)}} 
+                        <div class="input-group-addon">to</div>
+                        {{ form_widget(form.todate)}}
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="absencetyp" class="col-md-2 offset-md-2 col-form-label">{%trans%}Absence Type{%endtrans%}</label>
+                <div class="col-md-6 ">
+                    {{ form_widget(form.absencetype)}}
+                </div>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div> 
+</div>
+<script>
+    function buildFieldsNotificationForm() {
+        $('.input-daterange').datepicker({
+            language: "es",
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+    }
+    ;
+
+    $('body').on('submit', '.attForm', function (e) {
+
+        e.preventDefault();
+        var forElement = document.getElementById('attForm');
+        var formData = new FormData(forElement);
+
+        $.ajax({
+            cache: false,
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+                .done(function (data) {
+
+                    if (data['status'] !== 'ok') {
+                        $('.modal-body').html(data['form']);                      
+
+                    } else {
+
+                        $('.modal-body').load(Routing.generate('att_notification_message',
+                                {
+                                    'id': data['id'],
+                                    'code': data['code']
+                                }));
+                    }
+
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    if (typeof jqXHR.responseJSON !== 'undefined') {
+                        alert(errorThrown);
+                    }
+                });
+
+    });
+    };
+
+</script>   

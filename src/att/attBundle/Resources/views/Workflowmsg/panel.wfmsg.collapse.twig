@@ -1,0 +1,39 @@
+             
+<div class="panel panel-default" id="panel">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            
+                Messagges
+                <span class="badge">{{ msgs |length }}</span>
+                <a href="#collapseMsg" data-toggle="collapse">
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                </a>
+        </h4>    
+    </div>
+    <div class="panel-collapse collapse in" id="collapseMsg">
+        <table class="table table-responsive">
+            <thead>
+                    <th>Date</th>
+                    <th>State</th>
+                    <th>Message</th>
+            </thead>
+            <tbody>
+                {% for wfmsg in msgs %}
+                    <tr>
+                        <td>{{ wfmsg.createAt | date ('Y-m-d H:i:s ') }}</td>
+                        <td>{{ wfmsg.wfstate }}</td>
+                        <td>{{ wfmsg.details }}</td>
+                    </tr> 
+                {% endfor %}
+                     <tr>
+                         <td colspan="3">
+                              <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMsg">
+                                  <span class="glyphicon glyphicon-comment"></span> New
+                              </button>
+                         </td>
+                     </tr>
+            </tbody>
+                
+        </table>
+    </div>
+</div> 

@@ -1,0 +1,18 @@
+{% extends "attBundle:Certificate:front.html.twig"%}
+{% block content_certificate %}
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} Justify {% endtrans %}{% trans %} Step {% endtrans %}  1 </span>
+            </div>
+            <div class="panel-body">  
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+                
+{% endblock content_certificate %}

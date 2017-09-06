@@ -1,0 +1,96 @@
+<div class="col-md-8 col-md-offset-2">
+    {{ form_start(form,{'attr':{'id':'contract-planning-form', 'novalidate':'novalidate'} }) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">    
+                {{ form_errors(form.start_date) }}
+                {{ form_label(form.start_date) }}
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <span class="fa fa-th"></span>
+                    </div>
+                    {{ form_widget(form.start_date)}} 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">    
+                {{ form_errors(form.end_date) }}
+                {{ form_label(form.end_date) }}
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <span class="fa fa-th"></span>
+                    </div>
+                    {{ form_widget(form.end_date)}} 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_errors(form.in_time) }}
+                {{ form_label(form.in_time) }}    
+                <div class="input-group clockpicker">
+                    <span class="input-group-addon">
+                        <span class="fa fa-clock-o"></span>
+                    </span>
+                    {{ form_widget(form.in_time)}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_errors(form.out_time) }}
+                {{ form_label(form.out_time) }}    
+                <div class="input-group clockpicker">
+                    <span class="input-group-addon">
+                        <span class="fa fa-clock-o"></span>
+                    </span>
+                    {{ form_widget(form.out_time)}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.status)}}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.department)}}
+        </div>
+    </div>
+    
+    {{ form_rest(form) }} 
+    {{ form_end(form) }}
+</div>        
+
+
+
+
+
+{% block attjavascripts %}
+    <script>
+        $(document).ready(function () {
+
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                todayHighlight: true
+            });
+
+            $('.clockpicker').clockpicker({
+                placement: 'top',
+                autoclose: true
+            });
+
+            $('.select2').select2({
+                theme: "bootstrap"
+            });
+
+        });
+
+    </script>   
+{% endblock %}

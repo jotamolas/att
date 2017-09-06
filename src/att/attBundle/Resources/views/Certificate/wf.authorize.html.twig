@@ -1,0 +1,116 @@
+{% block content_data %}
+
+    <div class="row">        
+        <div class="col-md-6">
+            <div class="panel panel-default" id="panel">
+                <div class="panel-heading">
+                    Certificado {{ certificate.id }}
+                </div>      
+                <table class="table table-responsive">
+                    <tbody>
+
+
+                        <tr>
+                            <th>Employee</th>
+                            <td>{{ certificate.employee.surname |capitalize}}, {{certificate.employee.name|capitalize}}</td>
+                        </tr>
+                        <tr>
+                            <th>Presentation Date</th>
+                            <td>{% if certificate.date %}{{ certificate.date|date('Y-m-d H:i:s ') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>From</th>
+                            <td>{% if certificate.datefrom %}{{ certificate.datefrom|date('Y-m-d H:i:s ') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>To</th>
+                            <td>{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d H:i:s ') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Aprobation Status</th>
+                            <td>{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Details</th>
+                            <td>{{ certificate.details }}</td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <td>{{ certificate.type.description }}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+        
+         <div class="col-md-6">
+             <div class="panel panel-default" id="panel">
+                 <div class="panel-heading">
+                     Workflow {{ wf.id }}
+                 </div>
+                 <table class="table table-responsive">
+                     <tbody>
+                         <tr>
+                             <th>Wf State</th>
+                             <td>{{ wf.statekey }}</td>
+                         </tr>
+                         <tr>
+                             <th>Wf Create</th>
+                             <td>{{ wf.createAt | date ('Y-m-d H:i:s ')}}</td>
+                         </tr>
+                         <tr>
+                             <th>Wf Modified</th>
+                             <td>{{ wf.modifiedAt | date ('Y-m-d H:i:s ') }}</td>
+                         </tr>
+                         <tr>
+                             <th>Certificate ID</th>
+                             <td>{{ wf.entityid }}</td>
+                         </tr>
+                     </tbody>
+                 </table>
+                 
+             </div>     
+        </div>
+    </div>    
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Scan</h1>
+                </div>
+                <div class="panel-body">
+                    <img class="img-thumbnail img-responsive center-block" src="{{ vich_uploader_asset(certificate, 'scanFile') }}" alt="Certificado"/>    
+                </div>
+            </div>
+        </div>    
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-md-offset-0">
+            <ul class="list-inline">
+               <button type="button" id="back" class="btn btn-bg btn-default">Back</button>
+               <button type="button" id="authorize" class="btn btn-bg btn-default">Authorize</button>
+           </ul>
+        </div>
+    </div>
+    
+                    
+                
+                  
+
+{% endblock %}
+
+{% block  attjavascripts %}
+    <script>       
+        $(document).ready(function (){
+             $('#back').click(function (){
+                 $('#content').load('{{ path('att_certificate_list_wf') }}');
+             });
+             $('#authorize').click(function (){
+                 $('#content').load('{{ path('att_workflow_certificate_authorize' , { 'id': wf.id  }) }}');
+             });
+        });   
+    </script>    
+{% endblock %}
+
+                        
+                       

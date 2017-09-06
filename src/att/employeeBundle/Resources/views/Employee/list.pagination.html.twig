@@ -1,0 +1,188 @@
+{% extends 'employeeBundle:Default:index.html.twig' %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Employee{% endtrans %}</a></li>                                
+        <li class="active">{% trans %}List{% endtrans %}</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12" id="successMsg"></div>
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Employees{% endtrans %}</span>
+
+                <div class="dropdown pull-right">
+                    <div class="btn-group pull-right" role="group">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="strikes">
+                            <li style="width: 400px; font-size: 12px">
+                                <form  style="display:block;">
+                                    <div class="row">
+                                        <div class="form-group col-md-5 col-md-offset-1">
+                                            <label for="filter">{% trans %}Filter by Gender{% endtrans %}</label>
+                                            {{ filter_select(employees, "e.sex", gender)}}
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label for="contain">ID</label>
+                                            {{ filter_search(employees, "e.dni")}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-5 col-md-offset-1">
+                                            <label for="contain">{% trans %}Last Name{% endtrans %}</label>
+                                            {{ filter_search(employees, "e.surname")}}
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label for="contain">{% trans %}Name{% endtrans %}</label>
+                                            {{ filter_search(employees, "e.name")}}
+                                        </div>
+                                    </div>
+                                </form>   
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <!-- button group --> 
+                <button id="new" type="button" class="btn btn-default pull-right">
+                    <span class="fa fa-plus"></span>
+                </button> 
+                <div class="clearfix"></div>                     
+            </div>
+
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th class="text-center">{{ sorter_link(employees, "e.id", "Id") }}</th>
+                                <th class="text-center">{{ sorter_link(employees, "e.dni", "Person Id" | trans) }}</th>
+                                <th class="text-center">{{ sorter_link(employees, "e.sex", "Genre" | trans) }}</th>
+                                <th class="text-center">{{ sorter_link(employees, "e.surname", "Surname" | trans) }}</th>
+                                <th class="text-center">{{ sorter_link(employees, "e.name", "Name" | trans)}}</th>
+                                <th class="text-center">{{ sorter_link(employees, "e.birthday", "Birthday" | trans)}}</th> 
+                                <th class="text-center">{% trans %} Email{% endtrans %} </th> 
+                                <th class="text-center">{% trans %} Mobile{% endtrans %}</th> 
+                                <th class="text-center">{% trans %} Address{% endtrans %} </th>                            
+                                <th class="text-center">{% trans %} Actions {% endtrans %}</th>
+                            </tr>                    
+                        </thead>
+                        <tbody>
+                            {% for employee in employees %}
+                                <tr id="row-employee-{{employee.id}}">
+                                    {% include 'employeeBundle:Employee:show.row.html.twig' with {'employee' : employee, 'mode': app.security.token.providerKey} %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="text-center">
+                    {{ pagination(employees) }}
+                </div> 
+            </div>            
+        </div>
+    </div>       
+
+    <!-- Modal -->
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Edit Employee{% endtrans %}</h4>
+                </div>
+
+                <div class="modal-body" id="modal-body-edit">
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-default" id="save" value="Save">
+                </div>
+
+            </div>
+        </div>
+    </div>  
+
+    <div class="modal fade" id="addressModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Address{% endtrans %}</h4>
+                </div>
+                <div class="modal-body"  id="modal-body-address-show" >
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addresseditModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Address Edit{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-address-edit">
+
+                </div>
+                <div class="modal-footer" id="modal-footer-address-edit">
+
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div class="modal fade" id="employeeshowModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Employee Show{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-employee-show">
+
+                </div>
+                <div class="modal-footer" id="modal-body-employee-show">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{%  block javascripts %}
+    {{ parent()}}
+    <script src="{{ asset('bundles/employee/js/employee.form.js')}}"></script>
+    <script src="{{ asset('bundles/util/js/google.autocomplete.js') }}" ></script>    
+    <script src="{{ asset('bundles/util/js/google.map.js') }}" ></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_token }}&libraries=places&callback=initialize" async defer></script>
+    <script>
+        function initialize() {
+            initMap();
+            initAutoComplete();
+        }
+    </script>
+
+{% endblock %}
+

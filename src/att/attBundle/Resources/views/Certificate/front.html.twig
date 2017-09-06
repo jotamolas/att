@@ -1,0 +1,16 @@
+{% extends "appBundle:dev:index.html.twig"%}
+{% block content %}
+    <div class="col-sm-3">
+        <div class="list-group">
+            <a href="{{ path('att_certificate_list',{ 'mode':app.security.token.providerKey })}}" class="list-group-item">{% trans %}My Certificates{% endtrans %}</a>
+            <a href="{{ path('att_certification_first_step',{ 'mode':app.security.token.providerKey })}}" class="list-group-item">{% trans %}Send Certificate{% endtrans %}</a>
+            <a href="#" class="list-group-item">{% trans %}Justify Absence{% endtrans %}</a>
+        </div>
+    </div>
+
+    <div class="col-sm-9">
+        {% block content_certificate %}
+        {% endblock content_certificate %}
+    </div>
+
+{% endblock content %}

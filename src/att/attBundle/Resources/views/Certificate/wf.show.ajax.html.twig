@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.2.21/css/lightgallery.min.css">
+<div id="show-content">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            {% include 'attBundle:Certificate:panel.certificate.collapse.twig' with {'certificate' : certificate} %}
+
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+
+                    {% include 'attBundle:Certificate:panel.wf.collapse.twig' with {'wf': wf} %} 
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    {% include 'attBundle:Workflowmsg:panel.wfmsg.collapse.twig' with {'msgs':msgs, 'wf': wf} %}  
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-md-offset-0">
+            <ul class="list-inline">
+                {% if is_granted('ROLE_USER')%}
+                    <a class="btn btn-sm btn-primary" id="docAttached" href="#">
+                        <i class="fa fa-file fa-fw"></i>{% trans %} Attach {% endtrans %}</a>
+                    <a class="btn btn-sm btn-success" id="authorize" href="#">
+                        <i class="fa fa-check fa-fw"></i>{% trans %} Authorize {% endtrans %}</a>
+                    <a class="btn btn-sm btn-danger" id="reject" href="#">
+                        <i class="fa fa-remove fa-fw"></i>{% trans %} Reject {% endtrans %}</a>
+
+                {% endif %}
+                <a class="btn btn-sm btn-default" id="rectify" href="#">    
+                    <i class="fa fa-share fa-fw"></i>{% trans %} Rectify {% endtrans %}</a>
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    {% include 'attBundle:Workflowmsg:modal.wfmsg.new.html.twig' %}
+</div>       
+
+
+
+<script>
+    $("#lightgallery").lightGallery({
+        thumbnail: false,
+        animateThumb: false
+    });
+
+    $('#docAttached').click(function () {
+        $('#show-content').load('{{ path('att_workflow_certificate_attach' , { 'id': wf.id ,"mode": mode }) }}');
+    });
+    $('#authorize').click(function () {
+        $('#show-content').load('{{ path('att_workflow_certificate_authorize' , { 'id': wf.id ,"mode": mode}) }}');
+    });
+    $('#reject').click(function () {
+        $('#show-content').load('{{ path('att_workflow_certificate_cancel' , { 'id': wf.id ,"mode": mode }) }}');
+    });
+
+    $('#rectify').click(function () {
+        $('#show-content').load('{{ path('att_workflow_certificate_rectify' , { 'id': wf.id ,"mode": mode }) }}');
+    });
+</script>  
+
+
+
+

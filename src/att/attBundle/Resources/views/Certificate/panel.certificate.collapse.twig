@@ -1,0 +1,65 @@
+<div class="panel-group">
+    <div class="panel panel-default" id="panel">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a href="#collapseCertificate" data-toggle="collapse">
+                    Certificado {{ certificate.id }}
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                </a>
+            </h4>
+        </div> 
+        <div id="collapseCertificate" class="panel-collapse collapse in">
+            <table class="table table-responsive">
+                <tbody>
+
+                    <tr>
+                        <th>Employee</th>
+                        <td>{{ certificate.employee.surname |capitalize}}, {{certificate.employee.name|capitalize}}</td>
+                    </tr>
+                    <tr>
+                        <th>Presentation Date</th>
+                        <td>{% if certificate.date %}{{ certificate.date|date('Y-m-d H:i:s ') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>From</th>
+                        <td>{% if certificate.datefrom %}{{ certificate.datefrom|date('Y-m-d H:i:s ') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>To</th>
+                        <td>{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d H:i:s ') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Aprobation Status</th>
+                        <td>{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Details</th>
+                        <td>{{ certificate.details }}</td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td>{{ certificate.type.description }}
+                    </tr>
+                    <tr>
+                    <tr>
+                        <th>Attach Documentation</th>
+                        <td>{% if certificate.attachdoc %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Scan</th>
+                        <td>
+                            <div id="lightgallery">
+                                <a href="{{ vich_uploader_asset(certificate, 'scanFile') }}" class="thumbnail"> 
+                                    <img src="{{ vich_uploader_asset(certificate, 'scanFile') }}" style="width:80px;height:100px">
+                                </a>
+                            </div>   
+                        </td>
+                    </tr>
+                    </tr>
+                </tbody>
+            </table>
+        </div>            
+    </div>
+</div>
+
+

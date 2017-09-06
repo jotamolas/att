@@ -1,0 +1,68 @@
+{% extends "attBundle:Default:index.html.twig"%}
+
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Attendance{% endtrans %} </a></li>   
+            <li><a href="#">{% trans %} Work Leave Type{% endtrans %} </a></li>   
+            <li class="active">{% trans %} List {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} Work Leave Type List{% endtrans %}</span>
+            </div>
+            <div class="panel-body">     
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>{% trans %}Max Days{% endtrans %} </th>
+                            <th>{% trans %}Max Days Sequencial{% endtrans %}</th>
+                            <th>{% trans %}Is justifiable?{% endtrans %}</th>
+                            <th>{% trans %}Is_payable{% endtrans %}</th>
+                            <th>{% trans %}Description{% endtrans %}</th>
+                            <th>{% trans %}Agreement{% endtrans %}</th>
+                            <th>{% trans %}Actions{% endtrans %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for atworkleavetype in atworkleavetypes %}
+                            <tr>
+                                <td><a href="{{ path('att_workleavetype_show', { 'id': atworkleavetype.id  , 'mode':app.security.token.providerKey}) }}">{{ atworkleavetype.id }}</a></td>
+                                <td>{{ atworkleavetype.maxday }}</td>
+                                <td>{{ atworkleavetype.maxdaysseq }}</td>
+                                <td>
+                                    {% if atworkleavetype.isjustifiable == true %}
+                                        <span class="label label-success"> {% trans %}Yes{% endtrans %} </span>
+                                    {%else%}
+                                        <span class="label label-danger">{% trans %} No{% endtrans %} </span
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    {% if atworkleavetype.ispayable == true %}
+                                        <span class="label label-success">{% trans %} Yes{% endtrans %} </span>
+                                    {%else%}
+                                        <span class="label label-danger">{% trans %} No{% endtrans %} </span>
+                                    {%endif%}
+                                </td>
+                                <td>{{ atworkleavetype.description }}</td>
+                                <td>{{ atworkleavetype.id }}</td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <a href="{{ path('att_workleavetype_edit', { 'id': atworkleavetype.id , 'mode':app.security.token.providerKey}) }}">edit</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

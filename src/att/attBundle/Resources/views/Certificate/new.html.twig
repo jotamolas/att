@@ -1,0 +1,29 @@
+{% extends "attBundle:Certificate:front.html.twig"%}
+{% block content_certificate %}
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} New Certificate{% endtrans %}</span>
+            </div>
+            <div class="panel-body">  
+                {{ form_start(form,{'attr':{'class':'attForm', 'id':'attForm'} }) }}    
+                <div id="form_body">
+                    {% include formPath with {'form': form} %}
+                </div>
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock content_certificate %}
+{% block javascripts %}
+    {{ parent()}}
+    <script src="{{ asset('bundles/att/js/attForm.js') }}" ></script> 
+    <script>
+        $(document).ready(function () {
+            buildFieldsForm();
+            initForm();
+        });
+    </script>   
+{% endblock javascripts %}

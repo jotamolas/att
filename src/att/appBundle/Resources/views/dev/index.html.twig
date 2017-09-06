@@ -1,0 +1,194 @@
+{% extends '::base.html.twig' %}
+{% block title %}Developer Page{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.2/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.3/css/fileinput.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Encode+Sans" rel="stylesheet">
+    <style>
+        body{
+            background-color: darkslateblue;
+            color: #ddd;
+            font-size: 1.2rem;
+            font-family: 'Encode Sans', sans-serif;
+        }
+        .hero-widget {color: white; text-align: center; padding-top: 20px; padding-bottom: 20px; background-color: transparent; border: none }
+        .hero-widget .icon { display: block; font-size: 66px; line-height: 66px; margin-bottom: 1px; text-align: center; }
+        .hero-widget label { font-size: 20px; }
+        .hero-widget .options { margin-top: 5px; }
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        a:hover, a:focus {
+            color: #8e8686;
+            text-decoration: underline;
+        }
+        .navbar-nav > li > a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        .panel-default {
+            border-color: #ddd;
+            background-color: transparent;
+            font-size: 15px;
+            color: whitesmoke;
+
+        }
+        .panel-default > .panel-heading {
+            color: #ddd;
+            background-color: transparent;
+            font-size: 18px;
+        }
+        
+        .panel-default > .panel-footer {
+            color: #ddd;
+            background-color: transparent;
+            font-size: 18px;
+        }
+        
+        a.list-group-item{
+            color: #ddd;
+            background-color: transparent;
+            font-size: 18px;
+        }
+        
+        .table .table{
+            color: #ddd;
+            background-color: transparent;
+        }
+        .table-bordered{
+            color: #ddd;
+            background-color: transparent;
+        }
+        
+        @media (min-width: 768px) {
+            .navbar-nav.navbar-center {
+                position: absolute;
+                left: 50%;
+                transform: translatex(-50%);
+            }
+        }
+    </style>
+{% endblock %}
+{% block navbar %}
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded" style="background-color: darkslateblue;">
+
+
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>    
+        </div>
+        <span class="navbar-brand">
+            <a href="{{ path('att_index',{'mode':app.security.token.providerKey}) }}">
+                <img style="max-height: 88px; max-width:100px; margin-top: -7px;" class="img-responsive"
+                     src="{{ asset('bundles/app/images/logo_front.png')}}">
+            </a>
+        </span>
+        <div class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">{% trans %} Welcome  {% endtrans %} {{ app.user.employee.name}}</a></li>
+            </ul>
+        </div>
+
+    </nav>
+{% endblock %}
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div class="icon">
+                        <a href='{{ path('att_certificate_front',{ 'mode':app.security.token.providerKey })}}'>
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-square-o fa-stack-2x"></i>
+                                <i class="fa fa-certificate fa-stack-1x"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="text">
+                        <label>{% trans %} Justify Absence {% endtrans %}</label>
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div class="icon">
+                        <a href='{{ path('att_notification_new_w_employee',{ 'mode':app.security.token.providerKey })}}'>
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-square-o fa-stack-2x"></i>
+                                <i class="fa fa-bullhorn fa-stack-1x"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="text">
+                        <label>{% trans %} Notifiy Absence {% endtrans %}</label>
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div class="icon">
+                        <a href='#'>
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-square-o fa-stack-2x"></i>
+                                <i class="fa fa-map-o fa-stack-1x"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="text">
+                        <label>{% trans %} My Address {% endtrans %} </label>
+                    </div>             
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div class="icon">
+                        <a href='#'>
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-square-o fa-stack-2x"></i>
+                                <i class="fa fa-vcard fa-stack-1x"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="text">
+                        <label>{% trans %} My Contact Data{% endtrans %}</label>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                    {% block content %}
+                    {% endblock content%}
+            </div>
+        </div>
+    </div>
+{% endblock %}   
+
+
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.2/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.3/js/fileinput.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.3/themes/gly/theme.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.3/js/locales/es.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.3/js/plugins/purify.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.3/js/plugins/sortable.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.3/js/plugins/canvas-to-blob.min.js"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{% endblock%}    

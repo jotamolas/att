@@ -1,0 +1,46 @@
+{% extends 'attBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Listado de Licencias</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Descripcion</th>
+                <th>Cantidaddiasautorizados</th>
+                <th>Exigecertificado</th>
+                <th>Liquidable</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for atlicencium in atlicencias %}
+            <tr>
+                <td><a href="{{ path('att_licencia_show', { 'id': atlicencium.id }) }}">{{ atlicencium.id }}</a></td>
+                <td>{{ atlicencium.descripcion }}</td>
+                <td>{{ atlicencium.cantidaddiasautorizados }}</td>
+                <td>{% if atlicencium.exigecertificado %}Yes{% else %}No{% endif %}</td>
+                <td>{% if atlicencium.liquidable %}Yes{% else %}No{% endif %}</td>
+                
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('att_licencia_show', { 'id': atlicencium.id }) }}">Mostrar</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('att_licencia_edit', { 'id': atlicencium.id }) }}">Editar</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('att_licencia_new') }}">Registrar Nuevo Tipo</a>
+        </li>
+    </ul>
+{% endblock %}

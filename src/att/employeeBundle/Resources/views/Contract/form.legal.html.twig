@@ -1,0 +1,41 @@
+
+<div class="col-sm-8 col-sm-offset-2">
+{{ form_start(form,{'attr':{'id':'contract-legal-form' , 'novalidate': 'novalidate'} }) }}  
+
+
+{{ form_errors(form)}}
+
+{{ form_row(form.file_number)}}
+{{ form_row(form.agreement) }}
+{{ form_row(form.schema) }}
+
+{{ form_end(form) }}
+</div>
+<script>
+    
+    $("#contract_legal_agreement").change(function () {
+        var data = {
+            agreement_id: $(this).val()
+        };
+
+        $.ajax({
+            type: 'post',
+            url: '{{ path("employee_schema_ajax_list") }}',
+            data: data,
+            success: function (data) {
+
+                var $schema_selector = $('#contract_legal_schema');
+                $schema_selector.html('<option>Select a Schema...</option>');
+
+                for (var i = 0, total = data.length; i < total; i++) {
+                    $schema_selector.append('<option value="' + data[i].id + '"> Days: ' + data[i].days + " x Hours: " + data[i].hours + " | (" + data[i].description + ')</option>');
+                }
+            }
+        });
+    });
+    
+</script>
+
+
+{{ form_stylesheet(form) }}
+{{ form_javascript(form) }}

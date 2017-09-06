@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Atworkleave</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ atworkleave.id }}</td>
+            </tr>
+            <tr>
+                <th>Datefrom</th>
+                <td>{% if atworkleave.dateFrom %}{{ atworkleave.dateFrom|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Dateto</th>
+                <td>{% if atworkleave.dateTo %}{{ atworkleave.dateTo|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('atworkleave_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('atworkleave_edit', { 'id': atworkleave.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

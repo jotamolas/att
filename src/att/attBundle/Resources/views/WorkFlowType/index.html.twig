@@ -1,0 +1,41 @@
+{% extends 'attBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Lista de Tipos de Flujos de Trabajo</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Entityworkflow</th>
+                <th>Id de Servicio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for atworkflowtype in atworkflowtypes %}
+            <tr>
+                <td><a href="{{ path('att_workflows_show', { 'id': atworkflowtype.serviceid }) }}">{{ atworkflowtype.name }}</a></td>
+                <td>{{ atworkflowtype.entityworkflow }}</td>
+                <td>{{ atworkflowtype.serviceid }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('att_workflows_show', { 'id': atworkflowtype.serviceid }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('att_workflows_edit', { 'id': atworkflowtype.serviceid }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('att_workflows_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "medicalsrvBundle:Default:index.html.twig"%}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Medical Order{% endtrans %} </a></li>    
+            <li class="active">{% trans %} List {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} List of Medical Order{% endtrans %}</span>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">{% trans %}Date{% endtrans %}</th>
+                        <th class="text-center">{% trans %}Employee{% endtrans %}</th>
+                        <th class="text-center">{% trans %}Service{% endtrans %}</th>
+                        <th class="text-center">{% trans %}Status{% endtrans %}</th>
+                        <th class="text-center">{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                    </tr>                    
+                </thead>
+                <tbody>
+                    {% for mo in mos %}  
+                        <tr>
+                            <td class="text-center">{{ mo.id }}</td>
+                            <td class="text-center">{{ mo.date | date('d-m-Y')}}</td>
+                            <td class="text-center">{{ mo.employee.surname }},{{ mo.employee.name }}</td>
+                            <td class="text-center">{{ mo.service.name }}</td>
+                            <td class="text-center">{{ mo.status.description }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group" >
+                                    <button type="button" data-toggle="modal" data-target="#showModal" data-mode="{{app.security.token.providerKey}}" class="btn btn-xs btn-default" data-id="{{ mo.id }}" id="edit">
+                                        <span class="fa fa-play"></span>
+                                    </button>
+                                    <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{app.security.token.providerKey}}" class="btn btn-xs btn-default" data-id="{{ mo.id }}" id="edit">
+                                        <span class="fa fa-edit"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-default"  id="remove" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}">
+                                        <span class="fa fa-remove"></span>
+                                    </button> 
+                                    <button type="button" class="btn btn-xs btn-default"  id="remove" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}">
+                                        <span class="fa fa-plus"></span>
+                                    </button>
+                                </div>           
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Edit Medical Order{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-edit">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="showModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Show Medical Order{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-show">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Add Visit{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-add">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{%  block javascripts %}
+    {{ parent()}}
+
+    <script>
+
+        $('#editModal').on('show.bs.modal', function (e) {
+            //get data-id attribute of the clicked element
+            var medical_order = $(e.relatedTarget).data('id');
+            var mode = $(e.relatedTarget).data('mode');
+            $('#modal-body-edit').load(Routing.generate('medical_order_edit',
+                    {
+                        mode: mode,
+                        id: medical_order
+                    }));
+
+            $('#save').attr('data-medical_order-id', medical_order);
+
+        });
+
+        $('#showModal').on('show.bs.modal', function (e) {
+            //get data-id attribute of the clicked element
+            var medical_order = $(e.relatedTarget).data('id');
+            var mode = $(e.relatedTarget).data('mode');
+            $('#modal-body-show').load(Routing.generate('medical_order_show',
+                    {
+                        mode: mode,
+                        id: medical_order
+                    }));
+
+            $('#save').attr('data-medical_order-id', medical_order);
+
+        });
+
+        $('#ddModal').on('show.bs.modal', function (e) {
+            //get data-id attribute of the clicked element
+            var medical_order = $(e.relatedTarget).data('id');
+            var mode = $(e.relatedTarget).data('mode');
+            $('#modal-body-add').load(Routing.generate('medical_order_visit_add',
+                    {
+                        mode: mode,
+                        id: medical_order
+                    }));
+        });
+
+
+        $(document).on('click', '#remove', function (e) {
+            var medical_order = $(this).data('id');
+            var mode = $(this).data('mode');
+            var row = $(this).closest('tr');
+            bootbox.confirm({
+                size: "small",
+                message: "Are you sure?",
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: Routing.generate('medical_order_delete',
+                                    {
+                                        'id': medical_order,
+                                        'mode': mode
+                                    }),
+                            type: 'delete'
+                        }).done(function (data) {
+                            row.css("background-color", "#FF3700");
+                            row.fadeOut(4000, function () {
+                                row.remove();
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

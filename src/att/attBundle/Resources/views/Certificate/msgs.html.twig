@@ -1,0 +1,13 @@
+{% block content_data %}
+    
+        {% if status == 'ok' %}
+            <div class="alert alert-success">
+                <strong>Success!</strong>
+                
+            {% else %}
+            <div class="alert alert-danger">
+                <strong>Error!</strong>            
+        {% endif %}
+            {{ message }}
+            </div>
+{% endblock %}

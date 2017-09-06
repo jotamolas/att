@@ -1,0 +1,45 @@
+{% extends 'attBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Tipo de Licencia</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ atlicencium.id }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ atlicencium.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Cantidaddiasautorizados</th>
+                <td>{{ atlicencium.cantidaddiasautorizados }}</td>
+            </tr>
+            <tr>
+                <th>Exigecertificado</th>
+                <td>{% if atlicencium.exigecertificado %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Liquidable</th>
+                <td>{% if atlicencium.liquidable %}Yes{% else %}No{% endif %}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('att_licencia_index') }}">Volver</a>
+        </li>
+        <li>
+            <a href="{{ path('att_licencia_edit', { 'id': atlicencium.id }) }}">Editar</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Eliminar">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

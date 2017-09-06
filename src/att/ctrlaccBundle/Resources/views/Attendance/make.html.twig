@@ -1,0 +1,60 @@
+{# empty Twig template #}
+{% extends 'appBundle:dev:index.html.twig' %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">                
+                Access Control                
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">                
+                Attendances
+            </a>
+        </li>
+        <li class="breadcrumb-item active">  
+            Make
+        </li>
+    </ol>   
+
+
+    {% if status == 'ok' %}
+        <div class="alert alert-success" role="alert">
+            {% if action == 'make' %}
+                Attendance Make
+            {% else%}
+                Attendance Complete
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert"> 
+            {% if action == 'make' %}
+                Attendance Make Fail
+            {% else%}    
+                Attendance Complete Fail
+            {% endif %}     
+        </div> 
+    {% endif %}
+    
+    {#{ dump(errors) }#}   
+    {% if errors %}  
+        <div class="alert alert-danger" role="alert">
+            {#% for error in errors %} 
+                {% for data in error %}
+                    <li>{{ data.message }} => {{ data.propertyPath }} => {{ data.invalidValue }}</li>
+                {% endfor %}
+             {% endfor %#}
+            <p><strong>{{ errors }}</strong></p>
+        </div>
+    {% endif %}
+
+    {#{ dump(atts) }#} 
+    {#% if atts %}
+        <div>
+            {% include 'ctrlaccBundle:Attendance:table.list.html.twig' with {'atts' : atts} %}
+        </div>
+    {% endif %#}      
+
+
+{% endblock %}

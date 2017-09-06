@@ -1,0 +1,63 @@
+{% extends "appBundle::base.html.twig"%}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--link rel="stylesheet" href="{#{ asset('bundles/app/css/app-login.css')}#}">-->
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/app-login-2.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="container container-fluid">
+        <section class="login-block">
+            <div class="container">
+                <div class="row logo-sec">
+                   
+                    <div class="col-md-4">
+                        <img src="{{ asset('bundles/app/images/att_logo.png')}}" width="140" height="75">
+                     </div>
+                     <div class="col-md-4 offset-md-4">
+                         <div class="pull-right">
+                             <img style="position: absolute; right: 0; bottom: 0;"src="{{ asset('bundles/app/images/att_logo_leyend.png')}}" width="200" height="45">
+                         </div>
+                     </div>
+                </div>
+            
+            {% if error %}
+                <div class="row">
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-4 login-sec">
+                    <h2 class="text-center">Login Now</h2>
+                    <form class="login-form" action="{{ path('att_frontend_login') }}" method="POST">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="text-uppercase">Contract Id</label>
+                            <input type="username"  name="_username" class="form-control" placeholder="" value="{{ last_username }}">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="text-uppercase">Password</label>
+                            <input type="password"  name="_password" class="form-control" placeholder="">
+                        </div>
+
+                        <div class="form-check">
+                            <button type="submit" class="btn btn-login float-right">Sign In</button>
+                        </div>
+                    </form>                        
+                </div>
+                <div class="col-md-8 banner-sec">
+                    <div class="banner-text">
+                        <h2>Employee Desk</h2>
+                        <p>In this place, you can notify absences, register certificates, consult your contract data, among other things</p>
+                    </div>		   
+                </div>
+            </div>
+    </div>
+</section>    
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+{% endblock%}

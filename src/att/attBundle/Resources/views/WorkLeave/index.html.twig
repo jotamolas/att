@@ -1,0 +1,56 @@
+{% extends "attBundle:Default:index.html.twig"%}
+
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Attendance{% endtrans %} </a></li>   
+            <li><a href="#">{% trans %} Work Leave{% endtrans %} </a></li>   
+            <li class="active">{% trans %} List {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i>   
+                <span>{% trans %} Work Leave List{% endtrans %}</span>
+            </div>
+            <div class="panel-body">     
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Datefrom</th>
+                            <th>Dateto</th>
+                            <th>Employee</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for atworkleave in atworkleaves %}
+                            <tr>
+                                <td>{{ atworkleave.id }}</td>
+                                <td>{% if atworkleave.dateFrom %}{{ atworkleave.dateFrom|date('Y-m-d') }}{% endif %}</td>
+                                <td>{% if atworkleave.dateTo %}{{ atworkleave.dateTo|date('Y-m-d') }}{% endif %}</td>
+                                <td> {{atworkleave.employee.surname}},{{atworkleave.employee.name}}</td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <a href="{{ path('att_workleave_show', { 'id': atworkleave.id , 'mode':app.security.token.providerKey}) }}">show</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('att_workleave_edit', { 'id': atworkleave.id , 'mode':app.security.token.providerKey }) }}">edit</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">do plan</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

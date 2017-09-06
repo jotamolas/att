@@ -1,0 +1,81 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block content %}
+<ol class="breadcrumb">
+    <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+    <li><a href="#">{% trans %}Attendance{% endtrans %}</a></li>                                
+    <li class="active">{% trans %}List{% endtrans %}</li>
+</ol>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-table"></i>
+            <span>{% trans %}List of Attendances{% endtrans %}</span>
+        </div>
+
+        <div class="panel-body">
+            <div class="table table-responsive">
+                <table class="table table-bordered table-hover" style="font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th>{{ sorter_link(atts, "p.date", "Date") }}</th>
+
+                            <th>{{ sorter_link(atts, "e.surname", "Surname" | trans) }}</th>
+                            <th>{{ sorter_link(atts, "e.name", "Names" | trans)}}</th> 
+                            <th>{{ sorter_link(atts, "p.inplan", "In Plan" | trans)}}</th>
+                            <th>{{ sorter_link(atts, "p.inatt", "In" | trans)}}</th> 
+                            <th>{{ sorter_link(atts, "p.outplan", "Out Plan" | trans)}}</th>
+                            <th>{{ sorter_link(atts, "p.outatt", "Out" | trans)}}</th>
+                            <th>{{ sorter_link(atts, "p.hsworkplan", "Hs Plan" | trans)}}</th> 
+                            <th>{{ sorter_link(atts, "a.hsworked", "Hs Worked" | trans)}}</th> 
+                            <th>{{ sorter_link(atts, "sp.description", "Plan State" | trans)}}</th> 
+                            <th>{{ sorter_link(atts, "sa.description", "State" | trans)}}</th> 
+
+                        </tr>
+
+                        <tr>                          
+                            <td>{{ filter_search(atts, "p.date")}}</td>
+
+                            <td>{{ filter_search(atts, "e.surname" )}}</td>
+                            <td>{{ filter_search(atts, "e.name")}}</td>
+                            <td>{{ filter_search(atts, "p.inplan")}}</td>
+                            <td>{{ filter_search(atts, "a.inatt")}}</td>
+                            <td>{{ filter_search(atts, "p.outplan")}}</td>
+                            <td>{{ filter_search(atts, "p.outatt")}}</td>
+                            <td>{{ filter_search(atts, "p.hsworkplan")}}</td>
+                            <td>{{ filter_search(atts, "a.hsworked")}}</td>
+                            <td>{{ filter_select(atts, "sp.description", states)}}</td>
+                            <td>{{ filter_select(atts, "sa.description", states)}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for att in atts %}
+                            <tr>
+                                <td>{{ att.plan.date | date('Y-m-d') }}</td>
+
+                                <td>{{ att.plan.employee.surname }}</td>
+                                <td>{{ att.plan.employee.name }}</td>
+                                <td>{{ att.plan.inplan | date('H:i')}}</td>
+                                <td>{% if att.inatt %}  {{ att.inatt | date('H:i:s')}}{% else %} - {% endif %}</td>
+                                <td>{{ att.plan.outplan | date('H:i') }}</td>
+                                <td>{% if att.outatt %} {{ att.outatt | date('H:i:s')}}{% else %} - {% endif %}</td>
+                                <td>{{ att.plan.hsworkplan }}</td>
+                                <td>{{ att.hsworked }}</td>
+                                <td>{{ att.plan.stateplan.description }}</td>
+                                <td>{% if att.stateattendance %} {{ att.stateattendance.description }} {% else %} - {% endif %}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="text-center">
+                {{ pagination(atts) }}
+            </div> 
+        </div>  
+    </div>
+</div>
+{% endblock %}
+        

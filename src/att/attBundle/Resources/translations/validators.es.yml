@@ -1,0 +1,6 @@
+#Validation Constraint
+
+#Atabsencenotification
+notification.employee.fromdatetodate.unique: Ya ha registrado una notificacion para este rango de fechas
+notification.employee.todate.unique: Ya ha registrado una notificacion para la fecha de fin indicada
+notification.employee.fromdate.unique: Ya ha registrado una notificacion para la fecha de inicio indicadav

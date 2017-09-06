@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="col-md-12">
+        {{ form_start(form,{'attr':{'id':'employee-form' , 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.name) }}
+                    <div class="input-group">
+                        {{ form_errors(form.name) }}
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </div>
+                        {{ form_widget(form.name) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.surname) }}
+                    <div class="input-group">
+                        {{ form_errors(form.surname) }}
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </div>
+                        {{ form_widget(form.surname)}} 
+                    </div>
+                </div>
+            </div>                
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.dni) }}
+                    <div class="input-group ">
+                        {{ form_errors(form.dni) }}
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </div>
+                        {{ form_widget(form.dni) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.birthday) }}
+                    <div class="input-group date">
+                        {{ form_errors(form.birthday) }}
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </div>
+                        {{ form_widget(form.birthday) }}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group"> 
+                    {{ form_label(form.sex) }}
+                    <div class="input-group">
+                        {{ form_errors(form.sex) }}
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                        {{ form_widget(form.sex) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.email)}}
+                    <div class="input-group">
+                        {{ form_errors(form.email)}} 
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                        </div>                        
+                        {{ form_widget(form.email)}} 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_errors(form.celphone) }}
+                    {{ form_label(form.celphone) }}
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-earphone"></span>
+                        </div>
+                        {{ form_widget(form.celphone) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_errors(form.phone) }}
+                    {{ form_label(form.phone) }}
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-phone"></span>
+                        </div>
+                        {{ form_widget(form.phone)}} 
+                    </div>
+                </div>
+            </div>
+        </div>
+                    
+                 
+
+        {{ form_rest(form) }}   
+        {{ form_end(form) }}
+
+    </div>
+
+</div>
+        

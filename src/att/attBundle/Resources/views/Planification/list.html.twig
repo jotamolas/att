@@ -1,0 +1,69 @@
+{% extends 'attBundle::base.html.twig' %}
+{% block content_data %}
+    <div class="col-md-12 col-md-offset-0">
+        <div class="panel panel-default" id="panel">
+            <div class="panel-heading">
+                <h1 class="panel-title"> Planification List </h1>
+            </div>
+            <div class="table table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th class="text-center"> Day </th>
+                        <th class="text-center">{{ sorter_link(plans, "p.date", "Date") }}</th>
+                        <th class="text-center">{{ sorter_link(plans, "e.surname", "Surname") }}</th>
+                        <th class="text-center">{{ sorter_link(plans, "e.name", "Names")}}</th> 
+                        <th class="text-center">{{ sorter_link(plans, "p.inplan", "In")}}</th> 
+                        <th class="text-center">{{ sorter_link(plans, "p.outplan", "Out")}}</th>
+                        <th class="text-center">{{ sorter_link(plans, "p.hsworkplan", "Hs Work")}}</th> 
+                        <th class="text-center">{{ sorter_link(plans, "sp.description", "Plan State")}}</th> 
+                        <th class="text-center"> Actions </th> 
+                      </tr>
+
+                      <tr> 
+                          <td></td>
+                          <td>{{ filter_search(plans, "p.date")}}</td>
+                          <td>{{ filter_search(plans, "e.surname")}}</td>
+                          <td>{{ filter_search(plans, "e.name")}}</td>
+                          <td>{{ filter_search(plans, "p.inplan")}}</td>
+                          <td>{{ filter_search(plans, "p.outplan")}}</td>
+                          <td>{{ filter_search(plans, "p.hsworkplan")}}</td>
+                          <td>{{ filter_select(plans, "sp.description", states)}}</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for plan in plans %}
+                        <tr>
+                          <td>{{ plan.date | date('l') }}</td>  
+                          <td class="text-center">{{ plan.date | date('Y-m-d') }}</td>
+                          <td>{{ plan.employee.surname }}</td>
+                          <td>{{ plan.employee.name }}</td>
+                          <td class="text-center">{{ plan.inplan | date('H:i')}}</td>
+                          <td class="text-center">{{ plan.outplan | date('H:i') }}</td>
+                          <td class="text-center">{{ plan.hsworkplan }}</td>
+                          <td>{{ plan.stateplan.description }}</td>
+                          <td>
+                              <ul class="list-unstyled list-inline">
+                                  <li>
+                                      <a href="{#{ path('att_plan_show', {'id': plan.id })}#}"> 
+                                          <span class="glyphicon glyphicon-play-circle" > </span>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="{#{ path('att_employee_edit', {'id': employee.id })}#}"> 
+                                          <span class="glyphicon glyphicon-edit"></span>
+                                      </a>
+                                  </li>
+                              </ul>             
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                    </table>
+            </div>
+            <div class="panel-footer">
+            {{ pagination(plans) }}
+            </div>  
+        </div>    
+    </div>
+{% endblock %}

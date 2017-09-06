@@ -1,0 +1,43 @@
+{% extends 'attBundle:Planification:index.html.twig' %}
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+        <li><a href="#">{% trans %} Planification{% endtrans %} </a></li>
+        <li><a href="#">{% trans %} Create {% endtrans %} </a></li>    
+        <li class="active">{% trans %} from {% endtrans %}{% trans %}Schema {% endtrans %} </li>
+    </ol> 
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-file-archive-o"></i>   
+                <span>{% trans %} Plans Created From Schema {% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+
+                <div class="alert alert-success" role="alert">
+                    {% trans %}Planifications imported or updated: {% endtrans %} {{ plans_qty }}
+                </div>
+                <div class="alert alert-danger" role="alert">
+                    {% trans %}Errors in rows{% endtrans %}:
+                    <ul>
+                        {% for error in errors_file %}
+                            <li> {{error | trans}} </li>
+                            {% endfor %}   
+                    </ul>
+                </div>
+                <div class="alert alert-danger" role="alert">
+
+                    {% trans %}Errors in Planifications{% endtrans %}:
+                    <ul>
+                        {% for error in errors_entities %}
+                            <li> {{error | trans}} </li>
+                            {% endfor %}   
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

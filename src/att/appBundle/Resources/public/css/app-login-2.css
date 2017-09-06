@@ -1,0 +1,27 @@
+@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+body{
+    font-size: 0.8rem;
+    font-weight: 200;
+    color: #000;
+    background-image: url('https://images.pexels.com/photos/245618/pexels-photo-245618.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb');
+    background-size:cover;
+}
+.login-block{
+    float:left;
+    width:90%;
+    padding : 50px 0;
+}
+.banner-sec{background:url(https://static.pexels.com/photos/33972/pexels-photo.jpg)  no-repeat left bottom; background-size:cover;border-radius: 0 0 20px 0;}
+.container{border-radius: 10px; width: 80%;max-width: 100%;}
+.login-sec{background: #fff;padding: 50px 30px; position:relative;}
+.login-sec .copy-text{position:absolute; width:80%; bottom:20px; font-size:13px; text-align:center;}
+.login-sec .copy-text i{color:#FEB58A;}
+.login-sec .copy-text a{color:#E36262;}
+.login-sec h2{margin-bottom:30px; font-weight:400; font-size:20px; color: #161f29;}
+.login-sec h2:after{content:" "; width:100px; height:5px; background:#122b40; display:block; margin-top:20px; border-radius:3px; margin-left:auto;margin-right:auto}
+.btn-login{background: #122b40; color:#fff; font-weight:300;}
+.banner-text{width:70%; position:absolute; bottom:40px; padding-left:20px;}
+.banner-text h2{color:#fff; font-weight:300;}
+.banner-text h2:after{content:" "; width:100px; height:5px; background:#FFF; display:block; margin-top:20px; border-radius:3px;}
+.banner-text p{color:#fff;}
+.logo-sec{border-bottom: #122b40 1px solid ;background-color:#fff; border-radius: 0 20px 0 0; }

@@ -1,0 +1,4 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block content %}
+    {% include 'attBundle:Attendance:list.ajax.html.twig' with {'atts' : atts, 'states': states} %}
+{% endblock %}

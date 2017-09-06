@@ -1,0 +1,220 @@
+{% extends 'employeeBundle:Default:index.html.twig' %}
+{% block title %}
+    Contract - List
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+            <li><a href="#">{% trans %}Employee{% endtrans %}</a></li>                                
+            <li><a href="#">{% trans %}Contract{% endtrans %}</a></li>  
+            <li class="active">{% trans %}List{% endtrans %}</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" id="successMsg"></div>
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Contracts{% endtrans %}</span>
+
+                <div class="dropdown pull-right">
+                    <div class="btn-group pull-right" role="group">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="strikes">
+                            <li style="width: 400px; font-size: 12px">
+                                <form  style="display:block;">
+                                    <div class="row">
+                                        <div class="col-md-5 col-md-offset-1">
+                                            <label for="contain">{% trans %}Filter by Id File{% endtrans %}</label>
+                                            {{ filter_search(contracts, "c.file_number")}}
+                                        </div>
+                                        <div class="col-md-5 ">
+                                            <label for="contain">{% trans %}Filter by Person ID{% endtrans %}</label>
+                                            {{ filter_search(contracts, "e.dni")}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 col-md-offset-1">
+                                            <label for="contain">{% trans %}Filter by Last Name{% endtrans %}</label>
+                                            {{ filter_search(contracts, "e.surname")}}
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="contain">{% trans %}Filter by Name{% endtrans %}</label>
+                                            {{ filter_search(contracts, "e.name")}}
+                                        </div>
+                                    </div>        
+                                    <div class="row">
+                                        <div class="col-md-5 col-md-offset-1">
+                                            <label for="filter">{% trans %}Filter by Business{% endtrans %}</label>
+                                            {{ filter_select(contracts, "b.id", business)}}
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="filter">{% trans %}Filter by Company{% endtrans %}</label>
+                                            {{ filter_select(contracts, "cia.id", companies)}}
+                                        </div>
+                                    </div>   
+                                    <div class="row">
+                                        <div class="col-md-5 col-md-offset-1">
+                                            <label for="filter">{% trans %}Filter by Schema{% endtrans %}</label>
+                                            {{ filter_select(contracts, "sch.description", schemas)}}
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="filter">{% trans %}Filter by Agreement{% endtrans %}</label>
+                                            {{ filter_select(contracts, "a.id", agreements)}}
+                                        </div>
+                                    </div>   
+
+                                    <div class="row">
+                                        <div class="col-md-5 col-md-offset-1">
+                                            <label for="filter">{% trans %}Filter by Status{% endtrans %}</label>
+                                            {{ filter_select(contracts, "s.description", status)}}
+                                        </div>
+                                    </div>   
+                                </form>   
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
+
+                <button id="new" type="button" class="btn btn-default pull-right">
+                    <span class="fa fa-plus"></span>
+                </button>  
+
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th>{{ sorter_link(contracts, "c.file_number", "File Id"| trans) }}</th>
+                                <th>{{ sorter_link(contracts, "e.dni", "Person Id"| trans) }}</th>
+                                <th>{{ sorter_link(contracts, "e.surname", "Surname"| trans) }}</th>
+                                <th>{{ sorter_link(contracts, "e.name", "Name"| trans)}}</th>
+                                <th>{%trans%}Department{%endtrans%}</th>
+                                <th>{{ sorter_link(contracts, "c.start_date","Start Date"| trans) }} </th>
+                                <th>{{ sorter_link(contracts, "c.end_date","End Date"| trans) }} </th>
+                                <th>{{ sorter_link(contracts, "c.in_time","In"| trans) }} </th>
+                                <th>{{ sorter_link(contracts, "c.out_time","Out"| trans) }} </th>
+                                <th>{{ sorter_link(contracts, "b.description", "Business"| trans)}}</th>
+                                <th>{{ sorter_link(contracts, "cia.description", "Company"| trans)}}</th>
+                                <th>{{ sorter_link(contracts, "sch.description", "Schema"| trans)}}</th>
+                                <th>{{ sorter_link(contracts, "a.description", "Agreement"  | trans) }}</th>
+                                <th>{{ sorter_link(contracts, "s.description", "Status" | trans)}}</th>
+                                <th>{%trans%}Rest Days{%endtrans%}</th>
+                                <th>{%trans%}Actions{%endtrans%}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contract in contracts %}
+
+                                <tr id="row-contract-{{contract.id}}">
+                                    {% include 'employeeBundle:Contract:show.row.html.twig' with {'contract' : contract, 'mode': app.security.token.providerKey} %}
+                                </tr>
+
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="text-center">
+                    {{ pagination(contracts) }}
+                </div> 
+            </div>  
+        </div>
+    </div>
+
+    <div class="modal fade" id="restday_modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Rest Days {% endtrans %} {%trans%} Manage {% endtrans %}</h4>
+                </div>
+
+                <div class="modal-body" id="modal-body-restday">
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-default" id="save" value="{%trans%} Save {% endtrans %}">
+                </div>
+            </div>
+        </div>
+    </div>   
+{% endblock %}
+
+{%  block javascripts %}
+    {{ parent()}}
+    <script>
+
+        $('#restday_modal').on('show.bs.modal', function (e) {
+
+            //get data-id attribute of the clicked element
+            var employeeid = $(e.relatedTarget).data('employeeid');
+            var businessid = $(e.relatedTarget).data('businessid');
+            var contractid = $(e.relatedTarget).data('contractid');
+            var mode = $(e.relatedTarget).data('mode');
+            $('#save').attr('data-contract-id', contractid);
+            $.ajax({
+                url: Routing.generate('employee_contract_add_restday', {
+                    mode: mode,
+                    business: businessid,
+                    employee: employeeid
+                }),
+                type: 'POST',
+                success: function (data) {
+                    $('#modal-body-restday').html(data['form']);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                }
+            });
+
+
+        });
+
+        $(document).on('click', '#save', function (e) {
+            e.preventDefault();
+            var formElement = document.getElementById('contract-restdays-form');
+            var formData = new FormData(formElement);
+            var row = '#row-contract-' + $(this).data('contract-id');
+            $.ajax({
+                cache: false,
+                type: formElement.method,
+                url: formElement.action,
+                data: formData,
+                contentType: false,
+                processData: false
+            }).done(function (data) {
+                if (data['status'] !== true) {
+                    $('#modal-body-restday').html(data['form']);
+                } else {
+                    $('#successMsg').html("\
+            <div class='alert alert-success'>\n\
+                <strong>" + data['message'] + "</strong>\n\
+            </div>");
+                    $(row).html(data['row']);
+                    $('#restday_modal').modal('hide');
+                    $('.alert-success').fadeOut(7000, function () {
+                        $('.alert-success').remove();
+                    });
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+

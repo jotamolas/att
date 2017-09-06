@@ -1,0 +1,16 @@
+{% extends 'attBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Registrar Tipo de WorkFlow</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Registrar" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('att_workflows_index') }}">Volver</a>
+        </li>
+    </ul>
+{% endblock %}

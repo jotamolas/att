@@ -1,0 +1,57 @@
+{% embed 'attBundle:Certificate:form.html.twig' with { 'form': form.certificate, 'formMedical': form } %}
+
+    {% block subFormErrors %}
+        <div class="form-group row">
+            <div id="formErrors">
+                {{ form_errors(formMedical) }}
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block subForm %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label >{% trans %}Profesional{% endtrans %}</label>
+                    {{ form_widget(formMedical.profesional)}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>{% trans %}Matricula{% endtrans %}</label> 
+                    {{ form_widget(formMedical.matricula)}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>{% trans %}Diagnostic{% endtrans %}</label>
+                    {{ form_widget(formMedical.diagnostico)}}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>{% trans %}Sick Leave{% endtrans %}</label>
+                    {{ form_widget(formMedical.indicareposo)}}    
+                </div>
+            </div>
+
+        </div>
+    {% endblock %}
+
+    {% block formSumbit %}
+        <div class="row">
+            <div class="col-md-3 col-md-offset-5">
+                <div class="form-group ">
+                    <button type="submit" class="btn btn-default">
+                        {% trans %} Save {% endtrans %}
+                    </button>
+                    {{form_rest(formMedical)}}
+                </div>    
+            </div>
+        </div>
+    {% endblock %}
+{% endembed %}    

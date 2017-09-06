@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="table table-responsive">
+            <table class="table table-bordered table-hover" style="font-size: 12px;">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td id="certificateId">{{ order.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans %}Employee{% endtrans %}</th>
+                        <td>{{ order.employee.surname |capitalize}}, {{order.employee.name|capitalize}}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans %}Date{% endtrans %}</th>
+                        <td>{{ order.date|date('Y-m-d') }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans %}Service{% endtrans %}{% trans %}Assigned{% endtrans %}</th>
+                        <td>{{ order.service.name}}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans %}Pre Diagnostic{% endtrans %}</th>
+                        <td>{{ order.diagnostic }}</td>
+                    </tr>
+                </tbody>
+            </table>  
+        </div> 
+    </div>
+</div> 
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table table-responsive">
+            <table class="table table-bordered table-hover" style="font-size:10px;">
+                <thead>                    
+                    <tr>
+                        <th>Id</th>
+                        <th>{% trans %}Visit Date{% endtrans %}</th>
+                        <th>{% trans %}Matricula{% endtrans %}</th>
+                        <th>{% trans %}Medical Rest{% endtrans %}</th>
+                        <th>{% trans %}Rest Date From{% endtrans %}</th>
+                        <th>{% trans %}Rest Date To{% endtrans %}</th>    
+                        <th>{% trans %}Status{% endtrans %}</th>  
+                    </tr>              
+                </thead>
+                <tbody>
+                    {% for mv in order.medicalvisits %}
+                        <tr>
+                            <td>{{mv.id}}</td>
+                            <td>{{mv.matricula}}</td>
+                            <td>
+                                {%if mv.medicalrest == true %}
+                                    <span class="label label-success">{% trans %}Yes{% endtrans %}</span>
+                                {% else %}
+                                    <span class="label label-danger"> {% trans %}No{% endtrans %} </span>
+                                {% endif %}
+                            </td>
+                            <td>{{mv.restdatefrom | date('Y-m-d')}}</td>
+                            <td>{{mv.restdateto | date('Y-m-d')}}</td>
+                            <td>{{mv.status.description}}</td>
+                         </tr>
+
+                    {% endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>

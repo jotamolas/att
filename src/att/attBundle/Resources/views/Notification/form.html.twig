@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+{{ form_errors(form) }} 
+<div class="form-group">
+    <label>{% trans %}Date Range{% endtrans %}</label>
+    <div class="input-group input-daterange">
+        {{ form_widget(form.fromdate)}} 
+        <div class="input-group-addon">to</div>
+        {{ form_widget(form.todate)}}
+    </div>
+</div>
+{{ form_end(form) }}

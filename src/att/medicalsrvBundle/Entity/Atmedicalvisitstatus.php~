@@ -1,0 +1,33 @@
+<?php
+
+namespace att\medicalsrvBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Atmedicalservice
+ *
+ * @ORM\Table(name="AtMedicalVisitStatus")
+ * @ORM\Entity
+ */
+class Atmedicalvisitstatus {
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=50, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+
+}

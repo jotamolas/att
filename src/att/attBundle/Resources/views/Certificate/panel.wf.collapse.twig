@@ -1,0 +1,33 @@
+             
+<div class="panel panel-default" id="panel">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a href="#collapseWf" data-toggle="collapse">
+                Workflow {{ wf.id }}
+                <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
+            </a>
+        </h4>    
+    </div>
+    <div class="panel-collapse collapse in" id="collapseWf">
+        <table class="table table-responsive">
+            <tbody>
+                <tr>
+                    <th>Wf State</th>
+                    <td>{{ wf.statekey }}</td>
+                </tr>
+                <tr>
+                    <th>Wf Create</th>
+                    <td>{{ wf.createAt | date ('Y-m-d H:i:s ')}}</td>
+                </tr>
+                <tr>
+                    <th>Wf Modified</th>
+                    <td>{{ wf.modifiedAt | date ('Y-m-d H:i:s ') }}</td>
+                </tr>
+                <tr>
+                    <th>Certificate ID</th>
+                    <td>{{ wf.entityid }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> 

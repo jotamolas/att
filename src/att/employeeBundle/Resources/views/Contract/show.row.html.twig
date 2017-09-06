@@ -1,0 +1,34 @@
+<td>{% if contract.fileNumber %}{{contract.fileNumber}}{% endif %}</td>
+<td>{{ contract.employee.dni }}</td>
+<td>{{ contract.employee.surname }}</td>
+<td>{{ contract.employee.name }}</td> 
+<td>{% if contract.department %}{{ contract.department.name }}{% endif %}</td> 
+<td>{% if contract.startDate %}{{ contract.startDate | date('Y-m-d') }}{% endif %}</td> 
+<td>{% if contract.endDate %}{{ contract.endDate | date('Y-m-d') }}{% endif %}</td>  
+<td>{% if contract.inTime %}{{ contract.inTime | date('H:i:s') }}{% endif %}</td> 
+<td>{% if contract.outTime %}{{ contract.outTime | date('H:i:s') }}{% endif %}</td>  
+<td>{{ contract.business.description }}</td>
+<td>{{ contract.business.company.description }}</td>
+<td>{% if contract.schema %}{{contract.schema.description}}{% endif %}</td>
+<td>{% if contract.schema %}{{contract.schema.agreement.description}}{% endif %}</td>
+<td>{% if contract.status.description == 'Down'  %} <span class="label label-danger">{{ contract.status.description | trans }}</span> {% else %}<span class="label label-success">{{ contract.status.description | trans }}{% endif %}</span></td>
+<td>
+    {% if contract.restdays %}
+        {% for rd in contract.restdays %}
+            {{rd.description | trans | capitalize}}
+        {% endfor %}                                           
+    {% endif %}
+</td>
+<td class="text-center">
+    <div class="btn-group" role="group" >
+        <button type="button" data-toggle="modal" data-target="#edit_modal" class="btn btn-xs btn-default" id="edit" data-employeeid="{{ contract.employee.id }}" data-mode="{{mode}}">
+            <span class="fa fa-edit"></span>
+        </button>  
+        <button type="button" data-toggle="modal" data-target="#remove_modal"  class="btn btn-xs btn-default" id="remove" data-employeeid="{{ contract.employee.id }}" data-mode="{{mode}}">
+            <span class="fa fa-remove"></span>
+        </button>
+        <button type="button" data-toggle="modal" data-target="#restday_modal" class="btn btn-xs btn-default" id="restday" data-employeeid="{{ contract.employee.id }}" data-businessid="{{ contract.business.id }}" data-contractid="{{ contract.id }}" data-mode="{{mode}}">
+            <span class="fa fa-hotel"></span>
+        </button>     
+    </div>
+</td>

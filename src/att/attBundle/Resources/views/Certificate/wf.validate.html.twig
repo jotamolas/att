@@ -1,0 +1,107 @@
+<ol class="breadcrumb">
+    <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li><a href="#">{% trans %}Certificate{% endtrans %}</a></li>
+    <li><a href="#">{% trans %} Authorize{% endtrans %} </a></li>
+    <li class="active">{% trans %} Step{% endtrans %}2 </li>
+</ol>  
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-cogs"></i>   
+            <span>{% trans %}Select a Certificate to Authorize{% endtrans %}</span>
+        </div>
+        <div class="panel-body"> 
+            <div class="table-responsive">
+                <table class="table" width="100%" id="dataTable" cellspacing="0">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th colspan="3" class="thead-inverse"> 
+                                Certificate
+                            </th>                
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th colspan="2" > Employee: {{ certificate.employee.surname }}, {{ certificate.employee.name }} </th>
+                            <th  id="certificateId">Id:{{ certificate.id }} </th> 
+                        </tr>
+
+                        <tr>
+                            <th>Presentation</th>
+                            <th>From</th>
+                            <th>To</th>
+                        </tr>
+                        <tr>
+                            <td>{{ certificate.date | date('d/m/Y') }}</td>
+                            <td>{{ certificate.datefrom | date('d/m/Y') }}</td>
+                            <td>{{ certificate.dateto | date('d/m/Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th> Status </th>
+                            <th colspan="2"> Observations </th>
+                        </tr>
+                        <tr>
+                            <td>{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                            <td colspan="2"> {{ certificate.details }}</td>
+                        </tr> 
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table" width="100%" id="dataTable" cellspacing="0">
+                    <thead class="thead-inverse">
+                    <th colspan="3" class="thead-inverse"> 
+                        Absences
+                    </th>                
+                    </thead>
+                    <tbody>
+                        {% if absences %}
+                            <tr class="success">
+                                <td>Recorded</td>
+                                <td colspan="2">
+                                    <ul class="list-unstyled">
+                                        {% for absence in absences%}
+                                            <li>
+                                                <p>{{ absence.attendance.plan.date | date('jS F Y') }}</p>
+                                            </li>
+                                        {% endfor %}    
+                                    </ul> 
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr class="danger">
+                                <td>Recorded</td>
+                                <td colspan="2">
+                                    <div class="alert alert-danger">
+                                        <p><strong>No Absences are recorded in the Certified Period</strong></p>
+                                    </div>
+                                </td>
+                            </tr>        
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            {% if absences %}    
+                <button type="button" id="validateWf" class="btn btn-bg btn-success" value="Iniciar">Iniciar</button>  
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function ()
+    {
+        $('#validateWf').click(function () {
+            $.ajax({
+                type: "POST",
+                url: Routing.generate('att_workflow_certificate_create', {mode: '{{app.security.token.providerKey}}'}),
+                data: {'id': $('#certificateId').text()},
+                dataType: "json"
+            }).done(function (data) {
+                $('#content').html(data);
+            });
+        });
+    });
+</script>

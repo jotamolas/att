@@ -1,0 +1,63 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="col-md-8 col-md-offset-2" >
+
+
+    {{ form_start(form,{'attr':{'id':'employee-personal-form', 'novalidate': 'novalidate'} }) }}
+
+    {{ form_errors(form)}}
+    {{ form_errors(form.name)}}
+
+    <div class="form-group input-group">
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-text-width"></span></span>
+            {{ form_widget(form.name)}}
+    </div>
+
+
+    {{ form_errors(form.surname)}}
+
+    <div class="form-group input-group">
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-text-width"></span></span>
+            {{ form_widget(form.surname)}}
+    </div>
+
+
+    {{ form_errors(form.dni)}}
+
+    <div class="form-group input-group">
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-text-width"></span></span>
+            {{ form_widget(form.dni)}}
+    </div>
+
+
+    {{ form_errors(form.sex)}}
+    <div class="form-group input-group">
+
+        <span class="input-group-addon">
+            <span class="fa fa-mars-double" style="font-size:20px"></span>
+        </span>
+        {{ form_widget(form.sex) }}
+    </div>
+
+
+    {{ form_errors(form.birthday)}}
+
+    <div class="form-group input-group date">
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>   
+            {{ form_widget(form.birthday) }}
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }} 
+
+</div>
+<script>
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+    });
+</script>

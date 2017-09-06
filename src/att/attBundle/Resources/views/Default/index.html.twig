@@ -1,0 +1,158 @@
+{% extends "appBundle:app:index.html.twig"%}
+{% block sidebar %}
+    <li>
+        <a href="#" class="active"><i class="fa fa-wpforms  fa-fw"></i> 
+            <span class="masked">
+                {% trans %} Attendance Module{% endtrans %}
+            </span>    
+        </a>
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-bullhorn fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Notification {% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="list_notification" href="{{ path('att_notification_list',{"mode":app.security.token.providerKey}) }}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+            {% if is_granted('ROLE_FRONTEND') %}
+                <li>
+                    <a id="new_notification" href="{{path('att_notification_new',{"mode":app.security.token.providerKey})}}">
+                        <i class="fa fa-floppy-o fa-fw"></i>
+                        {% trans %}New{% endtrans %}
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </li>
+
+    <li class="">
+        <a href="#">
+            <i class="fa fa-hand-paper-o fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Attendance {% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="list_attendances" href="{{ path ('att_attendance_list',{'mode':app.security.token.providerKey })}}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="make_attendances">
+                    <i class="fa fa-play fa-fw"></i>
+                    {% trans %}Make{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="process_attendances">
+                    <i class="fa fa-fast-forward fa-fw"></i>
+                    {% trans %}Process{% endtrans %}
+                </a>
+            </li>
+        </ul>
+        <!-- /.nav-second-level -->
+    </li>
+
+    <li class="">
+        <a href="#" id="list_certificate">
+            <i class="fa fa-user-times fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Absence{% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>   
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="list_absence" href="{{ path('att_absence_list',{'mode':app.security.token.providerKey})}}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+        </ul>
+    </li>
+
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans %}Attendance{% endtrans %} <small>{% trans %} Module{% endtrans %}</small></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>{% trans %}Company{% endtrans %}</th>
+                        <th>{% trans %}Business{% endtrans %}</th>
+                        <th>{% trans %}Presents{% endtrans %}</th>
+                        <th>{% trans %}Absents{% endtrans %}</th>
+                        <th>{% trans %}Planned{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in stats %}
+                        <tr>
+                            <td>{{ stat.Company }}</td>
+                            <td>{{ stat.Business }}</td>
+                            <td>{{ stat.Prensents }}</td>
+                            <td>{{ stat.Absents }}</td>
+                            <td>{{ stat.Planned }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table table-striped">
+                <tbody>  
+                    <tr>
+                        <th>{% trans %}Absences Notifications {% endtrans %}</th>
+                        <td>
+                            {% if notifications_today_qty is defined %}
+                                {{ notifications_today_qty }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{%  block javascripts %}
+    {{ parent()}}
+    <script type="text/javascript">
+
+        //MENUS MODULES FUNCTIONS
+
+        $('#make_attendances').click(function () {
+            $('#content').load('{{ path('att_attendance_make',{"mode":app.security.token.providerKey}) }}');
+        });
+
+        $('#process_attendances').click(function () {
+            $('#content').load('{{ path('att_attendance_process',{"mode":app.security.token.providerKey}) }}');
+        });
+
+    </script>
+{%endblock%}

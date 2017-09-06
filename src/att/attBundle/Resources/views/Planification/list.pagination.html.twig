@@ -1,0 +1,154 @@
+{% extends 'attBundle:Planification:index.html.twig' %}
+
+{% block title %} {% trans %}List of Planifications{% endtrans %}{% endblock title %}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+            <li><a href="#">{% trans %}Planification{% endtrans %}</a></li>                                
+            <li class="active">{% trans %}List{% endtrans %}</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Planifications{% endtrans %}</span>
+                <div class="dropdown pull-right">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="strikes">
+                        <li style="width: 350px;">
+                            <form  style="display:block;">
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by Date{% endtrans %}</label>
+                                    {{ filter_search(plans, "p.date")}}                                        
+                                </div>
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by Employee Name{% endtrans %}</label>
+                                    {{ filter_search(plans, "e.surname")}}                                        
+                                </div>
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by Employee Last Name{% endtrans %}</label>
+                                    {{ filter_search(plans, "e.surname")}}                                     
+                                </div>
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by In Plan{% endtrans %}</label>
+                                    {{ filter_search(plans, "p.inplan")}}                                     
+                                </div>
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by Out Plan{% endtrans %}</label>
+                                    {{ filter_search(plans, "p.outplan")}}                                     
+                                </div>
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by Hours Work Plan{% endtrans %}</label>
+                                    {{ filter_search(plans, "p.hsworkplan")}}                                     
+                                </div>
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Filter by State Plan{% endtrans %}</label>
+                                    {{ filter_select(plans, "sp.description", states)}}                                    
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix">
+
+                </div>
+            </div>    
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th class="text-center"> Day </th>
+                                <th class="text-center">{{ sorter_link(plans, "p.date", "Date" | trans) }}</th>
+                                <th class="text-center">{{ sorter_link(plans, "e.surname", "Surname"| trans) }}</th>
+                                <th class="text-center">{{ sorter_link(plans, "e.name", "Names"| trans)}}</th> 
+                                <th class="text-center">{{ sorter_link(plans, "p.inplan", "In"| trans)}}</th> 
+                                <th class="text-center">{{ sorter_link(plans, "p.outplan", "Out"| trans)}}</th>
+                                <th class="text-center">{{ sorter_link(plans, "p.hsworkplan", "Hs Work"| trans)}}</th> 
+                                <th class="text-center">{{ sorter_link(plans, "sp.description", "Plan State"| trans)}}</th> 
+                                <th class="text-center"> Actions </th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for plan in plans %}
+                                <tr>
+                                    <td>{{ plan.date | date('l') }}</td>  
+                                    <td class="text-center">{{ plan.date | date('Y-m-d') }}</td>
+                                    <td>{{ plan.employee.surname }}</td>
+                                    <td>{{ plan.employee.name }}</td>
+                                    <td class="text-center">{{ plan.inplan | date('H:i')}}</td>
+                                    <td class="text-center">{{ plan.outplan | date('H:i') }}</td>
+                                    <td class="text-center">{{ plan.hsworkplan }}</td>
+                                    <td>{% if plan.stateplan %}{{ plan.stateplan.description }}{% endif %}</td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group" >
+                                            <button type="button" class="btn btn-xs btn-default"  data-toggle="modal" data-target="#plan_edit_modal" id="show" data-id="{{ plan.id }}" data-mode="{{ app.security.token.providerKey }}">
+                                                <span class="fa fa-edit"></span>
+                                            </button> 
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody></table></div></div>
+            <div class="panel-footer">
+                <div class="text-center">
+                    {{ pagination(plans) }}
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="plan_edit_modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{%trans%}Plan{% endtrans %} {%trans%}Edit{% endtrans %}</h4>
+                </div>
+                <div class="modal-body" id="modal-body-plan-edit">
+
+                </div>
+                <div class="modal-footer" id="modal-footer-plan-edit">
+
+                </div>
+            </div>
+        </div>
+    </div>                
+
+
+{% endblock %}
+
+{%  block javascripts %}
+    {{ parent()}}
+    <script>
+        $('#plan_edit_modal').on('show.bs.modal', function (e) {
+            //get data-id attribute of the clicked element
+            var plan_id = $(e.relatedTarget).data('id');
+            var mode = $(e.relatedTarget).data('mode');
+            $('#modal-body-plan-edit').load(Routing.generate('att_plan_edit',
+                    {
+                        id: plan_id,
+                        mode: mode
+
+                    }));
+        });
+        
+        $('#plan_edit_date').datepicker({
+            language: "es",
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+        
+
+        $('.clockpicker').clockpicker({
+            placement: 'top',
+            autoclose: true
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'attBundle::base.html.twig' %}
+
+{% block body %}
+    {#{ dump(errors)}#}
+  <div class="alert alert-info" role="alert">
+            <h2>Employees Active Updated: {{ qupdated }}</h2>
+ </div>   
+ <div class="alert alert-success" role="alert">
+            <h2>Employees New Created: {{ qcreated }}</h2>
+ </div>
+ {% if errors %}  
+ <div class="alert alert-danger" role="alert">
+     {{ dump(errors)}}
+        {% for error in errors %} 
+            {% for data in error %}
+                <li>{{ data.message }} => {{ data.propertyPath }} => {{ data.invalidValue }}</li>
+            {% endfor %}
+    {% endfor %}
+
+ </div>
+ {% endif %}
+ <div class="col-md-6 col-md-offset-3">
+             
+    <h1>Employees Created</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Employee</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for atempleado in news %}
+            <tr>                
+                <td>{{ atempleado.dni }}</td>
+                <td>{{ atempleado.surname }}, {{ atempleado.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+ </div>
+  <div class="col-md-6 col-md-offset-3">
+    <h1>Updated Employees</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Employee</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for atempleado in updated %}
+            <tr>                
+                <td>{{ atempleado.dni }}</td>
+                <td>{{ atempleado.surname }},{{ atempleado.name }}</td>
+                <td></td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+ </div>   
+{% endblock %}

@@ -1,0 +1,5 @@
+
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block content %}
+    {% include 'attBundle:Absence:list.ajax.html.twig' with {'abss' : abss} %}
+{% endblock %}

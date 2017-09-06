@@ -1,0 +1,148 @@
+{% extends "appBundle:app:index.html.twig"%}
+{% block sidebar %}
+    <li>
+        <a href="#" class="active"><i class="fa fa-users fa-fw"></i> 
+            <span class="masked">
+                {% trans %} Employee Module{% endtrans %}
+            </span>    
+        </a>
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-user fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Employees{% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="new_step_employee">
+                    <i class="fa fa-plus fa-fw"></i>
+                    {% trans %}New{% endtrans %}
+                </a>
+            </li>
+            <li> 
+                <a  id="list_employees" href="{{ path('employee_list',{'mode':app.security.token.providerKey}) }}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+            <li> 
+                <a  id="import_employees" href="{{ path('employee_import_from_file',{'mode':app.security.token.providerKey}) }}">
+                    <i class="fa fa-file-archive-o fa-fw"></i>
+                    {% trans %}Import{% endtrans %}
+                </a>
+            </li>
+        </ul>
+        <!-- /.nav-second-level -->
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-clone fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Contracts{% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="new_step_contract">
+                    <i class="fa fa-plus fa-fw"></i>
+                    {% trans %}New{% endtrans %}
+                </a>
+            </li>
+            <li> 
+                <a  id="list_contract" href="{{ path('employee_contract_list',{'mode':app.security.token.providerKey}) }}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+        </ul> 
+        <!-- /.nav-second-level -->
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-cog fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Configuration{% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>   
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="department" href="{{ path('employee_department_list',{'mode':app.security.token.providerKey}) }}">
+                    <i class="fa fa-sitemap fa-fw"></i>
+                    {% trans %}Department{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="business">
+                    <i class="fa fa-briefcase fa-fw"></i>
+                    {% trans %}Business{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="company">
+                    <i class="fa fa-building fa-fw"></i>
+                    {% trans %}Company{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="union">
+                    <i class="fa fa-group fa-fw"></i>
+                    {% trans %}Union{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="agreement">
+                    <i class="fa fa-handshake-o fa-fw"></i>
+                    {% trans %}Agreement{% endtrans %}
+                </a>
+            </li>
+        </ul>
+        <!-- /.nav-second-level -->
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans %}Employee{% endtrans %} <small>{% trans %} Module{% endtrans %}</small></h1>
+        </div>
+    </div>
+{% endblock %}
+{%  block javascripts %}
+    {{ parent()}}
+    <script type="text/javascript">
+        //MENUS MODULES FUNCTIONS
+
+        $('#new_step_employee').click(function () {
+            $('#content').load('{{ path('employee_new_step',{'mode':app.security.token.providerKey}) }}');
+        });
+        $('#import_employee').click(function () {
+            $('#content').load('{{ path('employee_import',{'mode':app.security.token.providerKey}) }}');
+        });
+
+        $('#new_step_contract').click(function () {
+            $('#content').load('{{ path('employee_contract_new',{'mode':app.security.token.providerKey}) }}');
+        });
+        $('#business').click(function () {
+            $('#content').load('{{ path('employee_business_index',{'mode':app.security.token.providerKey}) }}');
+        });
+        $('#company').click(function () {
+            $('#content').load('{{ path('employee_company_index',{'mode':app.security.token.providerKey}) }}');
+        });
+        $('#agreement').click(function () {
+            $('#content').load('{{ path('employee_agreement_index',{'mode':app.security.token.providerKey}) }}');
+        });
+        $('#union').click(function () {
+            $('#content').load('{{ path('employee_union_index',{'mode':app.security.token.providerKey}) }}');
+        });
+    </script>
+{%endblock%}

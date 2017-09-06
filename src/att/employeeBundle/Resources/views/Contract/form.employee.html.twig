@@ -1,0 +1,47 @@
+<div class="col-sm-8 col-sm-offset-2">
+    {{ form_start(form,{'attr':{'id':'contract-employee-form' , 'novalidate': 'novalidate'} }) }} 
+    {{ form_errors(form)}}
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-addon">
+                <span class="fa fa-user"></span>
+            </div>
+            <select class="select2" style="width: 100%" data-ajax--url="{{ path(form.employee.vars.update_route,{'mode':app.security.token.providerKey}) }}" data-ajax--url="json">
+                <option value=" " selected="selected"></option>
+            </select>
+        </div>
+    </div>
+    {{ form_widget(form.employee)}}
+    {{ form_end(form) }}
+
+</div>
+<script>
+    $('select').select2({
+        theme: "bootstrap",
+        placeholder: "Select a Employee",
+        minimumInputLength: 2,
+        ajax: {
+            data: function (params) {
+                return{
+                    q: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.surname + ", " + item.name + " | " + item.dni,
+                            id: item.id
+                        };
+                    })
+                };
+            }
+        }
+    });
+    $('select').change(function (e) {
+        $('#contract_employee_employee').val($("select").select2().val());
+    });
+</script>
+
+

@@ -1,0 +1,66 @@
+
+<!-- Breadcrumbs -->
+<ol class="breadcrumb">
+    <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li><a href="#">{% trans %} Certificate{% endtrans %} </a></li>
+    <li class="active">{% trans %} Show {% endtrans %} </li>
+</ol>   
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-table"></i>   
+            <span>{% trans %} Show Certificate  {% endtrans %} {{ certificate.id }}</span>
+        </div>
+
+        <div class="panel-body">
+            <div class="table table-responsive">
+                <table class="table table-bordered table-hover" style="font-size: 12px;">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td id="certificateId">{{ certificate.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans %}Employee{% endtrans %}</th>
+                            <td>{{ certificate.employee.surname |capitalize}}, {{certificate.employee.name|capitalize}}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans %}Presentation Date{% endtrans %}</th>
+                            <td>{% if certificate.date %}{{ certificate.date|date('Y-m-d') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans %}From{% endtrans %}</th>
+                            <td>{% if certificate.datefrom %}{{ certificate.datefrom|date('Y-m-d') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans %}To{% endtrans %}</th>
+                            <td>{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d') }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans %}Approved?{% endtrans %}</th>
+                            <td>{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans %}Observations{% endtrans %}</th>
+                            <td>{{ certificate.details }}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans %}Digitization{% endtrans %}</th>
+                            <td>
+                                <img class="img-thumbnail img-responsive" src="{{ vich_uploader_asset(certificate, 'scanFile') }}" alt="Certificado"/>    
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>  
+            </div> 
+        </div> 
+    </div>
+</div>
+
+
+
+
+
+
+

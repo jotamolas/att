@@ -1,0 +1,229 @@
+<?php
+
+namespace att\medicalsrvBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Atmedicalorder
+ *
+ * @ORM\Table(name="AtMedicalOrder", indexes={@ORM\Index(name="FK_serMed_idx", columns={"service"}), @ORM\Index(name="FK_empl_idx", columns={"employee"})})
+ * @ORM\Entity
+ */
+class Atmedicalorder {
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="diagnostic", type="text", length=65535, nullable=false)
+     */
+    private $diagnostic;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \att\medicalsrvBundle\Entity\Atmedicalservice
+     *
+     * @ORM\ManyToOne(targetEntity="\att\medicalsrvBundle\Entity\Atmedicalservice")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="service", referencedColumnName="id")
+     * })
+     */
+    private $service;
+
+    /**
+     * @var \att\employeeBundle\Entity\Atemployee
+     *
+     * @ORM\ManyToOne(targetEntity="\att\employeeBundle\Entity\Atemployee")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="employee", referencedColumnName="id")
+     * })
+     */
+    private $employee;
+    
+    /**
+     * @var \att\medicalsrvBundle\Entity\Atmedicalorderstatus
+     *
+     * @ORM\ManyToOne(targetEntity="\att\medicalsrvBundle\Entity\Atmedicalorderstatus")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="status", referencedColumnName="id")
+     * })
+     */
+    private $status;
+    
+    /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="Atmedicalvisit", mappedBy="medicalOrder")
+     */
+    private $medicalvisits;
+
+    public function __construct() {
+        $this->medicalvisits = new ArrayCollection();
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Atmedicalorder
+     */
+    public function setDate($date) {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate() {
+        return $this->date;
+    }
+
+    /**
+     * Set diagnostic
+     *
+     * @param string $diagnostic
+     * @return Atmedicalorder
+     */
+    public function setDiagnostic($prediagnostic) {
+        $this->diagnostic = $prediagnostic;
+
+        return $this;
+    }
+
+    /**
+     * Get diagnostic
+     *
+     * @return string 
+     */
+    public function getDiagnostic() {
+        return $this->diagnostic;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Set service
+     *
+     * @param \att\medicalsrvBundle\Entity\Atmedicalservice $service
+     * @return Atmedicalorder
+     */
+    public function setService(\att\medicalsrvBundle\Entity\Atmedicalservice $service = null) {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * Get service
+     *
+     * @return \att\medicalsrvBundle\Entity\Atmedicalservice 
+     */
+    public function getService() {
+        return $this->service;
+    }
+
+    /**
+     * Set employee
+     *
+     * @param \att\employeeBundle\Entity\Atemployee $employee
+     * @return Atmedicalorder
+     */
+    public function setEmployee(\att\employeeBundle\Entity\Atemployee $employee = null) {
+        $this->employee = $employee;
+
+        return $this;
+    }
+
+    /**
+     * Get employee
+     *
+     * @return \att\employeeBundle\Entity\Atemployee 
+     */
+    public function getEmployee() {
+        return $this->employee;
+    }
+
+
+    /**
+     * Add medicalvisit
+     *
+     * @param \att\medicalsrvBundle\Entity\Atmedicalvisit $medicalvisit
+     *
+     * @return Atmedicalorder
+     */
+    public function addMedicalvisit(\att\medicalsrvBundle\Entity\Atmedicalvisit $medicalvisit)
+    {
+        $this->medicalvisits[] = $medicalvisit;
+
+        return $this;
+    }
+
+    /**
+     * Remove medicalvisit
+     *
+     * @param \att\medicalsrvBundle\Entity\Atmedicalvisit $medicalvisit
+     */
+    public function removeMedicalvisit(\att\medicalsrvBundle\Entity\Atmedicalvisit $medicalvisit)
+    {
+        $this->medicalvisits->removeElement($medicalvisit);
+    }
+
+    /**
+     * Get medicalvisits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMedicalvisits()
+    {
+        return $this->medicalvisits;
+    }
+
+    /**
+     * Set status
+     *
+     * @param \att\medicalsrvBundle\Entity\Atmedicalorderstatus $status
+     *
+     * @return Atmedicalorder
+     */
+    public function setStatus(\att\medicalsrvBundle\Entity\Atmedicalorderstatus $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \att\medicalsrvBundle\Entity\Atmedicalorderstatus
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+}

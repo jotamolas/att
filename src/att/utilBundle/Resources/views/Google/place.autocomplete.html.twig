@@ -1,0 +1,96 @@
+<script src="{{ asset('bundles/util/js/google.autocomplete.js') }}" ></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ googleapitoken }}&libraries=places&callback=initAutocomplete" async defer></script>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div id="locationField">
+                            <input id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="route">Street Address</label>
+                        <div class="col-md-5">
+                            <input  class="field form-control" type="text" id="street_number" disabled="true">
+                        </div>
+                        <div class="col-md-5">
+                            <input class="field form-control" type="text" id="route" disabled="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="locality">City</label>
+                        <div class="col-md-10">
+                            <input class="field form-control" id="locality" type="text" disabled="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+          {#  <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="administrative_area_level_1">State</label>
+                        <div class="col-md-5">
+                            <input class="field form-control" type="text" id="administrative_area_level_1" disabled="true">
+                        </div>
+                        <div class="col-md-3">
+                            <input class="field form-control" id="postal_code" type="text" disabled="true">
+                        </div>                        
+                        <div class="col-md-2">
+                            <input class="field form-control" id="postal_code_suffix" type="text" disabled="true">
+                        </div>
+                    </div>
+                </div>
+            </div>#}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="locality">Country</label>
+                        <div class="col-md-10">
+                            <input class="field form-control" type="text" id="country" disabled="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="geometry">Geometry</label>
+                        <div class="col-md-5">
+                            <input class="field form-control" type="text" id="lat" disabled="true">
+                        </div>
+                        <div class="col-md-5">
+                            <input class="field form-control" type="text" id="lng" disabled="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="formated_address">Formated Address</label>
+                        <div class="col-md-10">
+                            <input class="field form-control" type="text" id="formated_address" disabled="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,22 @@
+{% extends "attBundle:Default:index.html.twig"%}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Attendance{% endtrans %} </a></li>   
+            <li><a href="#">{% trans %} Work Leave Type{% endtrans %} </a></li>    
+            <li class="active">{% trans %} New {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-edit"></i>   
+                <span>{% trans %} New Work Leave Type {% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                 {% include 'attBundle:WorkLeaveType:form.html.twig' with {'form': form} %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

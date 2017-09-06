@@ -1,0 +1,44 @@
+{% extends 'appBundle:dev:index.html.twig' %}
+{% block content %}
+
+<div class="col-md-12 col-md-offset-0">
+    
+    <div class="panel panel-default" id="panel">
+        <div class="panel-heading">
+            <h1 class="panel-title"> Event List </h1>
+        </div>   
+        
+        <div class="table table-responsive">            
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Id Original</th>
+                        <th class="text-center">Id Device</th>
+                        <th class="text-center">Event Date</th>
+                        <th class="text-center">Event Time</th>                        
+                        <th class="text-center">Employee</th>                        
+                        <th class="text-center">Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                     {% for event in events %}
+                        <tr>
+                            <td class="text-center">{{ event.id }}</td>
+                            <td class="text-center">{{ event.idoriginal }}</td>
+                            <td class="text-center">{{ event.iddevice }}</td>
+                            <td class="text-center">{{ event.eventdate | date('Y-m-d') }}</td>
+                            <td class="text-center">{{ event.eventtime | date('H:i:s')}}</td>
+                            <td class="text-center">{{ event.employee }}</td>
+                            <td class="text-center">{{ event.eventtype }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+                
+    </div>
+</div>                    
+
+{% endblock %}

@@ -1,0 +1,61 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+@import url(https://fonts.googleapis.com/css?family=Hind);
+html{
+    
+    font-family:  'Hind' , 'Open Sans',  sans-serif;
+}
+
+body{
+    font-family: inherit;
+}
+
+.menutop{
+    font-size: 15px;
+}
+
+.menulateral{
+    height: 100%;
+    position: fixed;
+    background-color: #f1f1f1;
+    font-size: 17px;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    width: 0; /* 0 width - change this with JavaScript */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+}
+
+.menulateral a{
+    padding: 8px 8px 8px 32px;
+    color: #818181;
+    display: block;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s
+}
+
+.menulateral a:hover, .offcanvas a:focus{
+    color: #000;
+}
+
+/* Position and style the close button (top right corner) */
+.closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px !important;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}

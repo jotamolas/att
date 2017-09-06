@@ -1,0 +1,207 @@
+## Dashboard
+id: ID
+Id: ID
+Start: Inicio   
+User Profile: Perfil
+Logout: Cerrrar Sesion   
+Settings: Ajustes
+Dashboard: Escritorio
+Hello: Hola
+Welcome to the Att Dasboard panel. In this space, you can administer the application and manage the modules enabled in it. Att welcomes you and wishes you luck: Bienvenido al panel Att Dashboard. En este espacio, puede administrar la aplicación y administrar los módulos habilitados en ella. Att le da la bienvenida y le desea suerte 
+To start in the navigation bar you will find the modules of the system, clicking on them will display the corresponding menu in the sidebar to your left. : Para comenzar, en la barra de navegación encontrará los módulos del sistema, al hacer clic en ellos se mostrará el menú correspondiente en la barra lateral a su izquierda.
+Module Employee: Modulo Empleado
+Name: Nombre
+Surname: Apellido
+Last Name: Apellido
+List: Listar
+list: listar
+New: Nuevo
+new: nuevo
+Employee: Empleado
+Employees: Empleados
+employee: empleado
+employees: empleados
+Contract: Contrato
+Contracts: Contratos
+contract: contrato
+contracts: contratos
+Business: Negocio
+business: negocio
+Companies: Compañias
+companies: compañias
+Company: Compañia
+company: compañia
+Schemas: Esquemas
+schemas: esquemas
+Schema: Esquema
+schema: esquema
+Unions: Gremios
+unions: gremios
+Union: Gremio
+union: gremio
+Agreements: Convenios
+agreements: convenios
+Agreement: Convenio
+agreement: convenio
+Status: Estado
+status: estado
+Rest Day: Franco
+Rest Days: Francos
+Actions: Acciones
+Action: Accion
+Genre: Genero
+Birthday: Nacimiento
+Male: Masculino
+Female: Femenino
+Down: Baja
+down: baja
+Active: Activo
+active: activo
+List of Contracts: Lista de Contratos
+List of Employees: Lista de Empleados
+Person Id: DNI
+Person id: DNI
+File ID: Legajo
+File Id: Legajo
+Start Date: F.Inicio
+End Date: F.Fin
+In: H.Entrada
+Out: H.Egreso
+Filter by Id File: Filtrar por Legajo
+Filter by Person ID: Filtrar por DNI
+Filter by Last Name: Filtrar por Apellido
+Filter by Name: Filtrar por Nombre
+Filter by Business: Filtrar por Negocio
+Filter by Company: Filtrar por Compañia
+Filter by Schema: Filtrar por Esquema
+Filter by Agreement: Filtrar por Convenio
+Filter by Status: Filtrar por Estado
+
+Sunday: Domingo
+sunday: domingo
+Monday: Lunes
+monday: lunes
+Tuesday: Martes
+tuesday: martes
+Wednesday: Miércoles
+wednesday: miércoles
+Thursday: Jueves
+thursday: jueves
+Friday: Viernes
+friday: viernes
+Saturday: Sábado
+saturday: sábado
+Manage: Gestionar
+manage: gestionar
+Register: Registrar
+Plan: Planificacion
+Planification: Planificacion
+
+Create Plan From Schema: Crear Planificacion desde el Esquema
+Select date range: Seleccione un rango de fechas
+Select employees to apply planning : Seleccione Empleados a Planificar
+Create: Crear
+Save: Guardar
+New: Nuevo
+From File: Desde Archivo
+Planification Module: Modulo Planificacion
+
+
+
+
+Employee Module: Modulo Empleado
+Import:	Importar
+Configuration: Configuracion
+Department: Departmento
+File: Archivo
+Import Employees from File: Importar Empleados desde Archivo
+
+
+Filter by Gender: Filtrar por Genero
+Email: Email
+Mobile: Movil
+Address: Direccion
+Edit Employee: Editar Empleado
+Address Edit: Editar Direccion
+Employee Show: Ver Empleado
+
+
+
+From Schema: Desde Esquema
+New/Update: Nuevo/Actualizar
+Employees Imported From File: Empleados importados desde Archivo
+Employees imported: Empleados importados
+Rows updated: Lineas de Empleados actualizados
+Errors in rows: Errores en lineas del archivo
+Contraint Validation Errors: Errores de validacion
+Exceptions: Excepciones
+
+Module: Modulo
+module: modulo
+
+
+Attendance: Asistencia
+attendance: asistencia
+
+Presents: Presentes
+presents: presentes
+Absence: Ausencia
+absence: Ausencia
+Absents: Ausentes
+absents: ausentes
+
+Planned: Planificados
+planned: planificados
+
+
+Attendance Module: Módulo Asistencia
+Notification: Notificacion
+notification: notificacion
+
+Make: Hacer
+make: hacer
+Process: Procesar
+process: procesar
+
+Certificate Module: Modulo Certificado
+Certification Workflow: Workflow Certificación
+Presentation Date: Fecha de Presentación
+From: Desde
+To: Hasta
+Approved: Aprobado
+Type: Tipo
+Certificate: Certificado
+
+Id Person: DNI
+Last View: Ultima Vista
+State: Estado
+
+List of Certificates: Listado de Certificados
+List of Certificate Workflow: Listado de Workflows de Certificación
+
+List of Planifications: Listado de Planes
+Day: Dia
+Date: Date
+Surname: Apellido
+Names: Nombres
+In: Ingreso
+Out: Salida
+Hs Work: Horas de Trabajo
+Plan State: Estado
+Actions: Acciones
+
+WSDL - REST API Sync: WSDL - REST API Sicronización
+
+Search by Date: Buscar por Fecha
+Search by Employee Name: Buscar por Nombre
+Search by Employee Last Name: Buscar por Apellido
+Search by In Plan: Buscar por Entrada
+Search by Out Plan: Buscar por Salida
+Search by Hours Work Plan: Buscar por Horas de Trabajo
+Filter by State Plan: Filtrar por Estado
+
+Choose an Option: Elige una Opción
+
+
+Medical Service: Servicios Medicos
+medical service: servicios medicos

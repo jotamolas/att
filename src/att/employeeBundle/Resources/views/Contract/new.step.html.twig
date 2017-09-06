@@ -1,0 +1,164 @@
+
+{% block my_stylesheets %}
+    <link href="{{asset('bundles/employee/css/form.steps.css') }}" type="text/css" rel="stylesheet" >
+{% endblock %}
+
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Employee{% endtrans %}</a></li>                                
+        <li><a href="#">{% trans %}Contract{% endtrans %}</a></li>  
+        <li class="active">{% trans %}New - Step{% endtrans %}</li>
+    </ol>
+    <div class="row">   
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-vcard"></i>
+                <span>{% trans %}New Contract{% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                <section>
+                    <div class="wizard">
+                        <div class="wizard-inner text-center">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Employee">
+                                        <span class="round-tab">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Business">
+                                        <span class="round-tab">
+                                            <i class="fa fa-briefcase"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="disabled">
+                                    <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Legal">
+                                        <span class="round-tab">
+                                            <i class="	fa fa-calendar"></i>
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li role="presentation" class="disabled">
+                                    <a href="#step4" data-toggle="tab" aria-controls="step4" role="tab" title="Planning">
+                                        <span class="round-tab">
+                                            <i class="fa fa-list-alt"></i>
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li role="presentation" class="disabled">
+                                    <a href="#step5" data-toggle="tab" aria-controls="step5" role="tab" title="Finish">
+                                        <span class="round-tab">
+                                            <i class="fa fa-check"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="tab-content">
+                                <div class="tab-pane active" role="tabpanel" id="step1">
+                                    <div class="row>">                                        
+                                        <h4 class="text-muted">1. {%trans%}Select a Employee{%endtrans%}</h4>                                                                            
+                                    </div>
+                                    <div id="formStep1" class="row">
+                                        {% include 'employeeBundle:Contract:form.employee.html.twig' with {'form': formEmployee} %}
+                                    </div>
+                                    <div class="row">
+                                        <ul class="list-inline pull-right">
+                                            <li><button type="button" class="btn btn-primary next-step-validate-step-1">Next</button></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" role="tabpanel" id="step2">
+                                    <div class="row>">
+                                        <h4 class="text-mute">
+                                            2. {%trans%}Select one Business for New Contract{%endtrans%}
+                                        </h4>
+                                    </div>
+
+                                    <div id="formStep2" class="row">
+
+                                    </div>
+
+                                    <div class="row>">
+                                        <div class="col-md-12"> 
+                                            <ul class="list-inline pull-right">
+                                                <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_contract_new',{'mode':app.security.token.providerKey}) }}">Skip</button></li>
+                                                <li><button type="button" class="btn btn-primary next-step-validate-step-2">Next</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>  
+
+                                <div class="tab-pane" role="tabpanel" id="step3">
+                                    <div class="row>">                                                                           
+                                        <h4 class="text-muted">3. {%trans%}Complete Legal Information{%endtrans%}</h4>                               
+                                    </div>
+
+                                    <div id="formStep3" class="row">
+                                    </div>
+
+                                    <div class="row>">
+                                        <div class="col-md-12">                        
+                                            <ul class="list-inline pull-right">
+                                                <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_contract_new',{'mode':app.security.token.providerKey}) }}">Skip</button></li>
+                                                <li><button type="button" class="btn btn-primary next-step-validate-step-3">Next</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" role="tabpanel" id="step4">
+                                    <div class="row>">
+                                        <h4 class="text-muted">4. {%trans%}Complete Planning Information{%endtrans%}</h4>                                        
+                                    </div>                        
+
+                                    <div id="formStep4" class="row">
+                                    </div>
+
+                                    <div class="row>">
+                                        <div class="col-md-12"> 
+                                            <ul class="list-inline pull-right">
+                                                <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_contract_new',{'mode':app.security.token.providerKey}) }}">Skip</button></li>
+                                                <li><button type="button" class="btn btn-primary next-step-validate-step-persist">Save</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>       
+
+                                <div class="tab-pane" role="tabpanel" id="step5">
+                                    <div class="row>">
+                                        <div class="col-md-12"> 
+                                            <h2>Step 5</h2>
+                                            <h4 class="text-muted">Finish</h4>
+                                        </div>
+                                    </div>    
+
+                                    <div id="formStep5" class="row">
+                                    </div>
+
+                                    <div class="row>">
+                                        <div class="col-md-12"> 
+                                            <ul class="list-inline pull-right">
+                                                <li><button type="button" class="btn btn-primary next-step-validate-step-persist">Save</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>   
+        </div>
+    </div>
+
+    <script src="{{ asset('bundles/employee/js/form.step.contract.js') }}" ></script>
+{% endblock %}

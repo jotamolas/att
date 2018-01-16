@@ -43,6 +43,13 @@ class Atworkflowmsg
      * @ORM\Column(name="create_at", type="datetime", nullable=true)
      */
     private $createAt;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=50 , nullable=true)
+     */
+    private $username;
 
     /**
      * @var integer
@@ -180,5 +187,27 @@ class Atworkflowmsg
     }
     
 
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return Atworkflowmsg
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
 
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
 }

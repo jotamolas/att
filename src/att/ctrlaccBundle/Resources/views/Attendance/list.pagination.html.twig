@@ -1,0 +1,90 @@
+{% extends 'ctrlaccBundle:Default:index.html.twig' %}
+
+
+{% block content %}
+    <!-- Breadcrumbs -->
+    <div class="row">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">
+
+                      {% trans %} Access Control {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">
+                    {% trans %} Attendances {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+                {% trans %} List{% endtrans %}
+            </li>
+        </ol>    
+    </div>
+
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-table">              
+            </i>
+            <span>{% trans %}List of Attendances {% endtrans %}</span>
+            <div class="dropdown pull-right">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="strikes">
+                        <li style="width: 350px;">
+                            <form  style="display:block;">
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by Date{% endtrans %}</label>
+                                    {{ filter_search(atts, "a.date")}}                                        
+                                </div>
+                                <div class="form-group col-md-10 col-md-offset-1">
+                                    <label for="contain">{% trans %}Search by Person{% endtrans %}</label>
+                                    {{ filter_search(atts, "a.employee")}}                                        
+                                </div>
+
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div class="table table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                            <tr>
+                                <th class="text-center">Id</th>
+                                <th class="text-center">{% trans %}Person{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Date{% endtrans %}</th>
+                                <th class="text-center">{% trans %}In{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Out{% endtrans %}</th>
+                                <th class="text-center">{% trans %}Hours Worked{% endtrans %}</th>
+                            </tr>
+                    </thead>
+                     <tbody>
+                        {% for att in atts %}
+                            <tr>                                
+                                    <td class="text-center">{{ att.id }}</td>
+                                    <td class="text-center">{{ att.employee }}</td>
+                                    <td class="text-center">{{ att.date | date('Y-m-d') }}</td>
+                                    <td class="text-center">{{ att.inEvent | date('H:i:s')}}</td>
+                                    <td class="text-center">{% if att.outEvent %}{{ att.outEvent | date('H:i:s')}} {% else %} - {% endif %}</td>
+                                    <td class="text-center">{% if att.hoursWorkedTime %}{{ att.hoursWorkedTime | date('H:i:s') }}{% else %} - {% endif %}</td>
+                    
+                                
+                            </tr>
+                        {% endfor %}
+                    </tbody>                        
+                </table>                    
+            </div>
+        </div>
+        <div class="panel-footer">
+                <div class="text-center">
+                    {{ pagination(atts) }}
+                </div> 
+        </div> 
+    </div>
+</div>   
+{% endblock %}

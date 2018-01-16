@@ -1,0 +1,33 @@
+<table class="table table-bordered table-hover" style="font-size: 12px;">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}Business{% endtrans %}</th>
+            <th>{% trans %}Company{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
+        </tr>
+                            
+    </thead>
+    <tbody>
+        {% for department in departments %}  
+            <tr>
+                <td>{{ department.id }}</td>
+                <td>{{ department.name }}</td>
+                <td>{{ department.business.description }}</td>
+                <td>{{ department.business.company.description }}</td>
+
+                <td class="text-center">
+                    <div class="btn-group" role="group" >
+                        <button type="button" data-toggle="modal" data-target="#edit_modal" data-mode="{{ mode }}" class="btn btn-xs btn-default" data-id="{{ department.id }}" id="edit">
+                            <span class="fa fa-edit"></span>
+                        </button>
+                        <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ department.id }}" data-mode="{{mode}}">
+                            <span class="fa fa-remove"></span>
+                        </button>     
+                    </div>           
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -105,7 +105,9 @@ class PlanService {
         } else {
             return [
                 'error' => TRUE,
-                'message' => "The " . $value . " could not be determined, verify the format."
+                'message' => $this->container->get('translator')->trans("The %value% could not be determined, verify the format.",[
+                    '%value%' => $value
+                ])                
             ];
         }
     }
@@ -239,6 +241,98 @@ class PlanService {
         $paginator = new \DataDog\PagerBundle\Pagination($dql, $request, $options);
 
         return array("paginator" => $paginator, "states" => $states);
+    }
+    
+
+    public function inconsistencyPagination(\Symfony\Component\HttpFoundation\Request $request) {
+
+        $dql = $this->em->getRepository('attBundle:Atplaninconsistency')->createQueryBuilder('pi')
+                ->leftJoin('pi.plan', 'p')
+                ->leftJoin('pi.att', 'a')
+                ->leftJoin('p.employee', 'e');
+
+        $options = [
+            'sorters' => ['p.date' => 'DESC'],
+            'applyFilter' => [$this, 'planInconsistencyFilters'],
+        ];
+
+        $paginator = new \DataDog\PagerBundle\Pagination($dql, $request, $options);
+
+        return ["paginator" => $paginator];
+    }
+    
+    /**
+     * 
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     * @param type $key
+     * @param type $val
+     * @throws \Exception
+     */
+    public function planInconsistencyFilters(\Doctrine\ORM\QueryBuilder $qb, $key, $val) {
+        switch ($key) {
+
+            case 'p.date':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->eq('p.date', ':date'));
+                    $qb->setParameter('date', $val);
+                }
+                break;
+
+
+            case 'e.name':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->like('e.name', ':name'));
+                    $qb->setParameter('name', "%$val%");
+                }
+                break;
+
+            case 'e.surname':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->like('e.surname', ':surname'));
+                    $qb->setParameter('surname', "%$val%");
+                }
+                break;
+
+            case 'p.inplan':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->like('p.inplan', ':plan'));
+                    $qb->setParameter('plan', "%$val%");
+                }
+                break;
+
+            case 'p.outplan':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->like('p.outplan', ':plan'));
+                    $qb->setParameter('plan', "%$val%");
+                }
+                break;
+
+            case 'p.hsworkplan':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->like('p.hsworkplan', ':hs'));
+                    $qb->setParameter('hs', "%$val%");
+                }
+                break;
+             
+            case 'a.inatt':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->like('p.inatt', ':in'));
+                    $qb->setParameter('in', "%$val%");
+                }
+                break;  
+            case 'a.out':
+                if ($val) {
+                    $qb->andWhere($qb->expr()->like('p.inatt', ':out'));
+                    $qb->setParameter('out', "%$val%");
+                }
+                break;     
+
+
+
+            default:
+
+                throw new \Exception("filter not allowed");
+        }
     }
 
     /**
@@ -375,12 +469,27 @@ class PlanService {
                 $plan = $this->em->getRepository('attBundle:Atplan')->findOneBy(['employee' => $data['employee'], 'date' => $date]);
 
                 if ($plan) {
-                    $plan = $this->setPlan($plan, NULL, NULL, \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['inplan']), \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['outplan']), $this->em->getRepository('attBundle:Atstateplan')->find($data['stateplan']));
+
+                    $plan = $this->setPlan(
+                        $plan, 
+                        NULL, 
+                        NULL, 
+                        \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['inplan']),
+                        \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['outplan']),
+                        $this->em->getRepository('attBundle:Atstateplan')->find($data['stateplan']));
 
                     $plansUpdate [] = $plan;
+
                 } else {
 
-                    $planNew = $this->setPlan(new \att\attBundle\Entity\Atplan(), $date, $this->em->getRepository('employeeBundle:Atemployee')->find($emp), \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['inplan']), \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['outplan']), $this->em->getRepository('attBundle:Atstateplan')->find($data['stateplan']));
+                    $planNew = $this->setPlan(
+                        new \att\attBundle\Entity\Atplan(), 
+                        $date, 
+                        $this->em->getRepository('employeeBundle:Atemployee')->find($emp),
+                        \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['inplan']),
+                        \DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . " " . $data['outplan']), 
+                        $this->em->getRepository('attBundle:Atstateplan')->find($data['stateplan']));
+
                     $plansNew [] = $planNew;
                 }
             }
@@ -397,6 +506,14 @@ class PlanService {
      */
     public function processPlansSchemaForm($data) {
 
+        /* 
+        * el metodo process toma todo el formulario
+        * recorre los empleados q trae los recorre obtiene los contratos y verifican el activo a partir del contrato
+        * crea la planificacion llamando al metodo createPlanFromSchema pandola las fechas de inicio y fin para planificar
+        * el metodo devuelve el status de la operacion si es positivo (ok) guarda las planificaciones y las persiste con el método
+        * persistPlans
+        */
+
         $begin = \DateTime::createFromFormat('Y-m-d', $data['datefrom']);
         $end = \DateTime::createFromFormat('Y-m-d', $data['dateto']);
         $empls = $data['employee'];
@@ -405,7 +522,7 @@ class PlanService {
         $massiveplans = [];
         $errors = [];
         $contracts = [];
-
+        $validations_errors = [];
 
         foreach ($empls as $emp) {
             $employee = $this->em->getRepository('employeeBundle:Atemployee')->find($emp);
@@ -419,6 +536,7 @@ class PlanService {
             if ($plans['status'] === 'ok') {
                 foreach ($plans['plans'] as $plan) {
                     $massiveplans[] = $plan;
+
                 }
             } else {
                 $errors[] = $plans['message'];
@@ -430,7 +548,8 @@ class PlanService {
             return [
                 'plan_persisted' => $result['plans'],
                 'plan_persist_error' => $result['errors_persist'],
-                'plan_process_errors' => $errors
+                'plan_process_errors' => $errors,
+                'validations_errors' => isset($plans['validations_errors']) ? $plans['validations_errors'] : NULL
             ];
         } else {
             return [
@@ -473,12 +592,12 @@ class PlanService {
      * @return type
      */
     public function persistPlans($plans) {
-        $batchSize = 20;
+        $batchSize = 1000;
         $i = 1;
         $errors = array();
         foreach ($plans as $plan) {
             $i ++;
-            $this->em->persist($plan);
+            $this->em->persist($plan);            
             if (($i % $batchSize) == 0) {
                 try {
                     $this->em->flush();
@@ -524,32 +643,49 @@ class PlanService {
     public function createPlanFromSchema(\att\employeeBundle\Entity\Atcontract $contract, \DateTime $start_date, \DateTime $end_date) {
         
         $plans = [];
+        $validation_errors = [];
         $period = $this->container->get('util.date.service')->getIterateDayPeriod($start_date, $end_date);
-        $restdays = $contract->getRestDays();
+        $restdays = $contract->getArrayRestDays();
+        
 
+
+        /* Si el contrato esta activo y tiene horario de ingreso y egreso seteado*/
         if ($contract->getRestDays() && $contract->getInTime() && $contract->getOutTime() && $contract->getStatus()->getDescription() == 'Active') {
 
             foreach ($period as $dt) {
-                $plan = $this->setPlan(new \att\attBundle\Entity\Atplan(), $dt, $contract->getEmployee(), $contract->getInTime(), $contract->getOutTime());
-                foreach ($restdays as $restday) {
-                    ($dt->format('l') == $restday->getDescription()) ?
-                                    $plan->setStateplan($this->em->getRepository('attBundle:Atstateplan')->find(3)) :
-                                    $plan->setStateplan($this->em->getRepository('attBundle:Atstateplan')->find(1));
-                }
 
-                $plans[] = $plan;
+                
+                $plan = $this->setPlan(
+                    new \att\attBundle\Entity\Atplan(),
+                    $dt,
+                    $contract->getEmployee(),
+                    date_create_from_format("Y-m-d H:i", $dt->format('Y-m-d')." ". $contract->getInTime()->format('H:i')),
+                    date_create_from_format("Y-m-d H:i", $dt->format('Y-m-d')." ". $contract->getOutTime()->format('H:i'))                    
+                );
+                
+                $isRestDay = in_array($dt->format('l'), $restdays);  
+
+                $isRestDay ?
+                            $plan->setStateplan($this->em->getRepository('attBundle:Atstateplan')->find(3)) :
+                            $plan->setStateplan($this->em->getRepository('attBundle:Atstateplan')->find(1));
+
+
+                $validations = $this->container->get('validator')->validate($plan);
+                count($validations) > 0 ?
+                    $validation_errors[] = $validations . " " . $plan->getEmployee()->getDni() . " | " . $plan->getDate()->format('Y.m.d') :
+                    $plans[] = $plan;
             }
 
             return [
                 'status' => 'ok',
-                'plans' => $plans
+                'plans' => $plans,
+                'validation_errors' => $validation_errors
             ];
         } else {
 
-
             return[
                 'status' => 'error',
-                'message' => 'Contract ' . $contract->getFileNumber() . ' has no registered schema data or not Active'
+                'message' => $this->container->get('translator')->trans('Contract')." ".$contract->getFileNumber()." ".$this->container->get('translator')->trans('has no registered schema data or not Active')
             ];
         }
     }

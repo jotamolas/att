@@ -1,0 +1,115 @@
+{% extends "appBundle:app:index.html.twig"%}
+
+{% block title %}Control Access - Admin{% endblock %}
+{% block sidebar %}
+
+    <li>
+        <a href="#" class="active"><i class="fa fa-key  fa-fw"></i> 
+            <span class="masked">
+                {% trans %} Control Access Module{% endtrans %}
+            </span>    
+        </a>
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-hand-paper-o"></i>
+            <span class="masked">
+                <span>
+                    {% trans %}Attendance {% endtrans %}
+                    <span class="fa arrow"></span>
+                </span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a href="{{ path ('ctrlacc_attendance_list',{'mode': app.security.token.providerKey})}}"> 
+                    <i class="fa fa-list fa-fw"></i>                  
+                    {% trans %} List {% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a href="#"> 
+                    <i class="fa fa-cogs" fa-fw></i>
+                    {% trans %} Process {% endtrans %}
+                </a>
+            </li>
+        </ul>         
+
+    </li>
+    <li class="">
+        <a href="{{ path ('ctrlacc_event_list',{'mode': app.security.token.providerKey})}}">
+            <i class="fa fa-calendar-check-o"></i>
+            <span class="masked">
+                <span>
+                    {% trans %} Event {% endtrans %}
+                </span>
+            </span>
+        </a>
+
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-microchip"></i>
+            <span class="masked">
+                <span>
+                    {% trans %} Device {% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a href="{{ path ('ctrlacc_device_list',{'mode': app.security.token.providerKey})}}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %}List{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="new_notification" href="#">
+                    <i class="fa fa-floppy-o fa-fw"></i>
+                    {% trans %}New{% endtrans %}
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="">
+        <a href="#">
+            <i class="fa fa-exchange"></i>
+            <span class="masked">
+                <span>
+                    {% trans %} Syncronization {% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a href=""> 
+                    <i class="fa fa-wrench fa-fw"></i>                  
+                    {% trans %} Settings {% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('ctrlacc_sync_from_database',{'mode': app.security.token.providerKey})}}"> 
+                    <i class="fa fa-database" fa-fw></i>
+                    {% trans %} Database {% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a href=""> 
+                    <i class="fa fa-cloud-download" fa-fw></i>
+                    {% trans %} Rest Api {% endtrans %}
+                </a>
+            </li>
+        </ul>
+    </li>
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans %}Control Access{% endtrans %} <small>{% trans %} Module{% endtrans %}</small></h1>
+        </div>
+    </div>
+{% endblock %}

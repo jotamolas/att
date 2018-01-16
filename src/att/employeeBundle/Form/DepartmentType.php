@@ -30,7 +30,7 @@ class DepartmentType extends AbstractType {
                     ]
                 ])
                 
-                ->add('save', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class)
+                
 
 
         ;

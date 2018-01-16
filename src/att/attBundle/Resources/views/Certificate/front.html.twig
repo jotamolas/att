@@ -1,14 +1,48 @@
 {% extends "appBundle:dev:index.html.twig"%}
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .icon-bar {
+            width: 250px; /* Set a specific width */
+            background-color: darkslateblue; /* Dark-grey background */
+            
+        }
+
+        .icon-bar a {
+            display: block; /* Make the links appear below each other instead of side-by-side */
+            text-align: center; /* Center-align text */
+            padding: 10px; /* Add some padding */
+            transition: all 0.3s ease; /* Add transition for hover effects */
+            color: white; /* White text color */
+            font-size: 16px; /* Increased font-size */
+            text-decoration: none;
+            text-align: left;
+        }
+        .icon-bar i{
+           font-size: 40px; 
+        }
+        .icon-bar a:hover {
+            background-color: #000; /* Add a hover color */
+        }
+
+        .active {
+            background-color: #4CAF50; /* Add an active/current color */
+        }
+    </style>
+{% endblock %}
 {% block content %}
+
+
     <div class="col-sm-3">
-        <div class="list-group">
-            <a href="{{ path('att_certificate_list',{ 'mode':app.security.token.providerKey })}}" class="list-group-item">{% trans %}My Certificates{% endtrans %}</a>
-            <a href="{{ path('att_certification_first_step',{ 'mode':app.security.token.providerKey })}}" class="list-group-item">{% trans %}Send Certificate{% endtrans %}</a>
-            <a href="#" class="list-group-item">{% trans %}Justify Absence{% endtrans %}</a>
+        <div class="icon-bar">
+            <a href="{{ path('att_certificate_list',{ 'mode':app.security.token.providerKey })}}"><i class="fa fa-certificate fa-fw" aria-hidden="true"></i>&nbsp; {% trans %}My Certificates{% endtrans %}</a> 
+            <a href="{{ path('att_certificate_new_first_step',{ 'mode':app.security.token.providerKey })}}"><i class="fa fa-save fa-fw" aria-hidden="true"></i>&nbsp; {% trans %}Save{% endtrans %} {% trans %}Certificate{% endtrans %}</a> 
+            <a href="{{ path('att_workflow_certificate_start',{ 'mode':app.security.token.providerKey })}}"><i class="fa fa-check fa-fw" aria-hidden="true"></i>&nbsp; {% trans %}Justify Absence{% endtrans %}</a>
+            <a href="{{ path('att_certificate_list_wf',{ 'mode':app.security.token.providerKey })}}"><i class="fa fa-list-ul fa-fw"></i>&nbsp; {% trans %}My Procedures{% endtrans %}</a> 
         </div>
     </div>
 
-    <div class="col-sm-9">
+    <div class="col-sm-9" id="content_certificate">
         {% block content_certificate %}
         {% endblock content_certificate %}
     </div>

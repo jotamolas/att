@@ -1,4 +1,4 @@
-
+    
 $(document).ready(function () {
 
     var business;
@@ -133,10 +133,11 @@ $(document).ready(function () {
             if (data['message'] !== 'ok') {
                 $('#formStep4').html(data['form']);
                 
-            } else {
-                contract = data['contract'];
-                $('#formStep5').html(data['form']);
-                
+            } else {                
+                $('#formStep5').html(data['confirm']);
+                var $active = $('.wizard .nav-tabs li.active');
+                $active.next().removeClass('disabled');
+                nextTab($active);
             }
 
         });

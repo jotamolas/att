@@ -59,6 +59,21 @@ class Atattendance
      * @ORM\Column(name="hsWorked", type="time", nullable=true)
      */
     private $hsworked;
+    
+    /**
+     *
+     * @var decimal
+     * 
+     * @ORM\Column(type="decimal", precision=6, scale=2, nullable=true) 
+     */
+    private $hsworkedtopayment;
+    
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Atabsence", mappedBy="attendance")
+     * @var type 
+     */
+    private $absence;
 
     /**
      * @var integer
@@ -89,7 +104,12 @@ class Atattendance
      */
     private $plan;
 
-
+    /**
+     *
+     * @var type 
+     * @ORM\OneToOne(targetEntity="Ataditionalhoursdetail", mappedBy="attendance")
+     */
+    private $aditionalhours;
 
     /**
      * Set in
@@ -260,5 +280,77 @@ class Atattendance
     public function getPlan()
     {
         return $this->plan;
+    }
+
+    /**
+     * Set hsworkedtopayment
+     *
+     * @param string $hsworkedtopayment
+     *
+     * @return Atattendance
+     */
+    public function setHsworkedtopayment($hsworkedtopayment)
+    {
+        $this->hsworkedtopayment = $hsworkedtopayment;
+
+        return $this;
+    }
+
+    /**
+     * Get hsworkedtopayment
+     *
+     * @return string
+     */
+    public function getHsworkedtopayment()
+    {
+        return $this->hsworkedtopayment;
+    }
+
+    /**
+     * Set aditionalhours
+     *
+     * @param \att\attBundle\Entity\Ataditionalhoursdetail $aditionalhours
+     *
+     * @return Atattendance
+     */
+    public function setAditionalhours(\att\attBundle\Entity\Ataditionalhoursdetail $aditionalhours = null)
+    {
+        $this->aditionalhours = $aditionalhours;
+
+        return $this;
+    }
+
+    /**
+     * Get aditionalhours
+     *
+     * @return \att\attBundle\Entity\Ataditionalhoursdetail
+     */
+    public function getAditionalhours()
+    {
+        return $this->aditionalhours;
+    }
+
+    /**
+     * Set absence
+     *
+     * @param \att\attBundle\Entity\Atabsence $absence
+     *
+     * @return Atattendance
+     */
+    public function setAbsence(\att\attBundle\Entity\Atabsence $absence = null)
+    {
+        $this->absence = $absence;
+
+        return $this;
+    }
+
+    /**
+     * Get absence
+     *
+     * @return \att\attBundle\Entity\Atabsence
+     */
+    public function getAbsence()
+    {
+        return $this->absence;
     }
 }

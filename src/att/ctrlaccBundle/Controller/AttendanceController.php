@@ -2,11 +2,12 @@
 
 namespace att\ctrlaccBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/ctrlacc/attendance")
+ * @Route("{mode}/ctrlacc/attendance", requirements={"mode":"frontend|backend"})
  */
 class AttendanceController extends Controller{    
     
@@ -14,39 +15,10 @@ class AttendanceController extends Controller{
     /**
      * @Route("/list" , name="ctrlacc_attendance_list")
      */
-    public function listAction(){
-                        
-        $ctrlacc = $this->getDoctrine()->getEntityManager('ctrlacc');
-        $atts = $ctrlacc->getRepository('ctrlaccBundle:Attendance')->findBy([],['date' => 'DESC']);
-        
-        $result = array();
-        if($atts){
-            foreach ($atts as $att){
-                
-                $employee = $this->getDoctrine()->getRepository("employeeBundle:Atemployee")->findOneByDni($att->getEmployee());
-                if($employee){
-                   $result[] = [
-                       'empName' => $employee->getSurname().", ".$employee->getName(),
-                       'empDni'  => $employee->getDni(),
-                       'attDate' => $att->getDate(),
-                       'attIn'   => $att->getInEvent(),
-                       'attOut'  => $att->getOutEvent(),
-                       'attHsWk' => $att->getHoursWorkedTime()
-                           ];     
-                }else{
-                   $result[] = [
-                       'empName' => NULL,
-                       'empDni'  => $att->getEmployee(),
-                       'attDate' => $att->getDate(),
-                       'attIn'   => $att->getInEvent(),
-                       'attOut'  => $att->getOutEvent(),
-                       'attHsWk' => $att->getHoursWorkedTime() 
-                   ];
-                }
-            }
-        }    
-    //return $this->render("attBundle:Default:dump.test.html.twig",['v' => $result, 'errors' => false]);    
-    return $this->render("ctrlaccBundle:Attendance:list.html.twig",['atts' => $result]);
+    public function listAction(Request $request){        
+        $atts = $this->get('ctrlacc.attendance.service')->pagination($request);
+        $options = ['atts' => $atts['paginator']];        
+        return $this->render('ctrlaccBundle:Attendance:list.pagination.html.twig', $options);
     }
     
     
@@ -55,8 +27,9 @@ class AttendanceController extends Controller{
      * @param type $day
      */
     public function makeAttendance($day){                
-        $result = $this->get('ctrlacc.attendance.service')->makeAttendance($day);        
-        if($result['status'] == 'ok'){ 
+        $result = $this->get('ctrlacc.attendance.service')->makeAttendance($day);   
+        dump($result);
+       /* if($result['status'] == 'ok'){ 
             
             return  $this->render('ctrlaccBundle:Attendance:make.html.twig', 
                                   [
@@ -75,7 +48,7 @@ class AttendanceController extends Controller{
                                     'atts'   => array()
                                     ]
                                 );
-            }
+            }*/
     }
     
     
@@ -85,7 +58,8 @@ class AttendanceController extends Controller{
      */
     public function completeAttendance($day){
         $result = $this->get('ctrlacc.attendance.service')->completeAttendance($day);  
-        if($result['status'] == 'ok'){ 
+        dump($result);
+        /*if($result['status'] == 'ok'){ 
             
             return  $this->render('attBundle:Default:dump.test.html.twig', 
                                   [
@@ -109,6 +83,6 @@ class AttendanceController extends Controller{
                                      'errors' => FALSE
                                   ]   
                                 );
-            }
+            }*/
     }
 }

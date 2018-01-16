@@ -1,36 +1,69 @@
-{% extends 'base.html.twig' %}
+{% extends "attBundle:Default:index.html.twig"%}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Attendance{% endtrans %} </a></li>   
+            <li><a href="#">{% trans %} Work Leave{% endtrans %} </a></li>   
+            <li class="active">{% trans %} Show {% endtrans %} </li>
+        </ol>   
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-fort-awesome"></i>   
+                <span>{% trans %}  Showing {% endtrans %} {% trans %} Work Leave{% endtrans %}: {{ atworkleave.id }} </span>
+            </div>
+            <div class="panel-body"> 
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ atworkleave.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>{% trans %}Employee {% endtrans %}</th>
+                                <td>{{ atworkleave.employee.surname |upper }},{{ atworkleave.employee.name |upper }}</td>
+                            </tr>
+                            <tr>
+                                <th>{% trans %}Date from {% endtrans %}</th>
+                                <td>{% if atworkleave.dateFrom %}{{ atworkleave.dateFrom|date('Y-m-d') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>{% trans %}Date to {% endtrans %}</th>
+                                <td>{% if atworkleave.dateTo %}{{ atworkleave.dateTo|date('Y-m-d') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>{% trans %} Type {% endtrans %}</th>
+                                <td>{{ atworkleave.type.description | trans}}</td>
+                            </tr>
+                            <tr>
+                                <th>{% trans %} Absences {% endtrans %} {% trans %} Recorded {% endtrans %}</th>
+                                <td>
+                                    {% if absences %}
+                                        {% for absence in absences %}
+                                            <p class="aler alert-danger">
+                                                <strong>
+                                                    {{ "workflow.certificate.create.absences"|trans
+                                ({
+                                    '%absence_id%': absence.id,
+                                    '%absence_date%': absence.attendance.plan.date | date('d/m/Y'),
+                                    '%absence_procedure%' : absence.certification
+                                }) }}
+                                                </strong>
+                                            </p>
 
-{% block body %}
-    <h1>Atworkleave</h1>
-
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ atworkleave.id }}</td>
-            </tr>
-            <tr>
-                <th>Datefrom</th>
-                <td>{% if atworkleave.dateFrom %}{{ atworkleave.dateFrom|date('Y-m-d') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Dateto</th>
-                <td>{% if atworkleave.dateTo %}{{ atworkleave.dateTo|date('Y-m-d') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('atworkleave_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('atworkleave_edit', { 'id': atworkleave.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+{% block javascripts %}
+{% endblock javascripts %}

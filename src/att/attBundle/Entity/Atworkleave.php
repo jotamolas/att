@@ -3,12 +3,17 @@
 namespace att\attBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Atworkleave
  *
  * @ORM\Table(name="att_work_leave")
  * @ORM\Entity(repositoryClass="att\attBundle\Repository\AtworkleaveRepository")
+ *  @UniqueEntity(
+ *     fields={"employee", "dateFrom", "dateTo"},
+ *     errorPath="dateFrom",
+ *     message="workleave.unique"
+ * )
  */
 class Atworkleave
 {

@@ -1,0 +1,3 @@
+department.unique: Este nombre ya fue usado en este Negocio.
+workleave.unique:  El empleado ya registra una licencia para la fecha seleccionada.
+medical.order.unique: Ya existe una Órden Medica para el Empleado para el dia de hoy.

@@ -66,7 +66,7 @@
     </div>
 {% endblock %}
 {%  block javascripts %}
-    {{ parent()}}
+    
     <script type="text/javascript">
         $('#create_plan').click(function () {
             $('#content').load('{{ path('att_plan_new',{"mode":app.security.token.providerKey}) }}');

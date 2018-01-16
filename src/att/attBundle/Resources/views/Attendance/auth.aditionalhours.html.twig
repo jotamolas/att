@@ -1,0 +1,26 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block title %} {% trans %} Attendance {% endtrans %} - {% trans %} Authorize Additional Hours {% endtrans %} {% endblock %}
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Attendance{% endtrans %}</a></li>                                
+        <li class="active">{% trans %}Authorize Additional Hours{% endtrans %}</li>
+    </ol>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Attendances{% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input type="submit" value="{% trans %} Authorize {% endtrans %}" class="btn btn-default">
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

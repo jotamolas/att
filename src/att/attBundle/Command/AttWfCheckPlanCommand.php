@@ -22,7 +22,7 @@ class AttWfCheckPlanCommand extends ContainerAwareCommand {
     {
         
         $date = new \DateTime('tomorrow');
-        $command = $this->getApplication()->find('att:checkplan');
+        $command = $this->getApplication()->find('att:plan:check');
         $arguments = [
             'command' => 'att:checkplan',
             'date' => $date->format('Ymd')

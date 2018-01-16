@@ -65,8 +65,12 @@ class EmployeeController extends Controller {
      * @Method("GET")
      */
     public function showAction(Atemployee $atemployee) {
+
+
+        $atemployee->getPhoto() ? $image = stream_get_contents($atemployee->getPhoto()) : $image = NULL;
         return $this->render('employeeBundle:Employee:show.html.twig', array(
                     'employee' => $atemployee,
+                    'image' =>  $image
         ));
     }
 
@@ -516,5 +520,6 @@ class EmployeeController extends Controller {
                     'form' => $form->createView()
         ]);
     }
+
 
 }

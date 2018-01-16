@@ -3,12 +3,18 @@
 namespace att\employeeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Atdepartment
  *
  * @ORM\Table(name="emp_department")
  * @ORM\Entity(repositoryClass="att\employeeBundle\Repository\AtdepartmentRepository")
+ * @UniqueEntity(
+ *     fields={"name", "business"},
+ *     errorPath="business",
+ *     message="department.unique"
+ * )
  */
 class Atdepartment
 {

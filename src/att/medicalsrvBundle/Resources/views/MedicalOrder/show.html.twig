@@ -8,6 +8,19 @@
                         <td id="certificateId">{{ order.id }}</td>
                     </tr>
                     <tr>
+                        <th>{% trans %}Status{% endtrans %}</th>
+                        <td>
+                            {% if order.status.id == 4 %}
+                                <span class="label label-success"> {{ order.status.description | trans | capitalize }} </span>
+                            {% elseif order.status.id == 5 %}
+                                <span class="label label-alert"> {{ order.status.description | trans | capitalize }} </span> 
+                            {% else %}
+                                <span class="label label-default"> {{ order.status.description | trans | capitalize }} </span> 
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                    <tr>
                         <th>{% trans %}Employee{% endtrans %}</th>
                         <td>{{ order.employee.surname |capitalize}}, {{order.employee.name|capitalize}}</td>
                     </tr>
@@ -16,7 +29,7 @@
                         <td>{{ order.date|date('Y-m-d') }}</td>
                     </tr>
                     <tr>
-                        <th>{% trans %}Service{% endtrans %}{% trans %}Assigned{% endtrans %}</th>
+                        <th>{% trans %}Service{% endtrans %} {% trans %}Assigned{% endtrans %}</th>
                         <td>{{ order.service.name}}</td>
                     </tr>
                     <tr>
@@ -30,12 +43,14 @@
 </div> 
 
 <div class="row">
+
     <div class="col-md-12">
+        <h4 class="title" style="text-decoration: underline">{% trans %}Visits{% endtrans %}</h4>
         <div class="table table-responsive">
             <table class="table table-bordered table-hover" style="font-size:10px;">
                 <thead>                    
                     <tr>
-                        <th>Id</th>
+                        <th>#</th>
                         <th>{% trans %}Visit Date{% endtrans %}</th>
                         <th>{% trans %}Matricula{% endtrans %}</th>
                         <th>{% trans %}Medical Rest{% endtrans %}</th>
@@ -48,6 +63,7 @@
                     {% for mv in order.medicalvisits %}
                         <tr>
                             <td>{{mv.id}}</td>
+                            <td>{{mv.visitdate | date('d/m/Y')}}</td>
                             <td>{{mv.matricula}}</td>
                             <td>
                                 {%if mv.medicalrest == true %}
@@ -58,8 +74,8 @@
                             </td>
                             <td>{{mv.restdatefrom | date('Y-m-d')}}</td>
                             <td>{{mv.restdateto | date('Y-m-d')}}</td>
-                            <td>{{mv.status.description}}</td>
-                         </tr>
+                            <td>{{mv.status.description | trans | upper }}</td>
+                        </tr>
 
                     {% endfor%}
                 </tbody>

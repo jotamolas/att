@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a href="#collapseCertificate" data-toggle="collapse">
-                    Certificado {{ certificate.id }}
+                    {% trans %}Certificate{% endtrans %} Id: {{ certificate.id }}
                     <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
                 </a>
             </h4>
@@ -13,40 +13,40 @@
                 <tbody>
 
                     <tr>
-                        <th>Employee</th>
+                        <th>{% trans %}Employee{% endtrans %}</th>
                         <td>{{ certificate.employee.surname |capitalize}}, {{certificate.employee.name|capitalize}}</td>
                     </tr>
                     <tr>
-                        <th>Presentation Date</th>
+                        <th>{% trans %}Presentation Date{% endtrans %} </th>
                         <td>{% if certificate.date %}{{ certificate.date|date('Y-m-d H:i:s ') }}{% endif %}</td>
                     </tr>
                     <tr>
-                        <th>From</th>
+                        <th>{% trans %}From{% endtrans %}</th>
                         <td>{% if certificate.datefrom %}{{ certificate.datefrom|date('Y-m-d H:i:s ') }}{% endif %}</td>
                     </tr>
                     <tr>
-                        <th>To</th>
+                        <th>{% trans %}To{% endtrans %}</th>
                         <td>{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d H:i:s ') }}{% endif %}</td>
                     </tr>
                     <tr>
-                        <th>Aprobation Status</th>
-                        <td>{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                        <th>{% trans %}Aprobation Status{% endtrans %}</th>
+                        <td>{% if certificate.aprobationstate %}{% trans %}Yes{% endtrans %}{% else %}No{% endif %}</td>
                     </tr>
                     <tr>
-                        <th>Details</th>
+                        <th>{% trans %}Details{% endtrans %}</th>
                         <td>{{ certificate.details }}</td>
                     </tr>
                     <tr>
-                        <th>Type</th>
-                        <td>{{ certificate.type.description }}
+                        <th>{% trans %}Type{% endtrans %}</th>
+                        <td>{{ certificate.type.description | trans }}
                     </tr>
                     <tr>
                     <tr>
-                        <th>Attach Documentation</th>
+                        <th>{% trans %}Attach Documentation{% endtrans %}</th>
                         <td>{% if certificate.attachdoc %}Yes{% else %}No{% endif %}</td>
                     </tr>
                     <tr>
-                        <th>Scan</th>
+                        <th>{% trans %}Scan{% endtrans %}</th>
                         <td>
                             <div id="lightgallery">
                                 <a href="{{ vich_uploader_asset(certificate, 'scanFile') }}" class="thumbnail"> 

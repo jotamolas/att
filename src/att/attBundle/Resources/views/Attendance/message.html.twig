@@ -1,0 +1,67 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+        <li><a href="#">{% trans %} Attendance {% endtrans %} </a></li>
+        <li><a href="#">{% trans %} Create{% endtrans %} </a></li>    
+        <li class="active">{{ result.operation }}</li>
+    </ol> 
+
+    <div class="row">
+
+        {% if result.status == 'ok' %}
+            <div class="panel panel-success">
+        {% else %}
+            <div class="panel panel-danger">        
+        {% endif %}
+        
+            <div class="panel-heading">
+                <i class="fa fa-file-archive-o"></i>   
+                <span>{% trans %} Attendance Records {% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                
+                {% if result.status == 'ok' %}
+                    <div class="alert alert-success" role="alert">                        
+                        <p>{{ result.message }}</p>
+                        <p>{% trans %}Registered Attendances: {% endtrans %} {{ result.atts | length }}</p>
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">                        
+                        <p>{{ result.message }}</p>
+                        {% if result.error_persist is defined %}
+                            <div class="alert alert-danger" role="alert">
+                                {% trans %}Errors when Persist{% endtrans %}:
+                                <ul>
+                                    {% for error in result.errors_persist %}
+                                        <li> {{error | trans}} </li>
+                                    {% endfor %}   
+                                </ul>
+                            </div>
+                        {% endif %}
+                        
+                    </div>        
+                {% endif %}    
+
+                
+                {% if result.errors_validation is defined %}
+                    <div class="alert alert-danger" role="alert">
+                        {% trans %}Errors in Validations {% endtrans %}:
+                        <ul>
+                            {% for error in result.errors_validation %}
+                                {% for violation in error %}
+                                    <li> {{ violation.message}}, {% trans %} for the planification {% endtrans %} ID: {{ violation.root.plan.id}} {% trans %} for employee {% endtrans %}
+                                    {{ violation.root.plan.employee.name}}, {{ violation.root.plan.employee.surname}} - {{ violation.root.plan.employee.dni}}
+                                </li>
+                                {% endfor %}
+                            {% endfor %}   
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+{% endblock javascripts %}

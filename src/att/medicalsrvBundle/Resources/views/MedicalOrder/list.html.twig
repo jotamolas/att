@@ -7,6 +7,9 @@
             <li class="active">{% trans %} List {% endtrans %} </li>
         </ol>   
     </div>
+    <div id="successMsg">
+
+    </div>
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -16,7 +19,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th class="text-center">Id</th>
+                        <th class="text-center">#</th>
                         <th class="text-center">{% trans %}Date{% endtrans %}</th>
                         <th class="text-center">{% trans %}Employee{% endtrans %}</th>
                         <th class="text-center">{% trans %}Service{% endtrans %}</th>
@@ -32,21 +35,42 @@
                             <td class="text-center">{{ mo.date | date('d-m-Y')}}</td>
                             <td class="text-center">{{ mo.employee.surname }},{{ mo.employee.name }}</td>
                             <td class="text-center">{{ mo.service.name }}</td>
-                            <td class="text-center">{{ mo.status.description }}</td>
+
+                            <td class="text-center">
+                                {% if mo.status.id == 4 %}
+                                    <span class="label label-success"> {{ mo.status.description | trans | capitalize }} </span>
+                                {% elseif mo.status.id == 5 %}
+                                    <span class="label label-alert"> {{ mo.status.description | trans | capitalize }} </span> 
+                                {% else %}
+                                    <span class="label label-default"> {{ mo.status.description | trans | capitalize }} </span> 
+                                {% endif %}
+                            </td>
                             <td class="text-center">
                                 <div class="btn-group" role="group" >
-                                    <button type="button" data-toggle="modal" data-target="#showModal" data-mode="{{app.security.token.providerKey}}" class="btn btn-xs btn-default" data-id="{{ mo.id }}" id="edit">
-                                        <span class="fa fa-play"></span>
-                                    </button>
-                                    <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{app.security.token.providerKey}}" class="btn btn-xs btn-default" data-id="{{ mo.id }}" id="edit">
-                                        <span class="fa fa-edit"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-xs btn-default"  id="remove" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}">
-                                        <span class="fa fa-remove"></span>
-                                    </button> 
-                                    <button type="button" class="btn btn-xs btn-default"  id="remove" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}">
-                                        <span class="fa fa-plus"></span>
-                                    </button>
+                                    {#% if status = %#}
+                                    <span data-toggle="modal" data-target="#showModal" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}" > 
+                                        <button type="button" data-toggle="tooltip" data-placement="top" title="{% trans %} Show {% endtrans %}" class="btn btn-xs btn-default">
+                                            <span class="fa fa-play"></span>
+                                        </button>
+                                    </span>    
+                                    <span data-toggle="modal" data-target="#editModal" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}" > 
+                                        <button type="button" data-toggle="tooltip" title="{% trans %} Edit {% endtrans %}" class="btn btn-xs btn-default">
+                                            <span class="fa fa-edit"></span>
+                                        </button>
+                                    </span>
+                                    <span>
+                                        <button type="button" data-toggle="tooltip" data-placement="top" class="btn btn-xs btn-default" title="{% trans %}Remove{% endtrans %}" id="remove" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}">
+
+                                            <span class="fa fa-remove"></span>
+                                        </button>
+                                    </span>
+                                    {% if not (mo.status.id == 4 or mo.status.id == 5) %}
+                                        <span data-toggle="modal" data-target="#add_visit_modal" data-id="{{ mo.id }}" data-mode="{{app.security.token.providerKey}}" > 
+                                            <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="{% trans %} Add visit {% endtrans %}"  id="addVisit" ">
+                                                <span class="fa fa-plus"></span>
+                                            </button>
+                                        </span>
+                                    {% endif %}        
                                 </div>           
                             </td>
                         </tr>
@@ -61,7 +85,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{%trans%}Edit Medical Order{% endtrans %}</h4>
+                    <h4 class="modal-title">{%trans%}Edit{% endtrans %} {%trans%}Medical Order{% endtrans %}</h4>
                 </div>
                 <div class="modal-body" id="modal-body-edit">
 
@@ -76,7 +100,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{%trans%}Show Medical Order{% endtrans %}</h4>
+                    <h4 class="modal-title">{%trans%}Showing {% endtrans %} {%trans%}Medical Order{% endtrans %}</h4>
                 </div>
                 <div class="modal-body" id="modal-body-show">
 
@@ -84,16 +108,19 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="addModal" role="dialog">
+    <div class="modal fade" id="add_visit_modal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{%trans%}Add Visit{% endtrans %}</h4>
+                    <h4 class="modal-title">{%trans%}Add visit{% endtrans %}</h4>
                 </div>
                 <div class="modal-body" id="modal-body-add">
 
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-default"  id="submit_add_visit" value="{%trans%}Add{% endtrans %}" >
                 </div>
             </div>
         </div>
@@ -136,15 +163,54 @@
 
         });
 
-        $('#ddModal').on('show.bs.modal', function (e) {
+        $('#add_visit_modal').on('show.bs.modal', function (e) {
             //get data-id attribute of the clicked element
             var medical_order = $(e.relatedTarget).data('id');
             var mode = $(e.relatedTarget).data('mode');
-            $('#modal-body-add').load(Routing.generate('medical_order_visit_add',
-                    {
-                        mode: mode,
-                        id: medical_order
-                    }));
+            $.ajax({
+                url: Routing.generate('medical_order_visit_add', {
+                    mode: mode,
+                    id: medical_order
+                }),
+                type: 'POST',
+                success: function (data) {
+                    $('#modal-body-add').html(data['form']);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                }
+            });
+
+        });
+
+
+        $('#submit_add_visit').on('click', function (e) {
+            e.preventDefault();
+            var formElement = document.getElementById('medical_visit');
+            var formData = new FormData(formElement);
+            //var row = '#row-contract-' + $(this).data('contract-id');
+            $.ajax({
+                cache: false,
+                type: formElement.method,
+                url: formElement.action,
+                data: formData,
+                contentType: false,
+                processData: false
+            }).done(function (data) {
+                if (data['status'] !== true) {
+                    $('#modal-body-add').html(data['form']);
+                } else {
+                    $('#successMsg').html("\
+            <div class='alert alert-success'>\n\
+                <strong>" + data['message'] + "</strong>\n\
+            </div>");
+                    //$(row).html(data['row']);
+                    $('#add_visit_modal').modal('hide');
+                    $('.alert-success').fadeOut(7000, function () {
+                        $('.alert-success').remove();
+                    });
+                }
+            });
         });
 
 

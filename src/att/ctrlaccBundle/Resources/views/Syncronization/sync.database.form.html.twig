@@ -1,0 +1,44 @@
+{% extends 'ctrlaccBundle:Default:index.html.twig' %}
+{% block title %}
+    {% trans %} Database Syncronization {% endtrans %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">
+
+                    {% trans %} Access Control {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">
+                    {% trans %} Database {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+                {% trans %} Sync {% endtrans %} 
+            </li>
+        </ol>    
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-exchange">              
+                    </i>
+                    <span> {% trans %} Sync Events from Database {% endtrans %}</span>
+
+                </div>
+                <div class="panel-body">
+
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input type="submit" value="{% trans %} Select {% endtrans %}" />
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}    
+

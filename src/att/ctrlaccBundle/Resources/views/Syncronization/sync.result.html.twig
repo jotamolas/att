@@ -1,0 +1,61 @@
+{% extends 'ctrlaccBundle:Default:index.html.twig' %}
+{% block title %}
+    {% trans %} Database Syncronization {% endtrans %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">
+
+                    {% trans %} Access Control {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">
+                    {% trans %} Database {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+                 Sync 
+            </li>
+        </ol>    
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-exchange">              
+                    </i>
+                    <span> {% trans %} Sync Events from Database - Result {% endtrans %}</span>
+
+                </div>
+                <div class="panel-body">
+                    {% if result.status %}                    
+                        <div class="alert alert-success">
+                            <p>
+                                {% trans %} Events found in remote system {% endtrans %}: {{ result.events_from_remote_database | length}}                                
+                            </p>
+                            <p>
+                                {% trans %} Events Persisted in Control Access  {% endtrans %}: {{ result.ctrlacc_event_persisted }}                                
+                            </p>
+                            <p>
+                                {% trans %} Errors Persisting  {% endtrans %}: {{ result.ctrlacc_event_error_persisting | length }}                                
+                            </p>
+                            <p>
+                                {% trans %} Last Event ID Sync from Remote System  {% endtrans %}: {{ result.ctrlacc_last_id_by_device_persisted }}                                
+                            </p>
+                        </div> 
+                    {% else %}
+                        <div class="alert alert-danger">
+                            <p>
+                                {{ result.message }}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}    
+

@@ -35,11 +35,11 @@ $('#addresseditModal').on('show.bs.modal', function (e) {
     $('#modal-footer-address-edit').html("<input type='button' class='btn btn-default' id='updateAddress' value='Update' data-employee-id='" + employeeid + "'>");
 });
 
-$('#employeeshowModal').on('show.bs.modal', function (e) {
+$('#employee_show_modal').on('show.bs.modal', function (e) {
     //get data-id attribute of the clicked element
     var employeeid = $(e.relatedTarget).data('id');
     var mode = $(e.relatedTarget).data('mode');
-    $('#modal-body-employee-show').load(Routing.generate('employee_show',
+    $('#modal-body-show').load(Routing.generate('employee_show',
             {
                 'mode': mode,
                 'id': employeeid

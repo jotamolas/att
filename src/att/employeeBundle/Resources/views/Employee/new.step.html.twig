@@ -51,8 +51,8 @@
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <div class="row>">
                             <div class="col-md-12"> 
-                                <h2>Step 1</h2>
-                                <h4 class="text-muted">Complete Personal Information</h4>
+                                <h2>{% trans %}Step{% endtrans %} 1</h2>
+                                <h4 class="text-muted">{% trans %}Complete Personal Information{% endtrans %}</h4>
                             </div>
                         </div>
                         <div id="formStep1" class="row">
@@ -61,7 +61,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <ul class="list-inline pull-right">
-                                    <li><button type="button" class="btn btn-primary next-step-validate-step-1">Next</button></li>
+                                    <li><button type="button" class="btn btn-primary next-step-validate-step-1">{% trans %}Next{% endtrans %}</button></li>
                                 </ul>
                             </div>
                         </div>
@@ -70,8 +70,10 @@
                     <div class="tab-pane" role="tabpanel" id="step2">
                         <div class="row>">
                             <div class="col-md-12"> 
-                                <h2>Step 2</h2>
-                                <h4 class="text-muted">Complete Contact Information</h4>
+                                <h2>{% trans %}Step{% endtrans %} 2</h2>
+                                <h4 class="text-muted">
+                                    {% trans %}Complete Contact Information{% endtrans %}
+                                </h4>
                             </div>
                         </div>
 
@@ -81,8 +83,8 @@
                         <div class="row>">
                             <div class="col-md-12"> 
                                 <ul class="list-inline pull-right">
-                                    <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_new_step',{'mode':app.security.token.providerKey}) }}">Skip</button></li>
-                                    <li><button type="button" class="btn btn-primary next-step-validate-step-2">Next</button></li>
+                                    <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_new_step',{'mode':app.security.token.providerKey}) }}">{% trans %}Skip{% endtrans %}</button></li>
+                                    <li><button type="button" class="btn btn-primary next-step-validate-step-2">{% trans %}Next{% endtrans %}</button></li>
                                 </ul>
                             </div>
                         </div>
@@ -91,8 +93,8 @@
                     <div class="tab-pane" role="tabpanel" id="step3">
                         <div class="row>">
                             <div class="col-md-12"> 
-                                <h2>Step 3</h2>
-                                <h4 class="text-muted">Complete Address Information</h4>
+                                <h2>{% trans %}Step{% endtrans %} 3</h2>
+                                <h4 class="text-muted">{% trans %}Complete Address Information{% endtrans %}</h4>
                             </div>
                         </div>
 
@@ -103,8 +105,8 @@
                         <div class="row>">
                             <div class="col-md-12">                        
                                 <ul class="list-inline pull-right">
-                                    <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_new_step',{'mode':app.security.token.providerKey}) }}">Skip</button></li>
-                                    <li><button type="button" class="btn btn-primary next-step-validate-step-3">Next</button></li>
+                                    <li><button type="button" class="btn btn-default skip" data-url="{{path('employee_new_step',{'mode':app.security.token.providerKey}) }}">{% trans %}Skip{% endtrans %}</button></li>
+                                    <li><button type="button" class="btn btn-primary next-step-validate-step-3">{% trans %}Next{% endtrans %}</button></li>
                                 </ul>
                             </div>
                         </div>
@@ -114,7 +116,7 @@
                     <div class="tab-pane" role="tabpanel" id="complete">
                         <div class="row>">
                             <div class="col-md-12"> 
-                                <h2>Complete</h2>
+                                <h2>{% trans %}Complete{% endtrans %}</h2>
                             </div>
 
                             <div id="show" class="row">

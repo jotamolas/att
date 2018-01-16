@@ -1,0 +1,23 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans %}Date{% endtrans %}</th>
+                <th>{% trans %}State{% endtrans %}</th>
+                <th>{% trans %}Message{% endtrans %}</th>
+                <th>{% trans %}User{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for wfmsg in msgs %}
+                <tr>
+                    <td>{{ wfmsg.createAt | date ('Y-m-d H:i:s ') }}</td>
+                    <td>{{ wfmsg.wfstate | trans }}</td>
+                    <td>{{ wfmsg.details | trans }}</td>
+                    <td>{{ wfmsg.username  }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>

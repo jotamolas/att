@@ -1,0 +1,78 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Inconsistency{% endtrans %}</a></li>                                
+        <li class="active">{% trans %}List{% endtrans %}</li>
+    </ol>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Inconsistencies{% endtrans %}</span>
+            </div>
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead>                     
+                            <tr>
+                                <th>{{ sorter_link(inconsistencies, "p.id", "ID Plan" | trans ) }}</th> 
+                                <th>{{ sorter_link(inconsistencies, "a.id", "ID Att" | trans ) }}</th>                                
+                                <th>{{ sorter_link(inconsistencies, "p.date", "Date" | trans ) }}</th>
+                                <th>{{ sorter_link(inconsistencies, "p.inplan", "In Plan" | trans ) }}</th>
+                                <th>{{ sorter_link(inconsistencies, "a.inatt", "In Att" | trans ) }}</th>
+                                <th>{{ sorter_link(inconsistencies, "p.outplan", "Out Plan" | trans ) }}</th>
+                                <th>{{ sorter_link(inconsistencies, "a.outatt", "Out Att" | trans ) }}</th>
+                                <th>{{ sorter_link(inconsistencies, "e.surname", "Surname" | trans ) }}</th>
+                                <th>{{ sorter_link(inconsistencies, "e.name", "Names" | trans)}}</th> 
+                                <th> {% trans %} Observations {% endtrans %} </th>
+                                
+                            </tr>
+
+                            <tr>    
+                                <td></td>
+                                <td></td>
+                                <td>{{ filter_search(inconsistencies, "p.date")}}</td>
+                                <td>{{ filter_search(inconsistencies, "p.inplan")}}</td>
+                                <td>{{ filter_search(inconsistencies, "a.inatt")}}</td>
+                                <td>{{ filter_search(inconsistencies, "p.outplan")}}</td>
+                                <td>{{ filter_search(inconsistencies, "a.outatt")}}</td>                                
+                                <td>{{ filter_search(inconsistencies, "e.surname")}}</td>
+                                <td>{{ filter_search(inconsistencies, "e.name")}}</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                            {% for i in inconsistencies %}
+                                <tr>
+                                    <td>{{ i.plan.id}}</td>
+                                    <td>{{ i.att.id}}</td>
+                                    <td>{{ i.plan.date | date('Y-m-d') }}</td>
+                                    <td>{{ i.plan.inplan | date('H:i')}}</td>
+                                    <td>{{ i.att.inatt | date('H:i')}}</td>
+                                    <td>{{ i.plan.outplan | date('H:i')}}</td>
+                                    <td>{{ i.att.outatt | date('H:i')}}</td>
+                                    <td>{{ i.plan.employee.surname }}</td>
+                                    <td>{{ i.plan.employee.name }}</td>
+                                    <td>{{ i.obs }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="text-center">
+                    {{ pagination(inconsistencies) }}
+                </div> 
+            </div>  
+        </div>
+    </div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+{% endblock javascripts %}

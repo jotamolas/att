@@ -26,33 +26,33 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('att_attendance_index',{'mode':app.security.token.providerKey}) }}">
+                    <a href="{{ path('att_attendance_index',{'mode':app.security.token.providerKey}) }}" data-toggle="tooltip" title="{% trans %} Attendance {% endtrans %} {% trans %} Module {% endtrans %} ">
                         <i class="fa fa-cogs fa-lg" aria-hidden="true"></i>                                
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('employee_index',{'mode':app.security.token.providerKey}) }}">
+                    <a href="{{ path('employee_index',{'mode':app.security.token.providerKey}) }}" data-toggle="tooltip" title="{% trans %} Employee {% endtrans %} {% trans %} Module {% endtrans %}">
                         <i class="fa fa-group fa-lg" aria-hidden="true"></i>                                
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('att_certificate_index',{'mode':app.security.token.providerKey}) }}">
+                    <a href="{{ path('att_certificate_index',{'mode':app.security.token.providerKey}) }}" data-toggle="tooltip" title="{% trans %} Certification {% endtrans %} {% trans %} Module {% endtrans %}">
                         <i class="fa fa-certificate fa-lg" aria-hidden="true"></i>                                
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('medical_service_index',{'mode':app.security.token.providerKey})}}">
-                            <i class="fa fa-user-md  fa-lg" aria-hidden="true"></i>                                
+                    <a href="{{ path('medical_service_index',{'mode':app.security.token.providerKey})}}" data-toggle="tooltip" title="{% trans %} Medical Service {% endtrans %} {% trans %} Module {% endtrans %}">
+                        <i class="fa fa-user-md  fa-lg" aria-hidden="true"></i>                                
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('att_plan_index',{'mode':app.security.token.providerKey}) }}">
+                    <a href="{{ path('att_plan_index',{'mode':app.security.token.providerKey}) }}" data-toggle="tooltip" title="{% trans %} Planification {% endtrans %} {% trans %} Module {% endtrans %}">
                         <i class="fa fa-id-card fa-lg" aria-hidden="true"></i>                                
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fa fa-refresh  fa-lg" aria-hidden="true"></i>                                
+                    <a href="{{ path('ctrlacc_index',{'mode':app.security.token.providerKey})}}" data-toggle="tooltip" title="{% trans %} Control Access {% endtrans %} {% trans %} Module {% endtrans %}">
+                        <i class="fa fa-key fa-lg" aria-hidden='true'></i>                                
                     </a>
                 </li>
 
@@ -64,7 +64,7 @@
                                 {{ app.user.employee.surname | capitalize }} ,{{ app.user.employee.name | capitalize }}</span>
                             {% else %}   
                                 {{ app.user.username | capitalize }} </span>
-                            {% endif %}    
+                        {% endif %}    
 
                         <i class="fa fa-caret-down"></i>
 
@@ -128,4 +128,14 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        {{ parent() }}
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip({'placement':'bottom'})
+            })
+
+    </script>
 {% endblock %}

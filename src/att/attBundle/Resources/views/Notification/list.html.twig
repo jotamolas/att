@@ -72,7 +72,7 @@
                                 <th class="text-center">{%trans%}Days{%endtrans%}</th>
                                 <th class="text-center">{%trans%}Type{%endtrans%}</th>
                                 <th class="text-center">{%trans%}Code{%endtrans%}</th>
-                                <th class="text-center">Actions</th>
+                                <th class="text-center">{% trans %}Actions{% endtrans %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -127,7 +127,7 @@
     </div> 
 {% endblock %}
 {% block javascripts %}
-    {{ parent()}}
+    
     <script>
         $('#editModal').on('show.bs.modal', function (e) {
             //get data-id attribute of the clicked element

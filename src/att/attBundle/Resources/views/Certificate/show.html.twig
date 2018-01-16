@@ -1,4 +1,6 @@
 
+{% extends 'attBundle:Certificate:index.html.twig' %}
+{% block content %}
 <!-- Breadcrumbs -->
 <ol class="breadcrumb">
     <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
@@ -10,7 +12,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <i class="fa fa-table"></i>   
-            <span>{% trans %} Show Certificate  {% endtrans %} {{ certificate.id }}</span>
+            <span>{% trans %} Showing {% endtrans %} {% trans %} Certificate  {% endtrans %}  {{ certificate.id }}</span>
         </div>
 
         <div class="panel-body">
@@ -38,8 +40,8 @@
                             <td>{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d') }}{% endif %}</td>
                         </tr>
                         <tr>
-                            <th>{% trans %}Approved?{% endtrans %}</th>
-                            <td>{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                            <th>{% trans %}Approved{% endtrans %}?</th>
+                            <td>{% if certificate.aprobationstate %}{% trans %}Yes{% endtrans %}{% else %}No{% endif %}</td>
                         </tr>
                         <tr>
                             <th>{% trans %}Observations{% endtrans %}</th>
@@ -57,6 +59,7 @@
         </div> 
     </div>
 </div>
+{% endblock %}
 
 
 

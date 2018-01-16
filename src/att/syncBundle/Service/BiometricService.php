@@ -18,14 +18,27 @@ class BiometricService{
 
     /**
      * 
-     * @param EntityManager $emctrlacc
-     * @param EntityManager $embiometric
      * @param ContainerInterface $container
      */
-    public function __construct(EntityManager $emctrlacc, EntityManager $embiometric , ContainerInterface $container) {
+    public function __construct(ContainerInterface $container) {
         $this->container = $container;
-        $this->emctrlacc = $emctrlacc;
-        $this->embiometric = $embiometric;
+    }
+
+
+
+    public function connectToDataBase($hostname, $port, $dbname, $username, $password){
+        
+        /** @var \Doctrine\Bundle\DoctrineBundle\ConnectionFactory $connectionFactory */
+        $string = "mysql:host=".$hostname.";dbname=".$dbname;
+        $connectionFactory = $this->getContainer()->get('doctrine.dbal.connection_factory');
+        $connection = $connectionFactory->createConnection(
+            ['pdo' => new \PDO("", $username, $password)]
+        );
+        
+        
+
+
+
     }
     
     /**

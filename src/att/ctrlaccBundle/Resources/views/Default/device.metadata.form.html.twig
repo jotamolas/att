@@ -1,0 +1,45 @@
+{% extends 'ctrlaccBundle:Default:index.html.twig' %}
+{% block title %}
+    {% trans %} Control Access {% endtrans %} - {% trans %} Devices {% endtrans %} - Metadata 
+{% endblock %}
+{% block content %}
+<div class="row">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">
+
+                      {% trans %} Access Control {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">
+                    {% trans %} Device {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+               Metadata 
+            </li>
+        </ol>    
+</div>
+
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table">              
+                </i>
+                <span>{% trans %}Device{% endtrans %}: {{ device.description}} - Metadata {% trans %} Configuration {% endtrans %}</span>
+                
+            </div>
+            <div class="panel-body">
+                {{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+                <input type="submit" value="{% trans %} Save {% endtrans %}" />
+                {{ form_end(form) }}
+            </div>        
+        </div>
+    </div>    
+</div>
+                
+{% endblock %}
+

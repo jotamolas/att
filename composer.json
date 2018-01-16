@@ -35,11 +35,9 @@
         "friendsofsymfony/jsrouting-bundle":"^1.6",
         "vich/uploader-bundle":"^1.4.2",
         "jms/serializer-bundle":"^2.0",
-        "symfony/var-dumper": "^3.3"      
-        
-
-        
-        
+        "symfony/var-dumper": "^3.3",
+        "friendsofsymfony/rest-bundle": "^2.2",
+        "nelmio/cors-bundle": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

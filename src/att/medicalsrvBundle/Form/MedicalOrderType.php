@@ -17,7 +17,9 @@ class MedicalOrderType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
         $builder
-                ->add('diagnostic' , TextareaType::class)
+                ->add('diagnostic' , TextareaType::class, [
+                    'label' => 'Pre Diagnostico'
+                ])
                 ->add('service', EntityType::class, [
                     'class' => 'medicalsrvBundle:Atmedicalservice',
                     'expanded' => FALSE,

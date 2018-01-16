@@ -29,9 +29,11 @@ class Event
     private $idoriginal;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_device", type="integer")
+     * @var \att\ctrlaccBundle\Entity\Device
+     * @ORM\ManyToOne(targetEntity="\att\ctrlaccBundle\Entity\Device")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="iddevice", referencedColumnName="id")
+     * })
      */
     private $iddevice;
 
@@ -94,29 +96,6 @@ class Event
     public function getIdoriginal()
     {
         return $this->idoriginal;
-    }
-
-    /**
-     * Set iddevice
-     *
-     * @param integer $iddevice
-     * @return Event
-     */
-    public function setIddevice($iddevice)
-    {
-        $this->iddevice = $iddevice;
-
-        return $this;
-    }
-
-    /**
-     * Get iddevice
-     *
-     * @return integer 
-     */
-    public function getIddevice()
-    {
-        return $this->iddevice;
     }
 
     /**
@@ -214,4 +193,28 @@ class Event
     
     
     
+
+    /**
+     * Set iddevice
+     *
+     * @param \att\ctrlaccBundle\Entity\Device $iddevice
+     *
+     * @return Event
+     */
+    public function setIddevice(\att\ctrlaccBundle\Entity\Device $iddevice = null)
+    {
+        $this->iddevice = $iddevice;
+
+        return $this;
+    }
+
+    /**
+     * Get iddevice
+     *
+     * @return \att\ctrlaccBundle\Entity\Device
+     */
+    public function getIddevice()
+    {
+        return $this->iddevice;
+    }
 }

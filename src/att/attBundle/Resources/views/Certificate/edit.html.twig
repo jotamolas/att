@@ -1,37 +1,33 @@
-{% block attstylesheets %}
 
-{% endblock %}
+{{ form_start(form,{'attr':{'id':'certificate-form' , 'novalidate': 'novalidate'} }) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
 
-{% block content_data %}
-    <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default" >
-            <div class="panel-heading">
-                Editar Certificado
-            </div> 
-            <div class="panel-body">
-                {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
-                <form method="POST" class="attForm" id="attForm" action="{{ path('att_certificate_update', { 'id' : entity.id }) }}" name="atcertificado" {{ form_enctype(form) }}>
-                    <div id="form_body">
-                        {% include formPath with {'form': form} %}
-                    </div>
-                </form>
-            </div>
-            <div class="panel-footer" id="form_error">
-            </div>        
-        </div>
-    </div>    
-                      
-{% endblock %}
-{% block attjavascripts %}
-    
-    <script src="{{ asset('bundles/att/js/attForm.js') }}" ></script> 
 
-   
-   <script>
-       $(document).ready(function() {
-            buildFieldsForm();
-            initForm();
-        });
-   </script>
+<script>
+    $('.input-daterange').datepicker({
+        language: "es",
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+    });
+    $('.fileInput').fileinput({
+        showUpload: true,
+        previewFileType: 'any',
+        theme: 'fa',
+        browseClass: 'btn btn-outline-primary btn-sm',
+        browseLabel: "{% trans %} Browse {% endtrans %}",
+        cancelClass: 'btn btn-outline-primary btn-sm',
+        removeClass: 'btn btn-outline-primary btn-sm',
+        uploadClass: 'btn btn-outline-primary btn-sm'
+    });
 
-{% endblock %}
+    $('.datepicker').datepicker({
+        language: "es",
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+    });
+
+</script>
+

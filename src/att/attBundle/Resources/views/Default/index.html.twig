@@ -3,7 +3,7 @@
     <li>
         <a href="#" class="active"><i class="fa fa-wpforms  fa-fw"></i> 
             <span class="masked">
-                {% trans %} Attendance Module{% endtrans %}
+                {% trans %} Attendance Module {% endtrans %}
             </span>    
         </a>
     </li>
@@ -12,26 +12,18 @@
             <i class="fa fa-bullhorn fa-fw"></i>
             <span class="masked">
                 <span>
-                    {% trans %}Notification {% endtrans %}
+                    {% trans %} Notification {% endtrans %}
                 </span>
                 <span class="fa arrow"></span>
             </span>
         </a>
         <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
             <li>
-                <a id="list_notification" href="{{ path('att_notification_list',{"mode":app.security.token.providerKey}) }}">
+                <a href="{{ path('att_notification_list',{"mode":app.security.token.providerKey}) }}">
                     <i class="fa fa-list fa-fw"></i>
-                    {% trans %}List{% endtrans %}
+                    {% trans %} List {% endtrans %}
                 </a>
             </li>
-            {% if is_granted('ROLE_FRONTEND') %}
-                <li>
-                    <a id="new_notification" href="{{path('att_notification_new',{"mode":app.security.token.providerKey})}}">
-                        <i class="fa fa-floppy-o fa-fw"></i>
-                        {% trans %}New{% endtrans %}
-                    </a>
-                </li>
-            {% endif %}
         </ul>
     </li>
 
@@ -40,28 +32,40 @@
             <i class="fa fa-hand-paper-o fa-fw"></i>
             <span class="masked">
                 <span>
-                    {% trans %}Attendance {% endtrans %}
+                    {% trans %} Attendance {% endtrans %}
                 </span>
                 <span class="fa arrow"></span>
             </span>
         </a>
         <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
             <li>
-                <a id="list_attendances" href="{{ path ('att_attendance_list',{'mode':app.security.token.providerKey })}}">
+                <a  href="{{ path ('att_attendance_list',{'mode':app.security.token.providerKey })}}">
                     <i class="fa fa-list fa-fw"></i>
-                    {% trans %}List{% endtrans %}
+                    {% trans %} List {% endtrans %}
                 </a>
             </li>
             <li>
-                <a id="make_attendances">
+                <a href="{{ path('att_attendance_make',{"mode":app.security.token.providerKey}) }}">
                     <i class="fa fa-play fa-fw"></i>
-                    {% trans %}Make{% endtrans %}
+                    {% trans %} Make {% endtrans %}
                 </a>
             </li>
             <li>
-                <a id="process_attendances">
+                <a href=" {{  path('att_attendance_process',{"mode":app.security.token.providerKey}) }}" >
                     <i class="fa fa-fast-forward fa-fw"></i>
-                    {% trans %}Process{% endtrans %}
+                    {% trans %} Process {% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('att_plan_inconsistency_list', {"mode": app.security.token.providerKey}) }}" >
+                    <i class="fa fa-warning fa-fw"></i>
+                    {% trans %} Inconsistencies {% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('att_plan_resume', {"mode": app.security.token.providerKey}) }}" >
+                    <i class="fa fa-file-text fa-fw"></i>
+                    {% trans %} Resume Last Month  {% endtrans %}
                 </a>
             </li>
         </ul>
@@ -73,7 +77,7 @@
             <i class="fa fa-user-times fa-fw"></i>
             <span class="masked">
                 <span>
-                    {% trans %}Absence{% endtrans %}
+                    {% trans %} Absence {% endtrans %}
                 </span>
                 <span class="fa arrow"></span>
             </span>
@@ -82,7 +86,38 @@
             <li>
                 <a id="list_absence" href="{{ path('att_absence_list',{'mode':app.security.token.providerKey})}}">
                     <i class="fa fa-list fa-fw"></i>
-                    {% trans %}List{% endtrans %}
+                    {% trans %} List {% endtrans %}
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="">
+        <a href="#" id="list_certificate">
+            <i class="fa fa-thermometer-quarter  fa-fw"></i>
+            <span class="masked">
+                <span>
+                    {% trans %} Work Leave {% endtrans %}
+                </span>
+                <span class="fa arrow"></span>
+            </span>
+        </a>   
+        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+            <li>
+                <a id="list_absence" href="{{ path('att_workleave_index',{'mode':app.security.token.providerKey})}}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %} List {% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="list_absence" href="{{ path('att_workleavetype_index',{'mode':app.security.token.providerKey})}}">
+                    <i class="fa fa-list fa-fw"></i>
+                    {% trans %} List Type {% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a id="list_absence" href="{{ path('att_workleavetype_new',{'mode':app.security.token.providerKey})}}">
+                    <i class="fa fa-save fa-fw"></i>
+                    {% trans %} New Type {% endtrans %}
                 </a>
             </li>
         </ul>
@@ -90,43 +125,109 @@
 
 {% endblock %}
 {% block content %}
+    
     <div class="row">
         <div class="page-header">
             <h1>{% trans %}Attendance{% endtrans %} <small>{% trans %} Module{% endtrans %}</small></h1>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>{% trans %}Company{% endtrans %}</th>
-                        <th>{% trans %}Business{% endtrans %}</th>
-                        <th>{% trans %}Presents{% endtrans %}</th>
-                        <th>{% trans %}Absents{% endtrans %}</th>
-                        <th>{% trans %}Planned{% endtrans %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for stat in stats %}
-                        <tr>
-                            <td>{{ stat.Company }}</td>
-                            <td>{{ stat.Business }}</td>
-                            <td>{{ stat.Prensents }}</td>
-                            <td>{{ stat.Absents }}</td>
-                            <td>{{ stat.Planned }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="fa fa-area-chart"></span>
+                {% trans %} Absenteeism {% endtrans %} {% trans %} Stats {% endtrans %} 
+                <div class="pull-right">
+                    {{ "now"|date("m/d/Y") }}
+                </div>
+            </div>
+            <div class="panel-body">
+
+                {% for at in resume_absenteeism_today %}
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                {{ at.business }} - {{ at.company }} 
+                            </div>
+                            <div class="panel-body">
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="flot-pie-chart-today-{{at.business_id}}"></div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped" style="font-size: 11px">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">{% trans %}Presents{% endtrans %}</th>
+                                                <th class="text-center">{% trans %}Absents{% endtrans %}</th>
+                                                <th class="text-center">{% trans %}Planned{% endtrans %}</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">{{ at.presents }}</td>
+                                                <td class="text-center">{{ at.absents }}</td>
+                                                <td class="text-center">{{ at.planned }}</td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
+            
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="fa fa-area-chart"></span>
+                {% trans %} Absenteeism {% endtrans %} {% trans %} Stats {% endtrans %} 
+                <div class="pull-right">
+                    {{ last_month_ini | date('F') | trans}} {{ last_month_ini | date('Y')}}
+                </div>
+            </div>
+            <div class="panel-body">
+
+                {% for alm in resume_absenteeism_last_month %}
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                {{ alm.business }} - {{ alm.company }} 
+                            </div>
+                            <div class="panel-body">
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="flot-pie-chart-{{alm.business_id}}"></div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped" style="font-size: 11px">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">{% trans %}Presents{% endtrans %}</th>
+                                                <th class="text-center">{% trans %}Absents{% endtrans %}</th>
+                                                <th class="text-center">{% trans %}Planned{% endtrans %}</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">{{ alm.presents }}</td>
+                                                <td class="text-center">{{ alm.absents }}</td>
+                                                <td class="text-center">{{ alm.planned }}</td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>      
+
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <table class="table table-striped">
                 <tbody>  
                     <tr>
-                        <th>{% trans %}Absences Notifications {% endtrans %}</th>
+                        <th>{% trans %}Absences Notifications{% endtrans %}</th>
                         <td>
                             {% if notifications_today_qty is defined %}
                                 {{ notifications_today_qty }}
@@ -139,20 +240,102 @@
             </table>
         </div>
     </div>
+                            
 {% endblock %}
-{%  block javascripts %}
-    {{ parent()}}
+
+
+{% block javascripts %}
+    
+    <script src="{{ asset('bundles/app/js/excanvas.min.js')}}"></script>
+    <script src="{{ asset('bundles/app/js/jquery.flot.js')}}"></script>
+    <script src="{{ asset('bundles/app/js/jquery.flot.pie.js')}}"></script>
+    <script src="{{ asset('bundles/app/js/jquery.flot.tooltip.min.js')}}"></script>
+
     <script type="text/javascript">
+        $(function () {
+        {% for at in resume_absenteeism_today %}   
 
-        //MENUS MODULES FUNCTIONS
+            var data_{{at.business_id}} = [{
+                    label: "{% trans %} Absents {% endtrans %}",
+                    data: 0
+                }, {
+                    label: "{% trans %} Presents {% endtrans %}",
+                    data: 1
+                }];
+            $.plot($("#flot-pie-chart-today-{{at.business_id}}"), data_{{at.business_id}}, {
+                series: {
+                    pie: {
+                        innerRadius: 0.5,
+                        show: true,
 
-        $('#make_attendances').click(function () {
-            $('#content').load('{{ path('att_attendance_make',{"mode":app.security.token.providerKey}) }}');
-        });
+                        label: {
+                            show: true,
+                            radius: 1,
+                            background: {
+                                color: '#000000',
+                                opacity: 0.8
+                            },
+                        }
+                    },
 
-        $('#process_attendances').click(function () {
-            $('#content').load('{{ path('att_attendance_process',{"mode":app.security.token.providerKey}) }}');
-        });
+                },
+                legend: {
+                    show: false
+                },
+                tooltip: true,
+                tooltipOpts: {
+                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                    shifts: {
+                        x: 20,
+                        y: 0
+                    },
+                    defaultTheme: false
+                }
+            });
+        {% endfor %}
+
+        {% for alm in resume_absenteeism_last_month %}   
+                var data_{{alm.business_id}} = [{
+                        label: "{% trans %} Absents {% endtrans %}",
+                        data:{{ alm.absents }}
+                    }, {
+                        label: "{% trans %} Presents {% endtrans %}",
+                                data:{{ alm.presents }}
+                    }];
+
+                $.plot($("#flot-pie-chart-{{alm.business_id}}"), data_{{alm.business_id}}, {
+                    series: {
+                        pie: {
+                            innerRadius: 0.5,
+                            show: true,
+
+                            label: {
+                                show: true,
+                                radius: 1,
+                                background: {
+                                    color: '#000000',
+                                    opacity: 0.8
+                                },
+                            }
+                        },
+
+                    },
+                    legend: {
+                        show: false
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                        shifts: {
+                            x: 20,
+                            y: 0
+                        },
+                        defaultTheme: false
+                    }
+                });
+        {% endfor %}
+
+            });
 
     </script>
-{%endblock%}
+{% endblock javascripts %}   

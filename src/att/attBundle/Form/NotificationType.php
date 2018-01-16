@@ -39,6 +39,8 @@ class NotificationType extends AbstractType {
                 ->add('subject', \Symfony\Component\Form\Extension\Core\Type\TextareaType::class)
                 
                 ->add('absencetype', EntityType::class, [
+                    'label' => 'Absence Type',
+                     'translation_domain' => 'messages',
                     'class' => 'attBundle:Atworkleavetype',
                     'property' => 'description'
                 ])

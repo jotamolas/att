@@ -1,0 +1,58 @@
+
+<style type="text/css">
+    .borderss {
+        border-bottom:0px !important;
+    }
+    .borderss th, .borderss td {
+        border: 1px !important;
+    }
+    .borderss-table-container {
+        border:0px !important;
+    }
+</style>
+<table class="table borderss">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ certificate.id }}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}Employee{% endtrans %}</th>
+            <td>{{ certificate.employee.surname |capitalize}}, {{certificate.employee.name|capitalize}}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}Presentation Date{% endtrans %}</th>
+            <td>{% if certificate.date %}{{ certificate.date|date(' l Y-m-d')}}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}From{% endtrans %}</th>
+            <td>{% if certificate.datefrom %}{{ certificate.datefrom|date('Y-m-d') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}To{% endtrans %}</th>
+            <td>{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}Approved{% endtrans %} ?</th>
+            <td>{% if certificate.aprobationstate %}{% trans %}Yes{% endtrans %}{% else %}No{% endif %}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}Observations{% endtrans %}</th>
+            <td>{{ certificate.details }}</td>
+        </tr>
+        <tr>
+            <th>{% trans %}Digitization{% endtrans %}</th>
+            <td>
+                <img class="img-thumbnail img-responsive" src="{{ vich_uploader_asset(certificate, 'scanFile') }}" alt="Certificado"/>    
+            </td>
+        </tr>
+    </tbody>
+</table>  
+
+
+
+
+
+
+
+

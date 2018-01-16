@@ -17,6 +17,7 @@ class AddAgreementFieldSuscriber implements EventSubscriberInterface {
     }
 
     private function addAgreementForm($form, $agreement = null) {
+       
         $formOptions = array(
             'class' => 'employeeBundle:Atagreement',
             'placeholder' => 'Select one choice...',
@@ -27,7 +28,8 @@ class AddAgreementFieldSuscriber implements EventSubscriberInterface {
             ),
             'constraints' => [
                     new \Symfony\Component\Validator\Constraints\NotBlank()
-                ]
+                ],
+
         );
 
         if ($agreement) {
@@ -38,19 +40,22 @@ class AddAgreementFieldSuscriber implements EventSubscriberInterface {
     }
 
     public function preSetData(FormEvent $event) {
+        
         $data = $event->getData();
         $form = $event->getForm();
 
         if (null === $data) {
             return;
         }
+        //dump($data);
 
-        $accessor = PropertyAccess::createPropertyAccessor();
+       $accessor = PropertyAccess::createPropertyAccessor();
 
-        $schema = $accessor->getValue($data, 'schema');
+        $schema = $accessor->getValue($data, 'agreement');
         $agreement = ($schema) ? $agreement->getSchema() : null;
-
+        //$agreement = null;
         $this->addAgreementForm($form, $agreement);
+
     }
 
     public function preSubmit(FormEvent $event) {

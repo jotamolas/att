@@ -19,14 +19,11 @@
 </td>
 <td class="text-center">
     <div class="btn-group" role="group" >
-        <button type="button" class="btn btn-xs btn-default"  data-toggle="modal" data-target="#employeeshowModal" id="show" data-id="{{ employee.id }}" data-mode="{{mode}}">
+        <button type="button" class="btn btn-xs btn-default"  data-toggle="modal" data-target="#employee_show_modal" id="show" data-id="{{ employee.id }}" data-mode="{{mode}}">
             <span class="fa fa-play-circle"></span>
         </button>  
         <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{mode}}" class="btn btn-xs btn-default" data-id="{{ employee.id }}" id="edit">
             <span class="fa fa-edit"></span>
-        </button>
-        <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ employee.id }}" data-mode="{{mode}}">
-            <span class="fa fa-remove"></span>
-        </button>     
+        </button> 
     </div>
 </td>

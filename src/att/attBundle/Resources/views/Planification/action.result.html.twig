@@ -17,21 +17,24 @@
             <div class="panel-body">
 
                 <div class="alert alert-success" role="alert">
-                    {% trans %}Planifications imported or updated: {% endtrans %} {{ plans_qty }}
+                    {% trans %}Planifications imported or updated: {% endtrans %} {{ plans }}
                 </div>
                 <div class="alert alert-danger" role="alert">
                     {% trans %}Errors in rows{% endtrans %}:
                     <ul>
-                        {% for error in errors_file %}
-                            <li> {{error | trans}} </li>
+                        
+                            {% for error in process_error %}
+                                <li> {{error | trans}} </li>
                             {% endfor %}   
+                    
                     </ul>
                 </div>
                 <div class="alert alert-danger" role="alert">
 
                     {% trans %}Errors in Planifications{% endtrans %}:
                     <ul>
-                        {% for error in errors_entities %}
+
+                        {% for error in persist_error %}
                             <li> {{error | trans}} </li>
                             {% endfor %}   
                     </ul>
@@ -41,3 +44,5 @@
         </div>
     </div>
 {% endblock content %}
+{% block javascripts %}
+{% endblock javascripts %}

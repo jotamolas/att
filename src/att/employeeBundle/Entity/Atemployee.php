@@ -173,6 +173,13 @@ class Atemployee {
     private $id;
 
     /**
+     * @var blob
+     *
+     * @ORM\Column(name="photo", type="blob", nullable=true)
+     */
+    private $photo;
+
+    /**
      * 
      * 
      * @ORM\OneToMany(targetEntity="\att\employeeBundle\Entity\Atcontract", mappedBy="employee", cascade={"persist", "remove"}, orphanRemoval=TRUE)
@@ -522,4 +529,28 @@ class Atemployee {
         return $this->city;
     }
 
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     *
+     * @return Atemployee
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
 }

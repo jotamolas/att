@@ -33,15 +33,18 @@ class AbsenceController extends Controller{
     public function manageAction(Atabsence $absence){
         
         $is_notificated = $this->get('att.absence.service')->searchAbsenceNotificactions($absence);
-        $is_certificate = $this->get('att.absence.service')->searchWorkflowCertification($absence);
-        //$is_managed_medical_service = $this->get('att.absence.service')->searchSrvMedical($absence);
-        //if($is_notificated)
-        // return $this->render('attBundle:Default:dump.test.html.twig',['v' => [$is_notificated, $is_certificate], 'errors' => NULL]);
+        $is_certificated = $this->get('att.absence.service')->searchWorkflowCertification($absence);        
+        
+ 
+        
         return $this->render('attBundle:Absence:manage.html.twig',[
+            'absence' => $absence,
             'employee' => $absence->getAttendance()->getPlan()->getEmployee(),
             'notification' => $is_notificated ? $is_notificated : NULL,
-            'certificate' => $is_certificate ? $is_certificate['certificate'] : NULL,
-            'workflow_certification' => $is_certificate ? $is_certificate['workflow_certification'] : NULL,
+            'certificate' => $is_certificated ? $is_certificated['certificate'] : NULL,
+            'workflow_certification' => $is_certificated ? $is_certificated['workflow_certification'] : NULL,
+            'workleave' => $absence->getWorkleave() ? $absence->getWorkleave() : null,
+            'medicalorder' => $absence->getMedicalorder() ? $absence->getMedicalorder() : null
         ]);
     }
 

@@ -1,20 +1,22 @@
 {% extends 'attBundle:Certificate:index.html.twig'%}
 {% block content %}
-    <ol class="breadcrumb">
-        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
-        <li><a href="#">{% trans %} Certificate{% endtrans %} </a></li> 
-        <li><a href="#">{% trans %} Workflow{% endtrans %} </a></li> 
-        <li class="active">{% trans %} Manage {% endtrans %} </li>
-    </ol> 
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Certificate{% endtrans %} </a></li> 
+            <li><a href="#">{% trans %} Procedure{% endtrans %} </a></li> 
+            <li class="active">{% trans %} Manage {% endtrans %} </li>
+        </ol> 
+    </div>
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-cogs-alt"></i>   
-                <span>{% trans %} Manage Workflow Certification{% endtrans %}</span>
+                <span>{% trans %} Manage Procedure Certification{% endtrans %}</span>
             </div>  
             <div class="panel-body">
                 {%  include 'attBundle:Certificate:wf.show.ajax.html.twig' with {'certificate' : certificate, 'wf': wf, 'msgs':msgs, 'wf': wf} %}
             </div>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}

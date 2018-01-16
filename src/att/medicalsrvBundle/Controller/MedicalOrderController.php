@@ -6,6 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use att\employeeBundle\Entity\Atemployee;
+use att\medicalsrvBundle\Entity\Atmedicalorder;
+use att\attBundle\Entity\Atabsence;
 
 /**
  * @Route("{mode}/medical/order", requirements={"mode":"frontend|backend"})
@@ -13,34 +17,51 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class MedicalOrderController extends Controller {
 
     /**
-     * @Route("/new/{notification}", name="medical_order_new")
+     * @Route("/new/{employee}/{absence}", name="medical_order_new")
      * @param Request $request
      * @return type
      */
-    public function newAction(Request $request, \att\attBundle\Entity\Atabsencenotification $notification) {
+    public function newAction(Request $request, Atemployee $employee, Atabsence $absence) {
 
         $medicalorder = new \att\medicalsrvBundle\Entity\Atmedicalorder();
         $medicalorder
-                ->setEmployee($notification->getEmployee())
+                ->setEmployee($employee)
+                ->addAbsence($absence)
                 ->setStatus($this->getDoctrine()->getRepository('medicalsrvBundle:Atmedicalorderstatus')->findOneByDescription('draft'))
-                ->setDate(new \DateTime);
+                ->setDate(new \DateTime)
+                ->setTime(new \DateTime);
 
         $form = $this->createForm(\att\medicalsrvBundle\Form\MedicalOrderType::class, $medicalorder, [
-            'action' => $this->generateUrl('medical_order_new', ['notification' => $notification->getId(), 'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()])
+            'action' => $this->generateUrl('medical_order_new', 
+                    [
+                        'employee' => $employee->getId(),
+                        'absence' => $absence->getId(),
+                        'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()])
         ]);
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            
+            
+            $medicalorder->setStatus($this->getDoctrine()->getRepository('medicalsrvBundle:Atmedicalorderstatus')->findOneByDescription('assigned'));
+            $em = $this->getDoctrine()->getManager();            
+            $absence->setMedicalorder($medicalorder);            
             $em->persist($medicalorder);
             $em->flush();
-            return $this->redirectToRoute('medical_service_index');
+            dump($medicalorder);
+            //return $this->redirectToRoute('medical_order_list',[
+              //  'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()
+            //]);
         }
+        
         return $this->render('medicalsrvBundle:MedicalOrder:new.html.twig', [
                     'form' => $form->createView(),
                     'medicalorder' => $medicalorder
         ]);
 
     }
+    
+
 
     /**
      * @Route("/list", name="medical_order_list", options={"expose"=true})
@@ -125,10 +146,10 @@ class MedicalOrderController extends Controller {
      */
     public function addVisitAction(Request $request, \att\medicalsrvBundle\Entity\Atmedicalorder $medicalorder) {
         
-        $visit = new \att\medicalsrvBundle\Entity\Atmedicalvisit();
-        
+        $visit = new \att\medicalsrvBundle\Entity\Atmedicalvisit();        
         $visit->setMedicalOrder($medicalorder);
-        $form = $this->createForm(new \att\medicalsrvBundle\Form\MedicalVisitType, $medicalorder, [
+        
+        $form = $this->createForm(new \att\medicalsrvBundle\Form\MedicalVisitType, $visit, [
             'action' => $this->generateUrl('medical_order_visit_add', [
                 'id' => $medicalorder->getId(),
                 'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()])
@@ -137,17 +158,39 @@ class MedicalOrderController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $medicalorder->addMedicalvisit($visit);
+            
+            if($visit->getConfirmOrder()){
+                $medicalorder->setStatus($this->getDoctrine()->getRepository('medicalsrvBundle:Atmedicalorderstatus')->find(4));
+                foreach ($medicalorder->getAbsences() as $abs){
+                    $abs->setStatejustif(true);
+                }
+            } 
+                    
+                   
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($visit);
             $em->flush();
 
-            return $this->redirectToRoute('medical_service_list',['mode' => $this->get('security.token_storage')->getToken()->getProviderKey()]);
+            return $this->redirectToRoute('medical_order_list',
+                    [
+                        'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()
+                    ]);
         }
-
-        return $this->render('medicalsrvBundle:MedicalService:visit.add.modal.html.twig', [
-                    'form' => $form->createView(),
-        ]);
+        
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                    [
+                'form' => $this->renderView('medicalsrvBundle:MedicalOrder:visit.form.html.twig', [
+                    'form' => $form->createView()
+                ])]
+            );
+        } else {
+            return $this->render('medicalsrvBundle:MedicalOrder:visit.form.html.twig', [
+                        'form' => $form->createView(),
+            ]);
+        }
     }
     
 }

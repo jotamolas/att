@@ -2,33 +2,35 @@
 <div class="panel panel-default" id="panel">
     <div class="panel-heading">
         <h4 class="panel-title">
-            
-                Messagges
+            {% trans %}Messages{% endtrans %}
+                
                 <span class="badge">{{ msgs |length }}</span>
                 <a href="#collapseMsg" data-toggle="collapse">
-                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
                 </a>
         </h4>    
     </div>
     <div class="panel-collapse collapse in" id="collapseMsg">
         <table class="table table-responsive">
             <thead>
-                    <th>Date</th>
-                    <th>State</th>
-                    <th>Message</th>
+                    <th>{% trans %}Date{% endtrans %}</th>
+                    <th>{% trans %}State{% endtrans %}</th>
+                    <th>{% trans %}Message{% endtrans %}</th>
+                    <th>{% trans %}User{% endtrans %}</th>
             </thead>
             <tbody>
                 {% for wfmsg in msgs %}
                     <tr>
                         <td>{{ wfmsg.createAt | date ('Y-m-d H:i:s ') }}</td>
-                        <td>{{ wfmsg.wfstate }}</td>
-                        <td>{{ wfmsg.details }}</td>
+                        <td>{{ wfmsg.wfstate | trans }}</td>
+                        <td>{{ wfmsg.details | trans}}</td>
+                        <td>{{ wfmsg.username}}</td>
                     </tr> 
                 {% endfor %}
                      <tr>
                          <td colspan="3">
                               <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#newMsg">
-                                  <span class="glyphicon glyphicon-comment"></span> New
+                                  <span class="fa fa-comment"></span> {% trans %}New{% endtrans %}
                               </button>
                          </td>
                      </tr>

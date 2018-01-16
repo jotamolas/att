@@ -431,7 +431,7 @@ class Atcertificate
         
         
         if(!$this->getId()){
-            if (date_diff($this->getDate(), $this->getDatefrom())->d > 2) 
+            if (date_diff($this->getDate(), $this->getDatefrom())->d > 300) 
                 {
             
                     $context->buildViolation("La fecha de Presentacion no debe exceder las 48 horas desde su fin de licencia")

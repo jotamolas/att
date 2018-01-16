@@ -2,14 +2,17 @@
 
 namespace att\employeeBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormError;
+use JMS\Serializer\SerializationContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use att\employeeBundle\Entity\Atcontract;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use JMS\Serializer\SerializationContext;
+use Symfony\Component\HttpFoundation\Request;
+use att\employeeBundle\Entity\Atbusiness;
+use att\employeeBundle\Entity\Atcontract;
+use att\employeeBundle\Entity\Atemployee;
+use att\employeeBundle\Form\ContractType;
 
 /**
  * @Route("{mode}/contract", requirements={"mode":"frontend|backend"})
@@ -19,12 +22,13 @@ class ContractController extends Controller {
     /**
      * @Route("/add/restday/{business}/{employee}", name="employee_contract_add_restday", options={"expose"=true})
      */
-    public function addRestDay(Request $request, \att\employeeBundle\Entity\Atbusiness $business, \att\employeeBundle\Entity\Atemployee $employee) {
+    public function addRestDay(Request $request, Atbusiness $business, Atemployee $employee) {
 
         $contract = $this->getDoctrine()->getRepository('employeeBundle:Atcontract')->findOneBy([
             'employee' => $employee->getId(),
             'business' => $business->getId()
         ]);
+        
         $form = $this->createForm(new \att\employeeBundle\Form\ContractAddRestDaysType(), $contract, [
             'qty_work_days' => $contract->getSchema()->getDays(),
             'action' => $this->generateUrl("employee_contract_add_restday", [
@@ -35,6 +39,7 @@ class ContractController extends Controller {
         ]);
 
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
 
 
@@ -407,5 +412,81 @@ class ContractController extends Controller {
 
         return new JsonResponse($employees);
     }
+
+
+    /**
+     * 
+     * @Route("/edit/{business}/{employee}", name="employee_contract_edit", options={"expose"=true})
+     * 
+     */
+    public function editAction(Request $request, Atbusiness $business, Atemployee $employee) {
+
+        $contract = $this->getDoctrine()->getRepository('employeeBundle:Atcontract')->findOneBy([
+            'employee' => $employee->getId(),
+            'business' => $business->getId()
+        ]);
+
+        $form = $this->createForm(new ContractType(), $contract, [
+            'action' => $this->generateUrl('employee_contract_edit', [
+                'mode' => $this->get('security.token_storage')->getToken()->getProviderKey(),
+                'business' => $business->getId(),
+                'employee' => $employee->getId()
+            ]),
+            'method' => 'POST'
+                ]
+        );
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($contract);
+            $em->flush();
+
+
+            return new JsonResponse(
+                    [
+                'status' => true,
+                'message' => $this->get('translator')->trans('Contract has been updated'),
+                'row' => $this->renderView('employeeBundle:Contract:show.row.html.twig', [
+                    'contract' => $contract,
+                    'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()
+                ]),
+            ]);
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                    [
+                'form' => $this->renderView('employeeBundle:Contract:form.html.twig', [
+                    'form' => $form->createView()
+                ])]
+            );
+        } else {
+            return $this->render('employeeBundle:Contract:form.html.twig', [
+                        'form' => $form->createView(),
+            ]);
+        }
+    }
+
+
+    /**
+     * @Route("/active/{employee}", name="employee_contract_active_show", options={"expose"=true})
+     * 
+     */
+    public function showActiveAction(Atemployee $employee)
+    {
+        
+        $activeContracts = $this->getDoctrine()->getRepository('employeeBundle:Atcontract')->getActiveContract($employee->getId());
+        $employee->getPhoto() ? $image = stream_get_contents($employee->getPhoto()) : $image = NULL;
+        return $this->render('employeeBundle:Contract:show.html.twig', [
+            'employee' => $employee,
+            'image' => $image,
+            'contracts' => $activeContracts
+        ]);
+        
+    }
+
 
 }

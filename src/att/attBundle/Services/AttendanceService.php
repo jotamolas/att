@@ -19,6 +19,7 @@ class AttendanceService {
      * @param EntityManager $em
      * @param ContainerInterface $container
      */
+     
     public function __construct(EntityManager $em, ContainerInterface $container) {
         $this->container = $container;
         $this->em = $em;        
@@ -143,17 +144,22 @@ class AttendanceService {
      * @return type
      */
     public function firstStepCreateAttendance($day){
-        
+
+        /* recupera la jornada laboral establecida a partir del dia enviado*/
         $dates = $this->container->get('util.workingday.service')->checkWorkingDay($day);
         
+        /* IMPORTANTE recupera los PLANES que jhay para la fecha evaluada*/
         $plans = $this->em->getRepository('attBundle:Atplan')->findByDate($dates['start']);
         
         if(count($plans)>0){
+            /* si hay Planes devuelve un ok y los planes recuperados */
             return [
                 'message' => $plans, 
                 'status' => 'ok'
             ];
+
         }else{
+            /* si no encuentra planes devuelve un error e informa que no hay planes*/
             return [
                 'status' => 'error', 
                 'message' => 'No plans were found'
@@ -189,20 +195,30 @@ class AttendanceService {
     }
     
     public function secondStepCreateAttendance($plans){
-        
+        /* declaro dos array, uno para alojar las asistencias que podria crear y otro con los errores de validación */
         $atts = array();
         $errors_validation = array();
         
+        /* se navega por los planes, por cada plan se ejecuta el metodo createAttendance para crear la asistencia */
         foreach($plans as $plan){            
            $result = $this->createAttendace($plan);
-           ($result['status'] == 'ok' ? $atts[] = $result['entity'] : $errors_validation[] = $result['error'] );
+           /* si createAttendance no devolvio un error se agregan las asistencias a un array, si devolvio un error se agregar a los errores de validacion */ 
+           ($result['status'] == 'ok' ? 
+            $atts[] = $result['entity'] :
+            $errors_validation[] = $result['error'] );
         }
         
+        /* 
+        * si existen asistencias las persisto 
+        * se devuelve un estado ok con el mensaje las 
+        */
+        //dump($errors_validation);
         if(count($atts)>0){
             $result = $this->persistAttendances($atts);
             return [
                     'status' => 'ok',
-                    'message' => 'One or more attendances are saved',
+                    'operation' => $this->container->get('translator')->trans('Make'),
+                    'message' => $this->container->get('translator')->trans('One or more attendances are saved'),
                     'atts' => $result['atts'],
                     'errors_validation' => $errors_validation,
                     'errors_persist' => isset($result['errors']) ? $result['errors'] : NULL
@@ -210,8 +226,10 @@ class AttendanceService {
         }else{
            return [
                     'status' => 'error',
-                    'message' => 'One or more attendances could not be recorded. See reported errors.',
+                    'operation' => $this->container->get('translator')->trans('Make'),
+                    'message' => $this->container->get('translator')->trans('One or more attendances could not be recorded. See reported errors.'),
                     'atts' => NULL,
+                    'errors_persist' => NULL,
                     'errors_validation' => $errors_validation
                ]; 
         }
@@ -254,10 +272,12 @@ class AttendanceService {
         }
     }
     
-    
+    //
+    //VERR NO ME PROCESA ME AISLA
     
     public function process(Atattendance $att, Attendance $ctrlaccatt = NULL){
         
+        //dump($att->getPlan()->getEmployee()->getSurname().' '.$att->getPlan()->getStateplan()->getDescription());
         switch ($att->getPlan()->getStateplan()->getDescription()){
             
             case 'Presente':
@@ -266,7 +286,7 @@ class AttendanceService {
                   
                     $rangetime = $att->getPlan()->getInplan()->diff(new \DateTime());
                     
-                    if($rangetime->format('%H') >= 1){
+                    if($rangetime->format('%H') >= $this->container->getParameter('att_max_hours_tolerance')){
                         
                         $att->setStateattendance(
                                 $this->em
@@ -274,29 +294,50 @@ class AttendanceService {
                                 ->findOneByDescription('Ausente'));
                         
                         $this->em->flush();
+                        
                         $abs = new Atabsence();
                         $abs->setAttendance($att);
+                        
                         $validate = $this->container->get('validator')->validate($abs);
-                        if(count($validate)===0){                            
+                        
+                        
+                        
+                        if(count($validate)===0){ 
+                            
+                            /* buscar si hay certificacion para meterle */
+                            $wf_search_result = $this->container->get('att.absence.service')->searchWorkflowCertification($abs);
+                            $wf_search_result ? $abs->setCertification($wf_search_result['workflow_certification']->getId())->setStatejustif(1) : null;
+                            /* buscar si hay una licencia en la fecha y asociarla */
+                            $is_it_licensed = $this->container->get('att.absence.service')->searchWorkleave($abs);
+                            $is_it_licensed ? $abs->setWorkleave($is_it_licensed) : null;
+                            /* buscar si tiene servicios medicos hechos */
+                            $is_medical_order = $this->container->get('att.absence.service')->getMedicalOrder($abs);
+                            $is_medical_order ? $abs->setMedicalorder($is_medical_order)->setStatejustif(true) : null;
+                            dump($is_medical_order);
                             $this->em->persist($abs);
                             $this->em->flush();
                         }
                     }                    
                 }else{
                     
-                    $att->setInatt($ctrlaccatt->getInEvent())
+                    $att
+                    ->setInatt($ctrlaccatt->getInEvent())
                     ->setOutatt($ctrlaccatt->getOutEvent())
                     ->setStateattendance($this->em->getRepository('attBundle:Atstateatt')
-                            ->findOneByDescription($att->getPlan()->getStateplan()->getDescription()));
+                            ->findOneByDescription($att->getPlan()->getStateplan()->getDescription()))
+                    ->setHsworked($ctrlaccatt->getHoursWorkedTime());
                     //busco si ya esta como ausente y vino en otro horario, borro la ausencia
+                    
                     $this->em->flush();
-                    $abs = $this->em->getRepository('attBundle:Atabsence')->findOneByAttendance($att);
+                    $abs = $att->getAbsence();                    
                     if($abs){
-                        
+                        $rangetime = $att->getPlan()->getInplan()->diff($att->getInatt());
+                        $rangetime->format('%H') >= 1 ?
                         $exp = $this->container->get('att.plan.service')
                                 ->createPlanInconsistency($att,
                                         $att->getPlan(),
-                                        "There has been a different schedule than planned");
+                                        "There has been a different schedule than planned"):
+                            NULL;
                         $this->em->remove($abs);
                         $this->em->flush();
                         
@@ -311,11 +352,23 @@ class AttendanceService {
                    
                    $att ->setStateattendance($this->em->getRepository('attBundle:Atstateatt')
                             ->findOneByDescription($att->getPlan()->getStateplan()->getDescription()));
+                   
                    $this->em->flush();
                    $abs = new Atabsence();
                    $abs->setAttendance($att);
                    $validate = $this->container->get('validator')->validate($abs);
-                   if(count($validate)=== 0){                            
+                   if(count($validate)=== 0){   
+                            /* buscar si hay certificacion para meterle */
+                            $wf_search_result = $this->container->get('att.absence.service')->searchWorkflowCertification($abs);
+                            $wf_search_result ? $abs->setCertification($wf_search_result['workflow_certification']->getId())->setStatejustif(1) : null;
+                            
+                            $is_it_licensed = $this->container->get('att.absence.service')->searchWorkleave($abs);
+                            $is_it_licensed ? $abs->setWorkleave($is_it_licensed) : null;
+                            
+                            $is_medical_order = $this->container->get('att.absence.service')->getMedicalOrder($abs);
+                            $is_medical_order ? $abs->setMedicalorder($is_medical_order)->setStatejustif(true) : null;
+                            
+                            //dump($is_medical_order);
                             $this->em->persist($abs);
                             $this->em->flush();
                         }
@@ -341,7 +394,10 @@ class AttendanceService {
                    
                    $att ->setStateattendance($this->em->getRepository('attBundle:Atstateatt')
                             ->findOneByDescription($att->getPlan()->getStateplan()->getDescription()));
+                   
+                   $att->getAbsence() ? $this->em->remove($att->getAbsence()) : NULL; 
                    $this->em->flush();
+                   
                     
                 }else{
                     $exp = $this->container->get('att.plan.service')

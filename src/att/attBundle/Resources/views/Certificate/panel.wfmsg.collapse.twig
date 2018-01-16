@@ -3,7 +3,7 @@
     <div class="panel-heading">
         <h4 class="panel-title">
             <a href="#collapseMsg" data-toggle="collapse">
-                Messagges
+                {% trans %}Messagges{% endtrans %}
                 <span class="badge">{{ msgs |length }}</span>
                 <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
             </a>
@@ -13,23 +13,7 @@
         </h4>    
     </div>
     <div class="panel-collapse collapse in" id="collapseMsg">
-        <table class="table table-responsive">
-            <thead>
-                    <th>Date</th>
-                    <th>State</th>
-                    <th>Message</th>
-            </thead>
-            <tbody>
-                {% for wfmsg in msgs %}
-                    
-                    <td>{{ wfmsg.createAt | date ('Y-m-d H:i:s ') }}</td>
-                    <td>{{ wfmsg.wfstate }}</td>
-                    <td>{{ wfmsg.details }}</td>
-                
-                {% endfor %}
-            </tbody>
-                
-        </table>
+        {% include 'attBundle:Workflowmsg:table.html.twig' with {'msgs' : msgs} %}
     </div>
             
     <div id="newMsg" class="modal fade" role="dialog">
@@ -39,13 +23,13 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">New Messagge</h4>
+                <h4 class="modal-title">{% trans %} New {% endtrans %} {% trans %} Message {% endtrans %}</h4>
               </div>
               <div class="modal-body">
-                {% render(controller('attBundle:Workflowmsg:new',{'wf':wf})) %}
+                {% render(controller('attBundle:Workflowmsg:new',{'mode':mode, 'wf':wf})) %}
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">{% trans %} Close {% endtrans %} </button>
               </div>
             </div>
 

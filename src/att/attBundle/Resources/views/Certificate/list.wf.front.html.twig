@@ -1,0 +1,75 @@
+{% extends 'attBundle:Certificate:front.html.twig' %}
+{% block content_certificate %}
+
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Id</th>
+                    <th class="text-center">{% trans %}State{% endtrans %}</th>
+                    <th class="text-center">{% trans %}Last View{% endtrans %}</th>
+                    <th class="text-center">{% trans %}View{% endtrans %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wf in wfs %}
+                    <tr>
+                        <td class="text-center">{{ wf.id }}</td>
+                        <td class="text-center">{{ wf.statekey | trans}}</td>
+                        <td class="text-center">{% if wf.modifiedAt %}  {{ wf.modifiedAt | date('Y-m-d') }} {% else %} - {% endif %}</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group" > 
+                                <a data-toggle="modal" href="#wf_certificate_show" id="show" data-id="{{ wf.id }}" data-mode="{{ app.security.token.providerKey }}" >
+                                    <span class="fa fa-play"></span>
+                                </a>          
+                            </div>
+                        </td>
+                    </tr> 
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="wf_certificate_show" role="dialog" style="background-color: darkslateblue">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: darkslateblue">
+                <div class="modal-header">
+
+                    <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="title-certificate-show"></h4>
+                </div>
+                <div class="modal-body" id="content-certificate-show">
+
+                </div>
+                <div class="modal-footer">    
+                </div>
+            </div>
+        </div>
+    </div>   
+
+
+</div>
+
+{% endblock %}
+{% block javascripts %}
+
+    {{ parent() }}
+    <script type="text/javascript">
+        $('#wf_certificate_show').on('show.bs.modal', function (e) {
+            var mode = $(e.relatedTarget).data('mode');
+            var id = $(e.relatedTarget).data('id');
+            $('#title-certificate-show').html('{%trans%}Managing{%endtrans%} {%trans%}Procedure{%endtrans%} ' + id);
+            $('#content-certificate-show').load(Routing.generate('att_workflow_certificate_show',
+                    {
+                        mode: mode,
+                        id: id,
+                    }));
+        });
+
+    </script>
+
+
+{% endblock %}

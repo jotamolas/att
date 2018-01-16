@@ -24,29 +24,45 @@
                     <td class="text-center">{% if certificate.date %}{{ certificate.date |date('Y-m-d') }}{% endif %}</td>
                     <td class="text-center">{% if certificate.datefrom %}{{ certificate.datefrom|date('Y-m-d') }}{% endif %}</td>
                     <td class="text-center">{% if certificate.dateto %}{{ certificate.dateto|date('Y-m-d') }}{% endif %}</td>
-                    <td class="text-center">{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
-                    <td class="text-center">{{ certificate.type.description }}</td>
+                    <td class="text-center">{% if certificate.aprobationstate %}{% trans %}Yes{% endtrans %}{% else %}No{% endif %}</td>
+                    <td class="text-center">{{ certificate.type.description | trans}}</td>
 
                     <td class="text-center">
                         <ul class="list-unstyled list-inline">
-                            <li class="list-inline-item">
-                                <a href="#" id="show" onclick="showIt({{ certificate.id }});
-                                    return false;">
-                                    <span class="fa fa-play" aria-hidden="true"></span>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#" id="edit" onclick="editIt({{ certificate.id }});
-                                    return false;">
-                                    <span class="fa fa-edit" aria-hidden="true"></span>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#" id="remove" onclick="removeIt({{ certificate.id }});
-                                    return false;">
-                                    <span class="fa fa-remove" aria-hidden="true"></span>
-                                </a>
-                            </li>
+
+                            {% if is_granted('ROLE_FRONTEND') %} 
+                                <li class="list-inline-item">
+                                    <a href="#certificate_show_modal" data-toggle="modal" data-id="{{ certificate.id }}">
+                                        <span class="fa fa-play"></span>
+                                    </a> 
+                                </li>
+
+                            {% endif %}
+
+                            {% if is_granted('ROLE_ADMIN') %} 
+                                <li class="list-inline-item">
+                                    <a href="{{ path('att_certificate_show', {'id':certificate.id, 'mode':mode}) }}" id="show">
+                                        <span class="fa fa-play" aria-hidden="true"></span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            
+                            {% if is_granted('ROLE_FRONTEND') %} 
+                                <li class="list-inline-item">
+                                    <a href="#certificate_edit_modal" data-toggle="modal" data-id="{{ certificate.id }}">
+                                        <span class="fa fa-paperclip"></span>
+                                    </a> 
+                                </li>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_ADMIN') %} 
+                                <li class="list-inline-item">
+                                    <a href="#" id="remove" onclick="removeIt({{ certificate.id }});
+                                            return false;">
+                                        <span class="fa fa-remove" aria-hidden="true"></span>
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </td>
                 </tr>

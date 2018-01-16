@@ -1,24 +1,67 @@
 <?php
 namespace att\ctrlaccBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use DataDog\PagerBundle\Pagination;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use att\ctrlaccBundle\Entity\Attendance;
 
 class AttendanceService {
     
-    protected $emctrlacc;
-    protected $embiometric;
+
     protected $container;
     protected $em;
     
-    public function __construct(EntityManager $em, EntityManager $emctrlacc, EntityManager $embiometric , ContainerInterface $container) {
+    public function __construct(EntityManager $em, ContainerInterface $container) {
         $this->container = $container;
-        $this->emctrlacc = $emctrlacc;
-        $this->embiometric = $embiometric;
         $this->em = $em;
     }
     
     
+    public function filters(\Doctrine\ORM\QueryBuilder $qb, $key, $val){
+        switch ($key) {
+
+        case 'a.date':
+            if($val){
+                $qb->andWhere($qb->expr()->like('a.date', ':date'));
+                $qb->setParameter('date', $val);            
+            }
+            break;
+
+        case 'a.employee':
+            if($val){
+            $qb->andWhere($qb->expr()->like('a.employee', ':employee'));
+            $qb->setParameter('employee', $val);
+            
+            }
+            break;
+         
+
+            
+        default:   
+            throw new \Exception("filter not allowed");
+
+        }
+    }
+
+
+    public function pagination(Request $request){
+        
+        $dql = $this->em->getRepository('ctrlaccBundle:Attendance')->createQueryBuilder('a');
+
+        
+        $options = [
+             'sorters' => ['a.date'=> 'DESC'], 
+             'applyFilter' => [$this, 'filters'],            
+         ];
+         
+        $paginator = new Pagination($dql, $request, $options);
+        
+        return array ("paginator"=> $paginator);
+    }
+
+
     public function makeAttendance($day){
         
         $dates = $this->container->get('util.workingday.service')->checkWorkingDay($day);
@@ -77,7 +120,7 @@ class AttendanceService {
             
 
                 
-            $att = $this->emctrlacc->getRepository('ctrlaccBundle:Attendance')->findOneBy(
+            $att = $this->em->getRepository('ctrlaccBundle:Attendance')->findOneBy(
                         [
                             'employee' =>  $event[0]->getEmployee(),
                             'date' => $event[0]->getEventdate()
@@ -87,7 +130,7 @@ class AttendanceService {
                 
           
             if(!$att){
-                $att = new \att\ctrlaccBundle\Entity\Attendance();
+                $att = new Attendance();
                 $att->setDate($event[0]->getEventdate())
                     ->setInEvent(date_create_from_format('Y-m-d H:i:s',$event[1]))
                     ->setEmployee($event[0]->getEmployee());
@@ -114,7 +157,6 @@ class AttendanceService {
             $error = $this->container->get('validator')->validate($att);
             
             if(count($error)>0){
-                print "aca error!";
                 $errors [] = (string) $error;
             }else{
                 $attsToPersist[] = $att;
@@ -140,7 +182,7 @@ class AttendanceService {
         $atts = array();
         foreach ($events as $event){
             
-            $att = $this->emctrlacc->getRepository('ctrlaccBundle:Attendance')->findOneBy(
+            $att = $this->em->getRepository('ctrlaccBundle:Attendance')->findOneBy(
                     [
                         'employee' =>  $event[0]->getEmployee(),
                         'date' => $event[0]->getEventdate()
@@ -201,7 +243,7 @@ class AttendanceService {
      */
     public function getFirstEventForDay(\DateTime $start, \DateTime $end){
         
-        $qb = $this->emctrlacc->getRepository('ctrlaccBundle:Event')->createQueryBuilder('e');
+        $qb = $this->em->getRepository('ctrlaccBundle:Event')->createQueryBuilder('e');
         
         $rs = $qb->addSelect($qb->expr()->min('e.eventtime'))
                 
@@ -225,7 +267,7 @@ class AttendanceService {
      */
     public function getLastEventForDay(\DateTime $start, \DateTime $end){
         
-        $qb = $this->emctrlacc->getRepository('ctrlaccBundle:Event')->createQueryBuilder('e');
+        $qb = $this->em->getRepository('ctrlaccBundle:Event')->createQueryBuilder('e');
         
         $rs = $qb->addSelect($qb->expr()->max('e.eventtime'))
                 
@@ -259,9 +301,9 @@ class AttendanceService {
             try{
                 
                 if (($i % $batchSize) == 0){
-                        $this->emctrlacc->persist($att);
-                        $this->emctrlacc->flush();
-                        $this->emctrlacc->clear();
+                        $this->em->persist($att);
+                        $this->em->flush();
+                        $this->em->clear();
                         $attsPersisted[] = $att;
                     }
             }catch (\Exception $e){
@@ -290,9 +332,9 @@ class AttendanceService {
             try{
                 
                 if (($i % $batchSize) == 0){
-                        $this->emctrlacc->merge($att);
-                        $this->emctrlacc->flush();
-                        $this->emctrlacc->clear();
+                        $this->em->merge($att);
+                        $this->em->flush();
+                        $this->em->clear();
                         $attsUpdated[] = $att;
                     }
             }catch (\Exception $e){
@@ -306,7 +348,7 @@ class AttendanceService {
     
     public function getAttendancesFromEmployeeListAndDay(\DateTime $day, array $employees = null){
     
-        $qb = $this->emctrlacc->getRepository('ctrlaccBundle:Attendance')->createQueryBuilder('a');
+        $qb = $this->em->getRepository('ctrlaccBundle:Attendance')->createQueryBuilder('a');
         $qb->where('a.date = :date')
            ->setParameter('date', $day->format('Y-m-d'));
         
@@ -321,7 +363,7 @@ class AttendanceService {
     }
     
     public function getAttendancesFromDay(\DateTime $day){
-        $qb = $this->emctrlacc->getRepository('ctrlaccBundle:Attendance')->createQueryBuilder('a');
+        $qb = $this->em->getRepository('ctrlaccBundle:Attendance')->createQueryBuilder('a');
                 $qb->where('a.date = :date')
                     ->setParameter('date', $day->format('Y-m-d'));
         

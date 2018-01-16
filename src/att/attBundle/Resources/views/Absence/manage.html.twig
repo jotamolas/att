@@ -1,138 +1,226 @@
+{% if notification %} {% set notification_panel_class = 'panel panel-green'%} {% else %} {% set notification_panel_class = 'panel panel-red'%} {% endif %}
+{% if workflow_certification %} {% set workflow_certification_panel_class = 'panel panel-green'%} {% else %} {% set workflow_certification_panel_class = 'panel panel-red'%} {% endif %}
+{% if workleave %} {% set workleave_panel_class = 'panel panel-green'%} {% else %} {% set workleave_panel_class = 'panel panel-red'%} {% endif %}
+{% if medicalorder %} {% set medicalorder_panel_class = 'panel panel-green'%}  {% else %} {% set medicalorder_panel_class = 'panel panel-red'%} {% endif %}
+
 <div class="row">
     <div class="col-md-6 col-sm-6">
         <div class="panel-group">
-            {% if notification %}
-                <div class="panel panel-green" id="panel">
-                {% else %}    
-                    <div class="panel panel-red" id="panel">
-                    {% endif %}    
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a href="#collapse_notification_panel" data-toggle="collapse">
-                                {%trans%}Notification{%endtrans%} 
-                                <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapse_notification_panel" class="panel-collapse collapse in">
-                        {% if notification %}
-                            <div class="list-group">
+
+            <div class="{{ notification_panel_class  }}" id="panel">    
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#collapse_notification_panel" data-toggle="collapse">
+                            {% trans %}Notification{% endtrans %} 
+                            <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse_notification_panel" class="panel-collapse collapse in">
+                    {% if notification %}
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">Id - {% trans %}Code{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">{{ notification.id}} - {{ notification.code}}</h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">{% trans %}Presentation Date{% endtrans %} - {% trans %}Qty Days{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">
+                                    {{ notification.date | date('Y-m-d')}} -
+                                    {{ notification.days}}
+                                </h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">{% trans %}Range Days{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">
+                                    {{ notification.fromdate | date('Y-m-d')}}  {% trans %} to {% endtrans %} {{ notification.fromdate | date('Y-m-d')}}
+
+                                </h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">
+                                    {% trans %}Absence{% endtrans %}{% trans %}Type{% endtrans %}
+                                </p>
+                                <h4 class="list-group-item-heading">{{notification.absencetype.description }}</h4>
+                            </div>
+                        </div>
+                    {% endif%}    
+                </div>            
+            </div>
+        </div>
+    </div>
+
+    <div  class="col-md-6 col-sm-6">
+        <div class="panel-group">
+            <div class="{{workflow_certification_panel_class}}" id="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#collapse_certification_panel" data-toggle="collapse">
+                            {% trans %} Certification {% endtrans %} 
+                            <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse_certification_panel" class="panel-collapse collapse in">
+                    {% if workflow_certification %}
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">Id - {% trans %}State{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">{{ workflow_certification.id}} - {{ workflow_certification.statekey | trans}}</h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">{% trans %}Presentation Date{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">
+                                    {{ certificate.date | date('Y-m-d')}}
+                                </h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">{% trans %}Range Days{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">
+                                    {{ certificate.datefrom | date('Y-m-d')}}  to {{ certificate.dateto | date('Y-m-d')}}
+
+                                </h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">
+                                    {% trans %}Type{% endtrans %}
+                                </p>
+                                <h4 class="list-group-item-heading">{{certificate.type.description | trans }}</h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">{{ certificate.details }}</p>
+                            </div>
+                        </div>
+                    {% endif %} 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div  class="col-md-6 col-sm-6">
+        <div class="panel-group">
+            <div class="{{ workleave_panel_class}}" id="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#collapse_workleave_panel" data-toggle="collapse">
+                            {% trans %} Work Leave {% endtrans %} 
+                            <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse_workleave_panel" class="panel-collapse collapse in">
+                    {% if workleave %}
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">Id</p>
+                                <h4 class="list-group-item-heading">{{ workleave.id}}</h4>
+                            </div>
+
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">{% trans %}Range Days{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">
+                                    {{ workleave.dateFrom | date('Y-m-d')}}  to {{ workleave.dateTo | date('Y-m-d')}}
+                                </h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">
+                                    {% trans %}Type{% endtrans %}
+                                </p>
+                                <h4 class="list-group-item-heading">{{workleave.type.description | trans }}</h4>
+                            </div>
+                        </div>
+
+                    {% endif %} 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div  class="col-md-6 col-sm-6">
+        <div class="panel-group">
+            <div class="{{ medicalorder_panel_class}}" id="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#collapse_medicalorder_panel" data-toggle="collapse">
+                            {% trans %} Medical Order {% endtrans %} 
+                            <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse_workleave_panel" class="panel-collapse collapse in">
+                    {% if medicalorder %}
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <p class="list-group-item-text"># - {% trans %}State{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">{{ medicalorder.id}} - {{ medicalorder.status.description | trans | capitalize}}</h4>
+                            </div>
+                            <div class="list-group-item">
+                                <p class="list-group-item-text">{% trans %}Date{% endtrans %} - {% trans %}Visits{% endtrans %}</p>
+                                <h4 class="list-group-item-heading">
+                                    {{ medicalorder.date | date('Y-m-d')}} - <span class="badge"> {{ medicalorder.medicalvisits | length}}</span>
+                                </h4>
+                            </div>
+                            {% for visit in medicalorder.medicalvisits %}
                                 <div class="list-group-item">
-                                    <p class="list-group-item-text">Id - {%trans%}Code{%endtrans%}</p>
-                                    <h4 class="list-group-item-heading">{{ notification.id}} - {{ notification.code}}</h4>
-                                </div>
-                                <div class="list-group-item">
-                                    <p class="list-group-item-text">{%trans%}Presentation Date{%endtrans%} - {%trans%}Qty Days{%endtrans%}</p>
+                                    <p class="list-group-item-text">{% trans %}Visit{% endtrans %} # - {% trans %}State{% endtrans %}</p>
                                     <h4 class="list-group-item-heading">
-                                        {{ notification.date | date('Y-m-d')}} -
-                                        {{ notification.days}}
+                                        {{ visit.id}} - {{ visit.status.description | trans | capitalize}}
                                     </h4>
                                 </div>
                                 <div class="list-group-item">
-                                    <p class="list-group-item-text">{%trans%}Range Days{%endtrans%}</p>
+                                    <p class="list-group-item-text">{% trans %}Range Days{% endtrans %}</p>
                                     <h4 class="list-group-item-heading">
-                                        {{ notification.fromdate | date('Y-m-d')}}  to {{ notification.fromdate | date('Y-m-d')}}
-
+                                        {{ visit.restdatefrom | date('Y-m-d')}}  to {{ visit.restdateto | date('Y-m-d')}}
                                     </h4>
                                 </div>
                                 <div class="list-group-item">
                                     <p class="list-group-item-text">
-                                        {%trans%}Absence{%endtrans%}{%trans%}Type{%endtrans%}
+                                        {% trans %}Diagnostic{% endtrans %}
                                     </p>
-                                    <h4 class="list-group-item-heading">{{notification.absencetype.description }}</h4>
+                                    <h4 class="list-group-item-heading">{{visit.diagnostic }}</h4>
                                 </div>
-                            </div>
-                        {% endif%}    
-                    </div>            
-                </div>
-
-            </div>
-        </div>
-        <div  class="col-md-6 col-sm-6">
-            <div class="panel-group">
-                {% if workflow_certification %}
-                    <div class="panel panel-green" id="panel">
-                    {% else %}    
-                        <div class="panel panel-red" id="panel">
-                        {% endif %} 
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a href="#collapse_certification_panel" data-toggle="collapse">
-                                    {%trans%}Certification{%endtrans%} 
-                                    <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
-                                </a>
-                            </h4>
+                            {% endfor %}
                         </div>
-                        <div id="collapse_certification_panel" class="panel-collapse collapse in">
-
-                            {% if workflow_certification %}
-                                <div class="list-group">
-                                    <div class="list-group-item">
-                                        <p class="list-group-item-text">Id - {%trans%}State{%endtrans%}</p>
-                                        <h4 class="list-group-item-heading">{{ workflow_certification.id}} - {{ workflow_certification.statekey }}</h4>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <p class="list-group-item-text">{%trans%}Presentation Date{%endtrans%}</p>
-                                        <h4 class="list-group-item-heading">
-                                            {{ certificate.date | date('Y-m-d')}}
-                                        </h4>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <p class="list-group-item-text">{%trans%}Range Days{%endtrans%}</p>
-                                        <h4 class="list-group-item-heading">
-                                            {{ certificate.datefrom | date('Y-m-d')}}  to {{ certificate.dateto | date('Y-m-d')}}
-
-                                        </h4>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <p class="list-group-item-text">
-                                            {%trans%}Type{%endtrans%}
-                                        </p>
-                                        <h4 class="list-group-item-heading">{{certificate.type.description }}</h4>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <p class="list-group-item-text">{{ certificate.details }}</p>
-                                    </div>
-                                </div>
-
-                            {% endif %} 
-                        </div>
-                    </div>
-
-
+                    {% endif %}
                 </div>
             </div>
-
         </div>
-    </div>
+    </div>            
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="list-inline">
+            {% if (notification and notification.absencetype.id == 1) %}
+                <a class="btn btn-default" href="{{ path('medical_order_new', {'notification': notification.id, 'mode': app.security.token.providerKey}) }}">
+                    {% trans %}Call Medical Service{% endtrans %}
+                </a>
+            {% endif %}
+            {% if (workflow_certification and workflow_certification.statekey != 'Analyzed') %}
+                <a class="btn  btn-default"  href="{{ path('att_workflow_certificate_show', {'id': workflow_certification.id, 'mode': app.security.token.providerKey}) }}">
+                    {% trans %}Manage Certification{% endtrans %}
+                </a>
+            {% endif %}
+            {% if (workleave is empty and workflow_certification ) %}
+                <a class="btn btn-default" href="{{ path('att_workleave_new', {'employee': employee.id, 'certificate': certificate.id , 'mode': app.security.token.providerKey}) }}">
+                    {% trans %}Create Work Leave{% endtrans %}
+                </a>
+            {% endif %}
 
-
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="list-inline">
-                {% if (notification and notification.absencetype.id == 1) %}
-                    <a class="btn btn-default" href="{{ path('medical_order_new', {'notification': notification.id, 'mode': app.security.token.providerKey}) }}">
-                        {% trans %}Call Medical Service{% endtrans %}
-                    </a>
-                {% endif %}
-                {% if (workflow_certification) %}
-                    <a class="btn  btn-default"  href="{{ path('att_workflow_certificate_show', {'id': workflow_certification.id, 'mode': app.security.token.providerKey}) }}">
-                        {% trans %}Manage Certification{% endtrans %}
-                    </a>
-                {% endif %}
-                {% if (notification) %}
-                    <a class="btn btn-default" href="{{ path('att_workleave_new', {'employee': employee.id, 'mode': app.security.token.providerKey}) }}">
-                        {% trans %}Assign Work Leave{% endtrans %}
-                    </a>
-                {% endif %}
-
-
-            </ul>
             {% if not (notification and workflow_certification) %}
-                <button type="button" class="btn btn-default " data-toggle="modal" data-target="#modal_call_employee" data-id="{{ employee.id }}">
-                    <i class="fa fa-phone"> </i>{% trans %} Call Employee{% endtrans %}
+                <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#modal_call_employee" data-id="{{ employee.id }}">
+                    <i class="fa fa-phone"> </i> {% trans %} Call Employee {% endtrans %}
                 </button>                   
             {% endif %}
-        </div>
+
+            {% if  notification and notification.absencetype.id == 2 and not medicalorder %}
+                <a class="btn btn-warning" href="{{ path('medical_order_new', {'employee': employee.id, 'absence': absence.id, 'mode': app.security.token.providerKey}) }}">
+                    <i class="fa fa-opencart"> </i> {% trans %} Create Medical Order {% endtrans %}
+                </a>                  
+            {% endif %}
+        </ul>
+
     </div>
+</div>
 

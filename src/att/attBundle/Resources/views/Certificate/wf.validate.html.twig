@@ -1,35 +1,40 @@
-<ol class="breadcrumb">
-    <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
-    <li><a href="#">{% trans %}Certificate{% endtrans %}</a></li>
-    <li><a href="#">{% trans %} Authorize{% endtrans %} </a></li>
-    <li class="active">{% trans %} Step{% endtrans %}2 </li>
-</ol>  
+<style type="text/css">
+    .borderss {
+        border-bottom:0px !important;
+    }
+    .borderss th, .borderss td {
+        border: 1px !important;
+    }
+    .borderss-table-container {
+        border:0px !important;
+    }
+</style>
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
             <i class="fa fa-cogs"></i>   
-            <span>{% trans %}Select a Certificate to Authorize{% endtrans %}</span>
+            <span>{% trans %}Authorize{% endtrans %}</span>
         </div>
         <div class="panel-body"> 
-            <div class="table-responsive">
-                <table class="table" width="100%" id="dataTable" cellspacing="0">
+            <div class="teble-responsive">
+                <table class="table table-condensed" id="dataTable" >
                     <thead class="thead-inverse">
                         <tr>
                             <th colspan="3" class="thead-inverse"> 
-                                Certificate
+                                {% trans %} Certificate{% endtrans %}
                             </th>                
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th colspan="2" > Employee: {{ certificate.employee.surname }}, {{ certificate.employee.name }} </th>
+                            <th colspan="2" > {% trans %} Employee{% endtrans %}: {{ certificate.employee.surname }}, {{ certificate.employee.name }} </th>
                             <th  id="certificateId">Id:{{ certificate.id }} </th> 
                         </tr>
 
                         <tr>
-                            <th>Presentation</th>
-                            <th>From</th>
-                            <th>To</th>
+                            <th>{% trans %} Presented {% endtrans %}</th>
+                            <th>{% trans %} From {% endtrans %}</th>
+                            <th>{% trans %} To {% endtrans %}</th>
                         </tr>
                         <tr>
                             <td>{{ certificate.date | date('d/m/Y') }}</td>
@@ -37,33 +42,34 @@
                             <td>{{ certificate.dateto | date('d/m/Y') }}</td>
                         </tr>
                         <tr>
-                            <th> Status </th>
-                            <th colspan="2"> Observations </th>
+                            <th>{% trans %} Status {% endtrans %} </th>
+                            <th colspan="2"> {% trans %}Observations{% endtrans %} </th>
                         </tr>
                         <tr>
-                            <td>{% if certificate.aprobationstate %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if certificate.aprobationstate %}{% trans %}Yes{% endtrans %}{% else %}No{% endif %}</td>
                             <td colspan="2"> {{ certificate.details }}</td>
                         </tr> 
                     </tbody>
                 </table>
-            </div>
+
+            </div>   
 
             <div class="table-responsive">
-                <table class="table" width="100%" id="dataTable" cellspacing="0">
+                <table class="table borderss" id="dataTable">
                     <thead class="thead-inverse">
                     <th colspan="3" class="thead-inverse"> 
-                        Absences
+                        {% trans %}Absences{% endtrans %}
                     </th>                
                     </thead>
                     <tbody>
                         {% if absences %}
-                            <tr class="success">
-                                <td>Recorded</td>
+                            <tr class="alert alert-success">
+                                <td>{% trans %}Recorded{% endtrans %}</td>
                                 <td colspan="2">
                                     <ul class="list-unstyled">
                                         {% for absence in absences%}
                                             <li>
-                                                <p>{{ absence.attendance.plan.date | date('jS F Y') }}</p>
+                                                <p>{{ absence.attendance.plan.date | date('l d F Y') }}</p>
                                             </li>
                                         {% endfor %}    
                                     </ul> 
@@ -71,10 +77,12 @@
                             </tr>
                         {% else %}
                             <tr class="danger">
-                                <td>Recorded</td>
+                                <td>{% trans %}Recorded{% endtrans %}</td>
                                 <td colspan="2">
                                     <div class="alert alert-danger">
-                                        <p><strong>No Absences are recorded in the Certified Period</strong></p>
+                                        <p><strong>
+                                                {% trans %}No Absences are recorded in the Certified Period{% endtrans %}
+                                            </strong></p>
                                     </div>
                                 </td>
                             </tr>        
@@ -82,13 +90,15 @@
                     </tbody>
                 </table>
             </div>
+
+
+
             {% if absences %}    
-                <button type="button" id="validateWf" class="btn btn-bg btn-success" value="Iniciar">Iniciar</button>  
+                <button type="button" id="validateWf" class="btn btn-bg btn-success" value="{% trans %} Create {% endtrans %} Workflow">{% trans %}Create{% endtrans %} Workflow</button>  
             {% endif %}
         </div>
     </div>
 </div>
-
 
 <script>
     $(document).ready(function ()
@@ -96,11 +106,11 @@
         $('#validateWf').click(function () {
             $.ajax({
                 type: "POST",
-                url: Routing.generate('att_workflow_certificate_create', {mode: '{{app.security.token.providerKey}}'}),
+                url: Routing.generate('att_workflow_certificate_create', {certificate: '{{ certificate.id }}', mode: '{{app.security.token.providerKey}}'}),
                 data: {'id': $('#certificateId').text()},
                 dataType: "json"
             }).done(function (data) {
-                $('#content').html(data);
+                $('#content_certificate').html(data['page']);
             });
         });
     });

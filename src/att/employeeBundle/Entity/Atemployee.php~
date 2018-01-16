@@ -173,6 +173,13 @@ class Atemployee {
     private $id;
 
     /**
+     * @var blob
+     *
+     * @ORM\Column(name="photo", type="blob", nullable=true)
+     */
+    private $photo;
+
+    /**
      * 
      * 
      * @ORM\OneToMany(targetEntity="\att\employeeBundle\Entity\Atcontract", mappedBy="employee", cascade={"persist", "remove"}, orphanRemoval=TRUE)

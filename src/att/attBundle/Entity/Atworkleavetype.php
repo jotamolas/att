@@ -27,16 +27,16 @@ class Atworkleavetype
     private $maxdaysseq;
 
     /**
-     * @var binary
+     * @var boolean
      *
-     * @ORM\Column(name="certification", type="binary", nullable=false)
+     * @ORM\Column(name="certification", type="boolean", nullable=false)
      */
     private $is_justifiable;
 
     /**
-     * @var binary
+     * @var boolean
      *
-     * @ORM\Column(name="payment", type="binary", nullable=false)
+     * @ORM\Column(name="payment", type="boolean", nullable=false)
      */
     private $is_payable;
 
@@ -68,6 +68,15 @@ class Atworkleavetype
     private $agreement;
 
 
+    /**
+     * @var \att\attBundle\Entity\Atcertificatetype
+     *
+     * @ORM\ManyToOne(targetEntity="\att\attBundle\Entity\Atcertificatetype" , inversedBy="workleavetypes")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="certificatetype", referencedColumnName="id")
+     * })
+     */
+    private $certificatetype;
 
 
 
@@ -119,53 +128,6 @@ class Atworkleavetype
         return $this->maxdaysseq;
     }
 
-    /**
-     * Set isJustifiable
-     *
-     * @param binary $isJustifiable
-     *
-     * @return Atworkleavetype
-     */
-    public function setIsJustifiable($isJustifiable)
-    {
-        $this->is_justifiable = $isJustifiable;
-
-        return $this;
-    }
-
-    /**
-     * Get isJustifiable
-     *
-     * @return binary
-     */
-    public function getIsJustifiable()
-    {
-        return $this->is_justifiable;
-    }
-
-    /**
-     * Set isPayable
-     *
-     * @param binary $isPayable
-     *
-     * @return Atworkleavetype
-     */
-    public function setIsPayable($isPayable)
-    {
-        $this->is_payable = $isPayable;
-
-        return $this;
-    }
-
-    /**
-     * Get isPayable
-     *
-     * @return binary
-     */
-    public function getIsPayable()
-    {
-        return $this->is_payable;
-    }
 
     /**
      * Set description
@@ -223,5 +185,77 @@ class Atworkleavetype
     public function getAgreement()
     {
         return $this->agreement;
+    }
+
+    /**
+     * Set certificatetype
+     *
+     * @param \att\attBundle\Entity\Atcertificatetype $certificatetype
+     *
+     * @return Atworkleavetype
+     */
+    public function setCertificatetype(\att\attBundle\Entity\Atcertificatetype $certificatetype = null)
+    {
+        $this->certificatetype = $certificatetype;
+
+        return $this;
+    }
+
+    /**
+     * Get certificatetype
+     *
+     * @return \att\attBundle\Entity\Atcertificatetype
+     */
+    public function getCertificatetype()
+    {
+        return $this->certificatetype;
+    }
+
+    /**
+     * Set isJustifiable
+     *
+     * @param boolean $isJustifiable
+     *
+     * @return Atworkleavetype
+     */
+    public function setIsJustifiable($isJustifiable)
+    {
+        $this->is_justifiable = $isJustifiable;
+
+        return $this;
+    }
+
+    /**
+     * Get isJustifiable
+     *
+     * @return boolean
+     */
+    public function getIsJustifiable()
+    {
+        return $this->is_justifiable;
+    }
+
+    /**
+     * Set isPayable
+     *
+     * @param boolean $isPayable
+     *
+     * @return Atworkleavetype
+     */
+    public function setIsPayable($isPayable)
+    {
+        $this->is_payable = $isPayable;
+
+        return $this;
+    }
+
+    /**
+     * Get isPayable
+     *
+     * @return boolean
+     */
+    public function getIsPayable()
+    {
+        return $this->is_payable;
     }
 }

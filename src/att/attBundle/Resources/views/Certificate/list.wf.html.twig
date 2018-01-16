@@ -1,16 +1,17 @@
+{% extends 'attBundle:Certificate:index.html.twig' %}
 {% block content %}
     <!-- Breadcrumbs -->
     <ol class="breadcrumb">
         <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
         <li><a href="#">{% trans %} Certificate{% endtrans %} </a></li>
-        <li class="active">{% trans %} Workflow List{% endtrans %} </li>
+        <li class="active">{% trans %} Procedure List{% endtrans %} </li>
     </ol>    
 
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-table"></i>   
-                <span>{% trans %}List of Certificate Workflow{% endtrans %}</span>
+                <span>{% trans %}List of Certificate Procedures{% endtrans %}</span>
             </div>
             <div class="panel-body">
                 <div class="table table-responsive">
@@ -32,7 +33,7 @@
                                 <tr>    
 
                                     <td class="text-center">{{ wf.id }}</td>
-                                    <td class="text-center">{{ wf.statekey }}</td>
+                                    <td class="text-center">{{ wf.statekey | trans}}</td>
                                     {{ render(controller('attBundle:Certificate:showInRow', {'id': wf.entityid})) }} 
                                     <td class="text-center">{{ wf.createAt | date('Y-m-d')}}</td>
                                     <td class="text-center">{% if wf.modifiedAt %}  {{ wf.modifiedAt | date('Y-m-d') }} {% else %} - {% endif %}</td>
@@ -42,7 +43,7 @@
                                                 <span class="fa fa-bar-chart"></span>
                                             </button>  
                                             <button type="button" class="btn btn-xs btn-default" data-toggle="modal" data-target="#wf_certificate_show" id="show" data-id="{{ wf.id }}" data-mode="{{ app.security.token.providerKey }}" >
-                                                <span class="fa fa-cogs-o"></span>
+                                                <span class="fa fa-cogs"></span>
                                             </button>
 
                                         </div>
@@ -99,12 +100,16 @@
 
 </div>
 
-<script>
+{% endblock %}
+{% block javascripts %}
+
+{{ parent() }}
+<script type="text/javascript">
 
     $('#wf_certificate_show').on('show.bs.modal', function (e) {
         var mode = $(e.relatedTarget).data('mode');
         var id = $(e.relatedTarget).data('id');
-        $('#title-certificate-show').html('{%trans%}Workflow Detail{%endtrans%} ' + id + mode);
+        $('#title-certificate-show').html('{%trans%}Managing{%endtrans%} {%trans%}Procedure{%endtrans%} ' + id);
         $('#content-certificate-show').load(Routing.generate('att_workflow_certificate_show',
                 {
                     mode: mode,
@@ -116,7 +121,7 @@
     $('#wf_timeline').on('shown.bs.modal', function (e) {
         var id = $(e.relatedTarget).data('id');
         var mode = $(e.relatedTarget).data('mode');
-        $('#title-wf-timeline').html('{%trans%}Certificate Timeline{%endtrans%} ' + id);
+        $('#title-wf-timeline').html('{%trans%}Timeline{%endtrans%} ' + id);
         $('#content-wf-timeline').load(Routing.generate('att_certificate_timeline',
                 {
                     mode: mode,
@@ -124,7 +129,7 @@
                 }));
     });
 
-
 </script>
+
 
 {% endblock %}

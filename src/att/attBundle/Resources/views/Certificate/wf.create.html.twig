@@ -1,13 +1,42 @@
-{% block content_data %}
-    <p> {{ workflow }} </p>
-    <p> {{ certificate }}</p>
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-cogs"></i>   
+            <span>{% trans %}Procedure{% endtrans %} {% trans %} Created {% endtrans %}</span>
+        </div>
+        <div class="panel-body"> 
+            <div class="alert alert-info">
 
-            {% if absences %}
-                {% for absence in absences %}
-                    <p>{{ absence }}</p>
-                {% endfor %}
-            {% endif %}
-{% endblock %}
+                <p>
+                    {% trans %} Procedure {% endtrans %} {{ workflow.id }} {% trans %} Created {% endtrans %} !
+                </p>
+                <p>
+                    <strong>
+                        {{ "workflow.certificate.create"|trans({'%certificate_id%': certificate.id}) }}
+                    </strong>
+                </p>
+            </div>
 
-{% block attjavascripts %}
-{% endblock %}
+            <div class="alert alert-info">         
+                {% if absences %}
+                    <p> {% trans %} The following absences will be approved if the procedure is approved {% endtrans %}
+                        {% for absence in absences %}
+
+                        <p>
+                            <strong>
+                                {{ "workflow.certificate.create.absences"|trans
+                                ({
+                                    '%absence_id%': absence.id,
+                                    '%absence_date%': absence.attendance.plan.date | date('d/m/Y'),
+                                    '%absence_procedure%' : absence.certification
+                                }) }}
+                            </strong>
+                        </p>
+
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+

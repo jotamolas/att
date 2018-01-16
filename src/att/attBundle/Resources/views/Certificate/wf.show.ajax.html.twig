@@ -40,7 +40,8 @@
 
                 {% endif %}
                 <a class="btn btn-sm btn-default" id="rectify" href="#">    
-                    <i class="fa fa-share fa-fw"></i>{% trans %} Rectify {% endtrans %}</a>
+                    <i class="fa fa-share fa-fw"></i>{% trans %} Rectify {% endtrans %}
+                </a>
 
             </ul>
         </div>
@@ -48,7 +49,7 @@
 
 </div>
 <div class="row">
-    {% include 'attBundle:Workflowmsg:modal.wfmsg.new.html.twig' %}
+    {% include 'attBundle:Workflowmsg:modal.wfmsg.new.html.twig' with {'mode' : mode} %}
 </div>       
 
 

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Atworkleaves list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datefrom</th>
+                <th>Dateto</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for atworkleave in atworkleaves %}
+            <tr>
+                <td><a href="{{ path('atworkleave_show', { 'id': atworkleave.id }) }}">{{ atworkleave.id }}</a></td>
+                <td>{% if atworkleave.dateFrom %}{{ atworkleave.dateFrom|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if atworkleave.dateTo %}{{ atworkleave.dateTo|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('atworkleave_show', { 'id': atworkleave.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('atworkleave_edit', { 'id': atworkleave.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('atworkleave_new') }}">Create a new atworkleave</a>
+        </li>
+    </ul>
+{% endblock %}

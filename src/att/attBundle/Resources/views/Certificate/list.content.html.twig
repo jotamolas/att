@@ -1,13 +1,14 @@
-
 {% if is_granted('ROLE_ADMIN') %}
-    <ol class="breadcrumb">
-        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
-        <li><a href="#">{% trans %} Certificate{% endtrans %} </a></li>
-        <li class="active">{% trans %} List{% endtrans %} </li>
-    </ol>    
-{% endif %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+            <li><a href="#">{% trans %} Certificate{% endtrans %} </a></li>
+            <li class="active">{% trans %} List{% endtrans %} </li>
+        </ol>    
+    </div>
+    <div class="row" id="message">
 
-{% if is_granted('ROLE_ADMIN') %}
+    </div>
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -16,7 +17,7 @@
                 <div class="dropdown pull-right">
                     <div class="btn-group pull-right" role="group">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-search"></span>
+                            <span class="fa fa-search"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="strikes">
                             <li style="width: 400px; font-size: 12px">
@@ -64,7 +65,7 @@
             </div>
             <div class="panel-body">
                 <div class="table table-responsive">
-                    {% include 'attBundle:Certificate:list.table.html.twig' with { 'certificates' : certificates} %}
+                    {% include 'attBundle:Certificate:list.table.html.twig' with { 'certificates' : certificates, 'mode':app.security.token.providerKey} %}
                 </div>
             </div>
             <div class="panel-footer">

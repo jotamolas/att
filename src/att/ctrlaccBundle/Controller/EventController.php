@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Description of EventController
  *
  * @author jorge.molas
- * @Route("/ctrlacc/event")
+ * @Route("{mode}/ctrlacc/event", requirements={"mode":"frontend|backend"})
  */
 class EventController extends Controller{
     
@@ -24,7 +24,7 @@ class EventController extends Controller{
      * @Route("/list/{dni}", name="ctrlacc_event_list")
      */
     public function listAction($dni){        
-        $events = $this->getDoctrine()->getRepository('ctrlaccBundle:Event', 'ctrlacc')->findByEmployee($dni);
+        $events = $this->getDoctrine()->getRepository('ctrlaccBundle:Event')->findByEmployee($dni);
         
         return $this->render('ctrlaccBundle:Event:list.html.twig', ['events' => $events]);
         
@@ -33,10 +33,11 @@ class EventController extends Controller{
     /**
      * @Route("/list", name="ctrlacc_event_list")
      */
-    public function listAllAction(){        
-        $events = $this->getDoctrine()->getRepository('ctrlaccBundle:Event', 'ctrlacc')->findAll();
-        
-        return $this->render('ctrlaccBundle:Event:list.html.twig', ['events' => $events]);
+    public function listAllAction(Request $request){        
+        $events = $this->get('ctrlacc.event.service')->pagination($request);
+        $options = ['events' => $events['paginator'] ];
+        dump($events);
+        return $this->render('ctrlaccBundle:Event:list.html.twig', $options);
         
     }    
 

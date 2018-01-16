@@ -34,7 +34,7 @@ class MedicalServiceType extends AbstractType {
                     'required' => FALSE,
                     'query_builder' => function (\Doctrine\ORM\EntityRepository $er) {
                         return $er->createQueryBuilder('es')
-                                ->where("es.module = 'medicalsrv'")
+                                ->where("es.module = 'medicalsrvBundle'")
                                 ;
                     },
                 ])

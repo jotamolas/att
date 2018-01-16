@@ -1,69 +1,127 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-4 text-center">
-                <h2 class="text-muted">
-                    {{ contract.fileNumber }}
-                </h2>
+        <div class="row" style="border-bottom: 0.5px solid #e1e1ea">
+            <div class="col-md-2">            
+            {% if employee.photo %}
+                <img src="{{image}}" style="width: 75px; height: 90px; padding-bottom: 2px;">
+            {% endif %}        
             </div>
-            <div class="col-md-8">
-                <h2 > {{ contract.employee.surname }}, {{ contract.employee.name }} </h2>
-            </div>            
+            <div class="col-md-10">  
+                <h1>{{ employee.surname }}, {{ employee.name }} </h1>
+            </div>      
         </div>
+        
+        {% for contract in contracts %}
         <div class="row">
-            <div class="col-md-4">
-                Company:
+            <div class="col-md-12">
+                <table class="table table-responsive table-striped">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h5>
+                                    {% trans %}File Number{% endtrans %}:
+                                </h5>
+                            </td>
+                            <td>
+                                <h3 class="text-muted">
+                                {{ contract.fileNumber }}
+                                </h3>
+                            </td>
+                            <td>
+                                <h5>
+                                   {% trans %}Company{% endtrans %}: 
+                                </h5>
+                            </td>
+                            <td>
+                                <h3 class="text-muted">
+                                {{ contract.business.company.description }}
+                                </h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>
+                                    {% trans %}Business{% endtrans %}:
+                                </h5>
+                            </td>
+                            <td>
+                                <h3 class="text-muted">
+                                {{ contract.business.description }}
+                                </h3>
+                            </td>
+                            <td>
+                                <h5>
+                                   {% trans %}Status{% endtrans %}: 
+                                </h5>
+                            </td>
+                            <td>
+                                {% if contract.status.description == 'Active' %}
+                                    <h3>
+                                       <span class="label label-success">
+                                            {{ contract.status.description }}
+                                        </span> 
+                                    </h3>                            
+                                    {% else %}
+                                    <h3>
+                                        <span class="label label-danger">
+                                            {{ contract.status.description }}
+                                        </span>
+                                    </h3>
+                                        
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>{% trans %}Rest days{% endtrans %}:</h5> 
+                            </td>
+                            <td colspan="3">
+                                {% if contract.restdays %}
+                                    <h3 class="text-muted">
+                                        {% for rd in contract.restdays %}                        
+                                            {% if loop.last %}                            
+                                                {{rd.description | trans | capitalize }}                            
+                                            {% else %}                            
+                                                {{rd.description | trans | capitalize }},
+                                            {% endif %}          
+                                        {% endfor %}
+                                    </h3>                                               
+                                 {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h5>{% trans %}In{% endtrans %}:</h5></td>
+                            <td>
+                                <h3 class="text-muted">
+                                    {{ contract.inTime | date('H:i') }}
+                                </h3>
+                            </td>
+                            <td><h5>{% trans %}Out{% endtrans %}:</h5></td>
+                            <td>
+                                <h3 class="text-muted">
+                                {{ contract.outTime | date('H:i') }}
+                                </h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h5>{% trans %}Agreement{% endtrans %}:</h5></td>
+                            <td>                                
+                                {% if contract.schema.agreement %}
+                                   <h3 class="text-muted"> {{ contract.schema.agreement.description }}</h3>
+                                {% endif %}
+                            </td>
+                            <td><h5>{% trans %}Union{% endtrans %}</h5></td>
+                            <td>
+                                {% if contract.schema.agreement %}
+                                <h3 class="text-muted">{{ contract.schema.agreement.union.abbreviation }}</h3>
+                                {% endif %}
+                            </td>                                
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-md-8 text-center">
-                {{ contract.business.company.description }}
-            </div>  
+            
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                Business:
-            </div>
-            <div class="col-md-8 text-center">
-                {{ contract.business.description }}
-            </div>  
-        </div> 
-        <div class="row">
-            <div class="col-md-4">
-                Status:
-            </div>
-            <div class="col-md-8 text-center">
-
-                {% if contract.status.description == 'Active' %}
-                    <span class="label label-success">
-                        {{ contract.status.description }}
-                    </span>
-                {% else %}
-                    <span class="label label-danger">
-                        {{ contract.status.description }}
-                    </span>
-                {% endif %}
-            </div>  
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                Restdays Qty:
-            </div>
-            <div class="col-md-8 text-center">
-                {{ qtyrestdays }}
-            </div>  
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                Restdays:
-            </div>
-            <div class="col-md-8 text-center">
-                {% if contract.restdays %}
-                    {% for rd in contract.restdays %}
-                        {{rd.description | trans | capitalize }}
-                    {% endfor %}                                           
-                {% endif %}
-            </div>  
-        </div>     
-
-
+    {% endfor %}
     </div>
 </div>

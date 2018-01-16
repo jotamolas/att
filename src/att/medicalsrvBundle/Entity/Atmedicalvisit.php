@@ -44,9 +44,9 @@ class Atmedicalvisit {
     private $diagnostic;
 
     /**
-     * @var binary
+     * @var boolean
      *
-     * @ORM\Column(name="medicalRest", type="binary", nullable=true)
+     * @ORM\Column(name="medicalRest", type="boolean", nullable=true)
      */
     private $medicalrest;
 
@@ -63,6 +63,14 @@ class Atmedicalvisit {
      * @ORM\Column(name="restDateTo", type="datetime", nullable=true)
      */
     private $restdateto;
+    
+    
+    /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="confirm_order", type="boolean", nullable=true)
+     */
+    private $confirmOrder;
 
     /**
      * @var integer
@@ -76,7 +84,7 @@ class Atmedicalvisit {
     /**
      * @var \att\medicalsrvBundle\Entity\Atmedicalvisitstatus
      *
-     * @ORM\ManyToOne(targetEntity="\att\medicalsrvBundle\Entity\Atmedicalvisitstatus")
+     * @ORM\ManyToOne(targetEntity="\att\medicalsrvBundle\Entity\Atmedicalvisitstatus",cascade={"persist"}))
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="status", referencedColumnName="id")
      * })
@@ -146,26 +154,7 @@ class Atmedicalvisit {
         return $this->diagnostic;
     }
 
-    /**
-     * Set medicalrest
-     *
-     * @param binary $medicalrest
-     * @return Atmedicalvisit
-     */
-    public function setMedicalrest($medicalrest) {
-        $this->medicalrest = $medicalrest;
 
-        return $this;
-    }
-
-    /**
-     * Get medicalrest
-     *
-     * @return binary 
-     */
-    public function getMedicalrest() {
-        return $this->medicalrest;
-    }
 
     /**
      * Set restdatefrom
@@ -265,5 +254,53 @@ class Atmedicalvisit {
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set medicalrest
+     *
+     * @param boolean $medicalrest
+     *
+     * @return Atmedicalvisit
+     */
+    public function setMedicalrest($medicalrest)
+    {
+        $this->medicalrest = $medicalrest;
+
+        return $this;
+    }
+
+    /**
+     * Get medicalrest
+     *
+     * @return boolean
+     */
+    public function getMedicalrest()
+    {
+        return $this->medicalrest;
+    }
+
+    /**
+     * Set confirmOrder
+     *
+     * @param boolean $confirmOrder
+     *
+     * @return Atmedicalvisit
+     */
+    public function setConfirmOrder($confirmOrder)
+    {
+        $this->confirmOrder = $confirmOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmOrder
+     *
+     * @return boolean
+     */
+    public function getConfirmOrder()
+    {
+        return $this->confirmOrder;
     }
 }

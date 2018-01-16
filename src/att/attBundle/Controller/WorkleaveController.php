@@ -2,11 +2,15 @@
 
 namespace att\attBundle\Controller;
 
-use att\attBundle\Entity\Atworkleave;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use att\employeeBundle\Entity\Atemployee;
+use att\attBundle\Entity\Atworkleavetype;
+use att\attBundle\Entity\Atworkleave;
+use att\attBundle\Entity\Atcertificate;
 
 /**
  * Atworkleave controller.
@@ -35,22 +39,46 @@ class WorkleaveController extends Controller
     /**
      * Creates a new atworkleave entity.
      *
-     * @Route("/new/{employee}", name="att_workleave_new")
+     * @Route("/new/{employee}/{certificate}", name="att_workleave_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request, \att\employeeBundle\Entity\Atemployee $employee)
+    public function newAction(Request $request, Atemployee $employee, Atcertificate $certificate)
     {
         $atworkleave = new Atworkleave();
-        $atworkleave->setEmployee($employee);
-        $form = $this->createForm('att\attBundle\Form\AtworkleaveType', $atworkleave);
+        $atworkleave->setEmployee($employee)
+                ->setDateFrom($certificate->getDatefrom())
+                ->setDateTo($certificate->getDateto());
+        dump($certificate->getType());
+        $form = $this->createForm('att\attBundle\Form\AtworkleaveType', $atworkleave,[
+            'types' => $certificate->getType()->getWorkleavetypes()
+        ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {            
+            
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($atworkleave);
             $em->flush();
-
-            return $this->redirectToRoute('atworkleave_show', array('id' => $atworkleave->getId()));
+            /* verifico si hay ausencias y le asigno la licencia */
+            $absences = $this->getDoctrine()->getRepository('attBundle:Atabsence')->findBetweenDate($certificate->getDatefrom(),$certificate->getDateto());
+            foreach ($absences as $absence){
+                $absence->setWorkleave($atworkleave);
+                $em->flush();
+            }
+            /* verifico la planificacion y le cambio por estado ausente */
+            $plans = $this->getDoctrine()->getRepository('attBundle:Atplan')->findByEmployeeAndBetweenDates($employee,$certificate->getDatefrom(),$certificate->getDateto());
+            foreach ($plans as $plan){
+                $plan->setStateplan($this->getDoctrine()->getRepository('attBundle:Atstateplan')->find(2));
+                $em->flush();
+                
+            }
+            
+           
+            return $this->redirectToRoute('att_workleave_show', [
+                'id' => $atworkleave->getId(),
+                'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()
+                    ]);
         }
 
         return $this->render('attBundle:WorkLeave:new.html.twig', array(
@@ -63,15 +91,14 @@ class WorkleaveController extends Controller
      * Finds and displays a atworkleave entity.
      *
      * @Route("/{id}", name="att_workleave_show")
-     * @Method("GET")
+     * 
      */
     public function showAction(Atworkleave $atworkleave)
     {
-        $deleteForm = $this->createDeleteForm($atworkleave);
-
+        $absences = $atworkleave->getAbsences();
         return $this->render('attBundle:WorkLeave:show.html.twig', array(
             'atworkleave' => $atworkleave,
-            'delete_form' => $deleteForm->createView(),
+            'absences' => $absences
         ));
     }
 
@@ -84,7 +111,7 @@ class WorkleaveController extends Controller
     public function editAction(Request $request, Atworkleave $atworkleave)
     {
         $deleteForm = $this->createDeleteForm($atworkleave);
-        $editForm = $this->createForm('att\attBundle\Form\WrkleaveType', $atworkleave);
+        $editForm = $this->createForm('att\attBundle\Form\AtworkleaveType', $atworkleave);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

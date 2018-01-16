@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
 /**
- * @Route("/workflowmsg")
+ * @Route("{mode}/workflowmsg" , requirements={"mode":"frontend|backend"})
  */
 
 class WorkflowmsgController extends Controller {
@@ -30,8 +30,8 @@ class WorkflowmsgController extends Controller {
                 new \att\attBundle\Form\WorkFlowMsgType(),
                 $entity,
                 [
-                    'action' => $this->generateUrl('att_workflowmsg_create'),
-                    'method' => 'POST',
+                    'action' => $this->generateUrl('att_workflowmsg_create',['mode' => $this->get('security.token_storage')->getToken()->getProviderKey()]),
+                    'method' => 'POST',                    
                     'wf' => [$wf]
                 ]
             );
@@ -61,13 +61,18 @@ class WorkflowmsgController extends Controller {
         $wf = $this->getDoctrine()->getRepository('attBundle:Atworkflow')->find($parameter['workflow']);
         
         $entity = new \att\attBundle\Entity\Atworkflowmsg();
-
+        $this->get('security.token_storage')->getToken()->getProviderKey() === 'frontend' ?
+        $entity->setUsername($this->getUser()->getEmployee()->getSurname()." ".$this->getUser()->getEmployee()->getName()) :
+        $entity->setUsername($this->getUser()->getUsername());
         $form = $this->createForm(
                         new \att\attBundle\Form\WorkFlowMsgType(),
                         $entity,
                         [
-                            'action' => $this->generateUrl('att_workflowmsg_create'),
+                            'action' => $this->generateUrl('att_workflowmsg_create',[
+                                'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()
+                            ]),
                             'method' => 'POST',
+                            
                             'wf' => [$wf]
 
                         ]);
@@ -108,9 +113,16 @@ class WorkflowmsgController extends Controller {
         ], 200);
 
        
+    } 
+    
+    /**
+     * @Route("/list/{wf}", name="att_workflowmsg_list" )
+     * @param \att\attBundle\Entity\Atworkflow $wf
+     */
+    public function listMessages(\att\attBundle\Entity\Atworkflow $wf){
+        $msgs = $this->getDoctrine()->getRepository("attBundle:Atworkflowmsg")->findByWorkflow($wf);
+        
     }
-    
-    
     
    
     

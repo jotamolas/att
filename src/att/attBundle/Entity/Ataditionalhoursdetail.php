@@ -10,19 +10,24 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="att_aditional_hours_detail", indexes={@ORM\Index(name="IXFK_AtDetalleHorasExtras_AtAsistencia", columns={"attendance"}), @ORM\Index(name="FK_type_idx", columns={"type"})})
  * @ORM\Entity
  */
-class Ataditionalhoursdetail
-{
+class Ataditionalhoursdetail {
+
     /**
-     * @var integer
+     * @var \att\attBundle\Entity\Atattendance
      *
-     * @ORM\Column(name="attendance", type="integer", nullable=false)
+     * 
+     *
+     * @ORM\OneToOne(targetEntity="\att\attBundle\Entity\Atattendance",inversedBy="aditionalhours")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="attendance", referencedColumnName="id")
+     * })
      */
     private $attendance;
 
     /**
-     * @var integer
+     * @var decimal
      *
-     * @ORM\Column(name="amount", type="integer", nullable=false)
+     * @ORM\Column(name="amount", type="decimal", precision=4, scale=2, nullable=false)
      */
     private $amount;
 
@@ -44,62 +49,21 @@ class Ataditionalhoursdetail
      * })
      */
     private $type;
-
-
-
+    
     /**
-     * Set attendance
      *
-     * @param integer $attendance
-     * @return Ataditionalhoursdetail
+     * @var boolean
+     * @ORM\Column(name="is_approved", type="boolean")
      */
-    public function setAttendance($attendance)
-    {
-        $this->attendance = $attendance;
+    private $isapproved = false;
 
-        return $this;
-    }
-
-    /**
-     * Get attendance
-     *
-     * @return integer 
-     */
-    public function getAttendance()
-    {
-        return $this->attendance;
-    }
-
-    /**
-     * Set amount
-     *
-     * @param integer $amount
-     * @return Ataditionalhoursdetail
-     */
-    public function setAmount($amount)
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
-    /**
-     * Get amount
-     *
-     * @return integer 
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -109,8 +73,7 @@ class Ataditionalhoursdetail
      * @param \att\attBundle\Entity\Ataditionalhourstype $type
      * @return Ataditionalhoursdetail
      */
-    public function setType(\att\attBundle\Entity\Ataditionalhourstype $type = null)
-    {
+    public function setType(\att\attBundle\Entity\Ataditionalhourstype $type = null) {
         $this->type = $type;
 
         return $this;
@@ -121,8 +84,78 @@ class Ataditionalhoursdetail
      *
      * @return \att\attBundle\Entity\Ataditionalhourstype 
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param string $amount
+     *
+     * @return Ataditionalhoursdetail
+     */
+    public function setAmount($amount) {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return string
+     */
+    public function getAmount() {
+        return $this->amount;
+    }
+
+
+    /**
+     * Set attendance
+     *
+     * @param \att\attBundle\Entity\Atattendance $attendance
+     *
+     * @return Ataditionalhoursdetail
+     */
+    public function setAttendance(\att\attBundle\Entity\Atattendance $attendance = null)
+    {
+        $this->attendance = $attendance;
+
+        return $this;
+    }
+
+    /**
+     * Get attendance
+     *
+     * @return \att\attBundle\Entity\Atattendance
+     */
+    public function getAttendance()
+    {
+        return $this->attendance;
+    }
+
+    /**
+     * Set isapproved
+     *
+     * @param boolean $isapproved
+     *
+     * @return Ataditionalhoursdetail
+     */
+    public function setIsapproved($isapproved)
+    {
+        $this->isapproved = $isapproved;
+
+        return $this;
+    }
+
+    /**
+     * Get isapproved
+     *
+     * @return boolean
+     */
+    public function getIsapproved()
+    {
+        return $this->isapproved;
     }
 }

@@ -1,0 +1,69 @@
+{% extends 'attBundle:Default:index.html.twig' %}
+
+{% block stylesheets %}
+   {{ parent() }}
+   <style type="text/css">
+    .hero-widget { text-align: center; padding-top: 20px; padding-bottom: 20px; }
+    .hero-widget .icon { display: block; font-size: 96px; line-height: 96px; margin-bottom: 10px; text-align: center; }
+    .hero-widget var { display: block; height: 64px; font-size: 64px; line-height: 64px; font-style: normal; }
+    .hero-widget label { font-size: 14px; }
+    .hero-widget .options { margin-top: 10px; }
+   </style>
+{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li>
+        <li><a href="#">{% trans %} Attendance {% endtrans %} </a></li>
+        <li class="active">{% trans %} Process {% endtrans %}</li>
+    </ol> 
+    
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                     <i class="fa fa-user"></i>
+                </div>
+                <div class="text">
+                    <var>{{ result.atts | length }}</var>
+                    <label class="text-muted">{% trans %}Attendances Processed{% endtrans %} </label>
+                </div>
+                <div class="options">
+                    <a href="{{ path('att_attendance_list',{'mode':app.security.token.providerKey})}}" class="btn btn-default btn-md"></i> {% trans %}List Attendances{% endtrans %}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4" >
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="fa fa-user-times"></i>                     
+                </div>
+                <div class="text">
+                    <var>{{ result.abss | length }}</var>
+                    <label class="text-muted">{% trans %}Absences Detected{% endtrans %} </label>
+                </div>
+                <div class="options">
+                    <a href="{{ path('att_absence_list',{'mode':app.security.token.providerKey})}}" class="btn btn-default btn-md"></i> {% trans %} List Absences {% endtrans %}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="hero-widget well well-sm">
+                <div class="icon">
+                    <i class="fa fa-warning"></i>                     
+                </div>
+                <div class="text">
+                    <var>{{ result.exps | length }}</var>
+                    <label class="text-muted">{% trans %}Exceptions{% endtrans %}</label>
+                </div>
+                <div class="options">
+                    <a href="" class="btn btn-default btn-md"></i> {% trans %} List  {% endtrans %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+{% endblock javascripts %}

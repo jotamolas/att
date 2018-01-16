@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Device
  *
  * @ORM\Table(name="ca_device")
- * @ORM\Entity(repositoryClass="att\ctrlaccBundle\Repository\DeviceRepository")
+ * @ORM\Entity
  */
 class Device
 {
@@ -28,33 +28,22 @@ class Device
      */
     private $description;
 
+
     /**
-     * @var \att\ctrlaccBundle\Entity\DeviceType
-     * 
-     * @ORM\ManyToOne(targetEntity="\att\ctrlaccBundle\Entity\DeviceType")
+     * @var \att\syncBundle\Entity\Atexternsystem
+     *
+     * @ORM\OneToOne(targetEntity="\att\syncBundle\Entity\Atexternsystem")
      * @ORM\JoinColumns({
-     *      @ORM\JoinColumn(name="type", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="system", referencedColumnName="id")
      * })
-     * 
      */
-    private $type;
-
+    private $system;
+    
     /**
-     * @var string
-     *
-     * @ORM\Column(name="ip", type="string", length=255)
+     * @ORM\OneToOne(targetEntity="\att\ctrlaccBundle\Entity\DeviceMetadataConfiguration", mappedBy="device")
+     * @var type 
      */
-    private $ip;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="port", type="string", length=255)
-     */
-    private $port;
-    
-    
-    
+    private $metadata;
     
     /**
      * Get id
@@ -89,73 +78,54 @@ class Device
         return $this->description;
     }
 
-    /**
-     * Set type
-     *
-     * @param \att\ctrlaccBundle\Entity\DeviceType $type
-     * @return Device
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
 
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \att\ctrlaccBundle\Entity\DeviceType
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Device
-     */
-    public function setIp($ip)
-    {
-        $this->ip = $ip;
-
-        return $this;
-    }
-
-    /**
-     * Get ip
-     *
-     * @return string 
-     */
-    public function getIp()
-    {
-        return $this->ip;
-    }
     
-     /**
-     * Set port
+
+    /**
+     * Set system
      *
-     * @param string $port
+     * @param \att\syncBundle\Entity\Atexternsystem $system
+     *
      * @return Device
      */
-    public function setPort($port)
+    public function setSystem(\att\syncBundle\Entity\Atexternsystem $system = null)
     {
-        $this->ip = $port;
+        $this->system = $system;
 
         return $this;
     }
 
     /**
-     * Get port
+     * Get system
      *
-     * @return string 
+     * @return \att\syncBundle\Entity\Atexternsystem
      */
-    public function getPort()
+    public function getSystem()
     {
-        return $this->port;
+        return $this->system;
     }
-    
+
+    /**
+     * Set metadata
+     *
+     * @param \att\ctrlaccBundle\Entity\DeviceMetadataConfiguration $metadata
+     *
+     * @return Device
+     */
+    public function setMetadata(\att\ctrlaccBundle\Entity\DeviceMetadataConfiguration $metadata = null)
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * Get metadata
+     *
+     * @return \att\ctrlaccBundle\Entity\DeviceMetadataConfiguration
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
 }

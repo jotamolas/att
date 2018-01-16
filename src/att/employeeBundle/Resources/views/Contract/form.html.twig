@@ -1,0 +1,128 @@
+<div class="row">
+    <div class="col-md-12">
+        {{ form_start(form,{'attr':{'id':'contract-edit-form' , 'novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.file_number) }}
+                    <div class="input-group">
+                        {{ form_errors(form.file_number) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-pencil"></i>
+                        </div>
+                        {{ form_widget(form.file_number) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.agreement) }}
+                    <div class="input-group">
+                        {{ form_errors(form.agreement) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-mouse-pointer"></i>
+                        </div>
+                        {{ form_widget(form.agreement) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.schema) }}
+                    <div class="input-group">
+                        {{ form_errors(form.schema) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-mouse-pointer"></i>
+                        </div>
+                        {{ form_widget(form.schema) }} 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.start_date) }}
+                    <div class="input-group">
+                        {{ form_errors(form.start_date) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        {{ form_widget(form.start_date) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.end_date) }}
+                    <div class="input-group">
+                        {{ form_errors(form.end_date) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        {{ form_widget(form.end_date) }} 
+                    </div>
+                </div>			
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.in_time) }}
+                    <div class="input-group">
+                        {{ form_errors(form.in_time) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        {{ form_widget(form.in_time) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.out_time) }}
+                    <div class="input-group">
+                        {{ form_errors(form.out_time) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        {{ form_widget(form.out_time) }} 
+                    </div>
+                </div>			
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.status) }}
+                    <div class="input-group">
+                        {{ form_errors(form.status) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-mouse-pointer"></i>
+                        </div>
+                        {{ form_widget(form.status) }} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_label(form.department) }}
+                    <div class="input-group">
+                        {{ form_errors(form.department) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-mouse-pointer"></i>
+                        </div>
+                        {{ form_widget(form.department) }} 
+                    </div>
+                </div>			
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

@@ -29,4 +29,14 @@ class AtcontractRepository extends EntityRepository {
         return $qb->getQuery()->getResult();
     }
 
+
+    public function getActiveContract($id){
+        $qb = $this->createQueryBuilder('c');
+        $qb
+           ->leftJoin('c.status', 's')
+           ->where($qb->expr()->eq('c.employee',$id))
+           ->andWhere($qb->expr()->eq('s.description', "'Active'"));
+        return $qb->getQuery()->getResult(); 
+    }
+
 }

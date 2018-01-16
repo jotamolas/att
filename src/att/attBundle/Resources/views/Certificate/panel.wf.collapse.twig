@@ -3,7 +3,7 @@
     <div class="panel-heading">
         <h4 class="panel-title">
             <a href="#collapseWf" data-toggle="collapse">
-                Workflow {{ wf.id }}
+                {% trans %} Procedure {% endtrans %} Id: {{ wf.id }}
                 <span class="pull-right clickable"><i class="fa fa-chevron-down"></i></span>
             </a>
         </h4>    
@@ -12,19 +12,19 @@
         <table class="table table-responsive">
             <tbody>
                 <tr>
-                    <th>Wf State</th>
-                    <td>{{ wf.statekey }}</td>
+                    <th>{% trans %} Procedure {% endtrans %} {% trans %} State{% endtrans %}</th>
+                    <td>{{ wf.statekey | trans }}</td>
                 </tr>
                 <tr>
-                    <th>Wf Create</th>
+                    <th>{% trans %} Procedure {% endtrans %} {% trans %} Create{% endtrans %}</th>
                     <td>{{ wf.createAt | date ('Y-m-d H:i:s ')}}</td>
                 </tr>
                 <tr>
-                    <th>Wf Modified</th>
+                    <th>{% trans %} Procedure {% endtrans %} {% trans %} Modified{% endtrans %} </th>
                     <td>{{ wf.modifiedAt | date ('Y-m-d H:i:s ') }}</td>
                 </tr>
                 <tr>
-                    <th>Certificate ID</th>
+                    <th>{% trans %}Certificate{% endtrans %} ID</th>
                     <td>{{ wf.entityid }}</td>
                 </tr>
             </tbody>

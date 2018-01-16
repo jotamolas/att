@@ -1,0 +1,122 @@
+{% extends 'ctrlaccBundle:Default:index.html.twig' %}
+{% block title %}
+    {% trans %} Control Access {% endtrans %} - {% trans %} Devices {% endtrans %}
+{% endblock %}
+{% block content %}
+<div class="row">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">
+
+                      {% trans %} Access Control {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">
+                    {% trans %} Device {% endtrans %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+                {% trans %} List {% endtrans %}
+            </li>
+        </ol>    
+</div>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table">              
+                </i>
+                <span> {% trans %} List of Devices {% endtrans %}</span>
+                
+            </div>
+            <div class="panel-body">
+                <div class="table table-responsive">            
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">{% trans %} Id {% endtrans %}</th>
+                                <th class="text-center">{% trans %} Description {% endtrans %}</th>
+                                <th class="text-center">{% trans %} Type {% endtrans %}</th>
+                                <th class="text-center">{% trans %} Ip {% endtrans %}</th>
+                                <th class="text-center">{% trans %} Port{% endtrans %}</th>
+                                <th class="text-center">{% trans %} Configure{% endtrans %}</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for device in devices %}
+                                <tr>
+                                    <td class="text-center">{{ device.id }}</td>
+                                    <td class="text-center">{{ device.description }}</td>
+                                    <td class="text-center">
+                                        {% if device.system.type.id == 1  %}
+                                            <i class="fa fa-database"></i> 
+                                            {{ device.system.type.description }}
+                                        {% else %}
+                                            <i 
+                                            class="fa fa-microchip"></i>
+                                            {{ device.system.type.description }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">{{ device.system.ip }}</td>
+                                    <td class="text-center">{{ device.system.port}}</td>
+                                    <td class="text-center">
+                                        <a href="{{ path('ctrlacc_device_metadata_config',{'device': device.id, 'mode':app.security.token.providerKey })}}" class="btn btn-xs"><i class="fa fa-cog"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>        
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table">              
+                </i>
+                <span> {% trans %} List of Device Types {% endtrans %}</span>
+                
+            </div>
+            <div class="panel-body">
+                <div class="table table-responsive">            
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">{% trans %} Id {% endtrans %}</th>
+                                <th class="text-center">{% trans %} Description {% endtrans %}</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for type in types %}
+                                <tr>
+                                    <td class="text-center">{{ type.id }}</td>
+                                    <td class="text-center">{{ type.description }}</td>
+                                    <td class="text-center">
+                                        {% if type.id == 1  %}
+                                            <i class="fa fa-database"></i> 
+                                        {% else %}
+                                            <i class="fa fa-microchip"></i>          
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>        
+        </div>
+    </div>
+</div>
+
+    
+
+                  
+{% endblock %}

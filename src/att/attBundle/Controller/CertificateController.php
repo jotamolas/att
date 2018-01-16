@@ -33,10 +33,10 @@ class CertificateController extends Controller {
     }
 
     /**
-     * @Route("/certification/step/first" , name="att_certification_first_step", options={"expose"=true})
+     * @Route("/new/step/first" , name="att_certificate_new_first_step", options={"expose"=true})
      * @param Request $request
      */
-    public function firstStepCertification(Request $request) {
+    public function newFirstStepAction(Request $request) {
 
         $form = $this->createFormBuilder()
                 ->add('certificate_type', \Symfony\Component\Form\Extension\Core\Type\ChoiceType::class, [
@@ -64,7 +64,7 @@ class CertificateController extends Controller {
             }
         }
 
-        return $this->render('attBundle:Certificate:certification.first.step.html.twig', [
+        return $this->render('attBundle:Certificate:new.first.step.html.twig', [
                     'form' => $form->createView()
         ]);
     }
@@ -79,7 +79,7 @@ class CertificateController extends Controller {
 
     /**
      *  @Route("/list", name="att_certificate_list", options={"expose"=true})
-     *  @Method("GET")
+     *  
      */
     public function listAction(Request $request) {
 
@@ -91,29 +91,33 @@ class CertificateController extends Controller {
             'certificates' => $certificates['paginator']
         ];
 
-        dump($certificates);
+
         
-        $this->get('security.token_storage')->getToken()->getProviderKey() == 'frontend' ?
-                $page = $this->render("attBundle:Certificate:list.frontend.html.twig", $options ):
-                $page = $this->render("attBundle:Certificate:list.backend.html.twig", $options );
+        $this->get('security.token_storage')->getToken()->getProviderKey() === 'frontend' ?
+                        $page = $this->render("attBundle:Certificate:list.frontend.html.twig", $options) :
+                        $page = $this->render("attBundle:Certificate:list.backend.html.twig", $options);
+
+
         return $page;
-        
     }
 
     /**
      * @Route("/listwf", name="att_certificate_list_wf", options={"expose"=true})
-     * @Method("GET")
+     * 
      */
     public function listWfAction() {
         if ($this->get('security.token_storage')->getToken()->getProviderKey() == 'frontend') {
+            $employee = $this->getUser()->getEmployee();
             $wfs = $this->getDoctrine()->getRepository('attBundle:Atworkflow')
                     ->findByCertificatesAndEmployee(
-                    $this->getDoctrine()->getRepository('attBundle:Atcertificate')->findByEmployee($this->getUser()->getEmployee()), $this->getDoctrine()->getRepository('attBundle:Atworkflowtype')->find('wf.certificate'));
+                    $this->getDoctrine()->getRepository('attBundle:Atcertificate')->findByEmployee($employee), $this->getDoctrine()->getRepository('attBundle:Atworkflowtype')->find('wf.certificate'));
+            return $this->render('attBundle:Certificate:list.wf.front.html.twig', ['wfs' => $wfs]);
         } else {
             $wfs = $this->getDoctrine()->getRepository('attBundle:Atworkflow')
                     ->findByWorkflow($this->getDoctrine()->getRepository('attBundle:Atworkflowtype')->find('wf.certificate'));
+            return $this->render('attBundle:Certificate:list.wf.html.twig', ['wfs' => $wfs]);
         }
-        return $this->render('attBundle:Certificate:list.wf.html.twig', ['wfs' => $wfs]);
+        
     }
 
     /**
@@ -125,6 +129,7 @@ class CertificateController extends Controller {
     public function newAction(Request $request) {
 
         $entity = new Atcertificate();
+
         $form = $this->createForm(
                 new \att\attBundle\Form\AtcertificateType($this->getDoctrine()->getManager()), $entity, [
             'action' => $this->generateUrl('att_certificate_create', [
@@ -321,24 +326,47 @@ class CertificateController extends Controller {
      * @Route("/{id}/edit", name="att_certificate_edit", options={"expose"=true})
      * @Method({"GET","POST"})
      */
-    public function editAction(Request $request, Atcertificate $entity) {
+    public function editAction(Request $request, Atcertificate $certificate) {
 
+        /*if ($certificate->getScan()) {
+            $certificate->setScan(
+                    new File($certificate->getScan()));
+        }*/
 
-        $entity->setScan(
-                new File($this->getParameter('kernel.root_dir') . '/../web/uploads/certificates/' . $entity->getScan()));
+        $form = $this->createForm(new \att\attBundle\Form\AtcertificateType($this->getDoctrine()->getManager()), $certificate, [
+            'action' => $this->generateUrl("att_certificate_edit", [
+                'mode' => $this->get('security.token_storage')->getToken()->getProviderKey(),
+                'id' => $certificate->getId()
+            ]),
+        ]);
 
+        $form = $form->handleRequest($request);
 
-        $form = $this->createForm(
-                new \att\attBundle\Form\AtcertificateType($this->getDoctrine()->getManager()), $entity
-        );
+        if ($form->isSubmitted() && $form->isValid()) {
 
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($certificate);
+            $em->flush();
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'status' => true,
+                    'message' => $this->get('translator')->trans('The Certificate was updated')
+                        ], 200);
+            }
+        }
 
-
-        return $this->render('attBundle:Certificate:edit.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $form->createView(),
-                    'formPath' => 'attBundle:Certificate:form.html.twig'
-        ));
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                    [
+                'form' => $this->renderView('attBundle:Certificate:edit.html.twig', [
+                    'form' => $form->createView()
+                ])]
+            );
+        } else {
+            return $this->render('attBundle:Certificate:edit.html.twig', [
+                        'form' => $form->createView(),
+            ]);
+        }
     }
 
     /**
@@ -354,7 +382,6 @@ class CertificateController extends Controller {
             return new JsonResponse(['message' => 'You can access this only using Ajax!'], 400);
         }
 
-
         $entity = new Atcertificate();
         $entity->setDate(new \DateTime());
         $entity->setEmployee($this->getUser()->getEmployee());
@@ -369,19 +396,14 @@ class CertificateController extends Controller {
 
         $form->handleRequest($request);
 
-
         if ($form->isValid()) {
-
             $persistedEntity = $this->get('certificate.manager')->persistCertificate($entity);
-
             return new JsonResponse([
                 'message' => 'ok',
                 'id' => $persistedEntity->getId(),
                     ], 200);
         }
 
-
-//$entity->setScan(NULL);  
         return new JsonResponse(
                 [
             'form' => $this->renderView('attBundle:Certificate:form.html.twig', [
@@ -392,51 +414,25 @@ class CertificateController extends Controller {
     }
 
     /**
-     * @param Request $request
-     * @Route("/{id}/update", name="att_certificate_update", options={"expose"=true})
-     * @Method({"POST"})
-     */
-    public function updateAction(Request $request, Atcertificate $certificate) {
-
-        if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse(['message' => 'You can access this only using Ajax!'], 400);
-        }
-
-        $form = $this->createForm(new \att\attBundle\Form\AtcertificateType($this->getDoctrine()->getManager()), $certificate);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-
-            $persistedEntity = $this->get('certificate.manager')->persistCertificate($certificate);
-            return new JsonResponse([
-                'message' => 'ok',
-                'id' => $persistedEntity->getId(),
-                    ], 200);
-        }
-
-        return new JsonResponse(
-                [
-//'message' => $form->getErrorsAsString(),
-            'form' => $this->renderView('attBundle:Certificate:edit.html.twig', [
-                'entity' => $certificate,
-                'form' => $form->createView(),
-            ])
-                ], 200);
-    }
-
-    /**
      *
      * @Route("/{id}", name="att_certificate_show", options={"expose"=true})
-     * @Method("GET")
+     * 
      */
-    public function showAction(Atcertificate $certificate) {
-        $deleteForm = $this->createDeleteForm($certificate);
+    public function showAction(Request $request, Atcertificate $certificate) {
 
-        return $this->render('attBundle:Certificate:show.html.twig', array(
-                    'certificate' => $certificate,
-                    'delete_form' => $deleteForm->createView(),
-        ));
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                    [
+                'page' => $this->renderView('attBundle:Certificate:show.ajax.twig', [
+                    'certificate' => $certificate
+                ])]
+            );
+        } else {
+           
+            return $this->render('attBundle:Certificate:show.html.twig', array(
+                        'certificate' => $certificate,
+            ));
+        }
     }
 
     /**

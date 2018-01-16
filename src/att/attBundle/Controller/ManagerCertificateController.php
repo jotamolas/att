@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use att\attBundle\Entity\Atworkflow;
 use att\attBundle\Form\WorkFlowCertType;
+use att\attBundle\Entity\Atcertificate;
 
 /**
  * @Route("{mode}/wfcertificate/" , name="att_workflow_certificate", requirements={"mode":"frontend|backend"})
@@ -58,6 +59,7 @@ class ManagerCertificateController extends Controller {
                 'certificates' => $certificates,
                     ]
             );
+
             return $this->render('attBundle:Certificate:wf.start.html.twig', ['form' => $form->createView()]);
         } else {
             return $this->render('attBundle:Certificate:wf.start.html.twig', ['form' => FALSE]);
@@ -79,12 +81,14 @@ class ManagerCertificateController extends Controller {
                     $certificate->getDatefrom(), $certificate->getDateto()
             );
 
-            $render = $this->render('attBundle:Certificate:wf.validate.html.twig', [
-                'certificate' => $certificate,
-                'absences' => $absences,
-            ]);
 
-            return new JsonResponse($render->getContent());
+
+            return new JsonResponse([
+                "page" => $this->renderView('attBundle:Certificate:wf.validate.html.twig', [
+                    'certificate' => $certificate,
+                    'absences' => $absences,
+                ])
+            ]);
         } else {
 
             return new Response('This is not ajax request!', 400);
@@ -93,10 +97,10 @@ class ManagerCertificateController extends Controller {
 
     /**
      * 
-     * @Route("create", name="att_workflow_certificate_create", options={"expose"=true})
+     * @Route("create/{certificate}", name="att_workflow_certificate_create", options={"expose"=true})
      * 
      */
-    public function createWfCertificateAction(Request $request) {
+    public function createWfCertificateAction(Request $request, Atcertificate $certificate) {
 
         if ($request->isXMLHttpRequest()) {
 
@@ -107,11 +111,11 @@ class ManagerCertificateController extends Controller {
             $atcertificate = $this->get('workflow.manager')->castToClass($wf->getParentClass(), $wf);
             // setting others atributtes
             $atcertificate->setWorkflow($this->getDoctrine()->getRepository('attBundle:Atworkflowtype')->findOneByServiceid('wf.certificate'));
-            $atcertificate->setEntityid($request->request->get('id'));
+            $atcertificate->setEntityid($certificate->getId());
 
             // persist 
             $persistedWfCertificate = $this->get('workflow.manager')->persistWorkFlow($atcertificate);
-            $certificate = $this->get('certificate.manager')->getCertificateById($request->request->get('id'));
+
             $absences = $this->getDoctrine()->getRepository('attBundle:Atabsence')->findBetweenDate(
                     $certificate->getDateFrom(), $certificate->getDateTo()
             );
@@ -119,16 +123,18 @@ class ManagerCertificateController extends Controller {
                 $absence->setCertification($persistedWfCertificate->getId());
                 $this->get('att.absence.service')->persistAbsence($absence);
             }
-
-            $render = $this->render('attBundle:Certificate:wf.create.html.twig', [
-                "workflow" => $persistedWfCertificate,
-                "certificate" => $certificate,
-                "absences" => $absences,
+            $this->get('workflow.manager')->createWorkflowMessage(
+                    $persistedWfCertificate,
+                    'The procedure was created');
+            return new JsonResponse(
+                    [
+                'page' => $this->renderView('attBundle:Certificate:wf.create.html.twig', [
+                    "workflow" => $persistedWfCertificate,
+                    "certificate" => $certificate,
+                    "absences" => $absences,
+                ])
             ]);
-
-            return new JsonResponse($render->getContent());
         } else {
-
             return new Response('This is not ajax!', 400);
         }
     }
@@ -154,14 +160,17 @@ class ManagerCertificateController extends Controller {
         // lo cambio al estado deseado manejando la excepciones de acuerdo al estado del workflows
 
         try {
-
+            $message = 'The procedure was authorized';
             $wfService->setAsAnalyzed($this->get('wf.certificate'));
 
             $certificate = $this->getDoctrine()->getRepository("attBundle:Atcertificate")->find($wf->getEntityid());
             $certificate->setAprobationstate(1);
-
+            $absences = $this->getDoctrine()->getRepository("attBundle:Atabsence")->findBy(['certification' => $wf->getId()]);
+            
+            foreach ($absences as $absence){
+                $absence->setStatejustif(true);
+            }
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($certificate);
             $em->flush();
             $wf->setStatekey($wfService->getStatekey());
 
@@ -172,13 +181,17 @@ class ManagerCertificateController extends Controller {
 
             return $this->render('attBundle:Certificate:msgs.html.twig', [
                         'status' => 'ok',
-                        'message' => 'It has been approved pending. You must update your assistance.'
+                        'message' => 'The procedure was approved. You must update your assistance'
             ]);
         } catch (\Gmorel\StateWorkflowBundle\StateEngine\Exception\UnsupportedStateTransitionException $exc) {
 
             return $this->render('attBundle:Certificate:msgs.html.twig', [
                         'status' => 'error',
-                        'message' => 'The procedure can not be approved from the state ' . $wfService->getState($this->get('wf.certificate'))
+                        'message' => $this->get('translator')->trans(
+                                'The procedure can not be approved from the state %wf_status%', [
+                            'wf_status' => $this->get('translator')->trans($wfService->getStatekey())
+                                ]
+                        )
                             ]
             );
         }
@@ -224,8 +237,13 @@ class ManagerCertificateController extends Controller {
         } catch (\Gmorel\StateWorkflowBundle\StateEngine\Exception\UnsupportedStateTransitionException $exc) {
 
             return $this->render('attBundle:Certificate:msgs.html.twig', [
-                        'status' => 'error',
-                        'message' => 'The procedure can not be canceled from the state ' . $wfService->getStatekey()
+                        'status' => 'error The procedure can not be canceled from the state',
+                        'message' => $this->get('translator')->trans(
+                                'The procedure can not be canceled from the state %wf_status%', [
+                            'wf_status' => $this->get('translator')->trans($wfService->getStatekey())
+                                ]
+                        )
+                      
             ]);
         }
     }
@@ -279,7 +297,11 @@ class ManagerCertificateController extends Controller {
 
             return $this->render('attBundle:Certificate:msgs.html.twig', [
                         'status' => 'error',
-                        'message' => 'You can not access this option from the state ' . $wfService->getStatekey()
+                        'message' => $this->get('translator')->trans(
+                                'You can not access this option from the state %wf_status%', [
+                            'wf_status' => $this->get('translator')->trans($wfService->getStatekey())
+                                ]
+                        )
                             ]
             );
         }
@@ -322,7 +344,11 @@ class ManagerCertificateController extends Controller {
 
             return $this->render('attBundle:Certificate:msgs.html.twig', [
                         'status' => 'error',
-                        'message' => 'The procedure can not be rectyfied from the state ' . $wfService->getStatekey()
+                        'message' => $this->get('translator')->trans(
+                                'The procedure can not be rectyfied from the state %wf_status%', [
+                            'wf_status' => $this->get('translator')->trans($wfService->getStatekey())
+                                ]
+                        )
             ]);
         }
     }
@@ -334,7 +360,6 @@ class ManagerCertificateController extends Controller {
      * 
      */
     public function showWfCertificate(Request $request, $id) {
-
         $wf = $this->getDoctrine()->getRepository("attBundle:Atworkflow")->find($id);
         $certificate = $this->getDoctrine()->getRepository("attBundle:Atcertificate")->find($wf->getEntityid());
         $msgs = $this->getDoctrine()->getRepository("attBundle:Atworkflowmsg")->findByWorkflow($wf);
@@ -345,9 +370,16 @@ class ManagerCertificateController extends Controller {
             'msgs' => $msgs,
             'mode' => $this->get('security.token_storage')->getToken()->getProviderKey()
         ];
-        $request->isXmlHttpRequest() ?
-                        $page = $this->render('attBundle:Certificate:wf.show.ajax.html.twig', $options) :
-                        $page = $this->render('attBundle:Certificate:wf.show..html.twig', $options);
+        if ($this->get('security.token_storage')->getToken()->getProviderKey() == 'frontend') {
+            $page = $this->render('attBundle:Certificate:wf.show.front.ajax.html.twig', $options);
+        } else {
+            $request->isXmlHttpRequest() ?
+                            $page = $this->render('attBundle:Certificate:wf.show.ajax.html.twig', $options) :
+                            $page = $this->render('attBundle:Certificate:wf.show.html.twig', $options);
+        }
+
+
+
         return $page;
     }
 

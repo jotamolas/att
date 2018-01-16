@@ -21,12 +21,9 @@
 </td>
 <td class="text-center">
     <div class="btn-group" role="group" >
-        <button type="button" data-toggle="modal" data-target="#edit_modal" class="btn btn-xs btn-default" id="edit" data-employeeid="{{ contract.employee.id }}" data-mode="{{mode}}">
+        <button type="button" data-toggle="modal" data-target="#edit_modal" class="btn btn-xs btn-default" id="edit" data-employeeid="{{ contract.employee.id }}" data-businessid="{{ contract.business.id }}" data-contractid="{{ contract.id }}" data-mode="{{mode}}">
             <span class="fa fa-edit"></span>
         </button>  
-        <button type="button" data-toggle="modal" data-target="#remove_modal"  class="btn btn-xs btn-default" id="remove" data-employeeid="{{ contract.employee.id }}" data-mode="{{mode}}">
-            <span class="fa fa-remove"></span>
-        </button>
         <button type="button" data-toggle="modal" data-target="#restday_modal" class="btn btn-xs btn-default" id="restday" data-employeeid="{{ contract.employee.id }}" data-businessid="{{ contract.business.id }}" data-contractid="{{ contract.id }}" data-mode="{{mode}}">
             <span class="fa fa-hotel"></span>
         </button>     

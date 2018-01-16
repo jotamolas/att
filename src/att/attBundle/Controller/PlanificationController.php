@@ -34,6 +34,19 @@ class PlanificationController extends Controller {
         ];
         return $this->render('attBundle:Planification:list.pagination.html.twig', $options);
     }
+    
+    /**
+     * @Route("/list/inconsistency", name="att_plan_inconsistency_list")
+     * @param Request $request
+     * @return type
+     */
+    public function listInconsistencyAction(Request $request){
+        $inconsistencies = $this->get('att.plan.service')->inconsistencyPagination($request);
+        dump($inconsistencies);
+        return $this->render('attBundle:Inconsistency:list.pagination.html.twig',[
+            'inconsistencies' => $inconsistencies['paginator']
+        ]);
+    }
 
     /**
      * @Route("/new", name="att_plan_new", options={"expose" = true})
@@ -72,13 +85,13 @@ class PlanificationController extends Controller {
             $data = $request->request->get('plan_from_schema');
             $result = $this->get('att.plan.service')->processPlansSchemaForm($data);
 
-            dump($result);
-            /* return $this->render('attBundle:Planification:action.result.html.twig',[
+            
+             return $this->render('attBundle:Planification:action.result.html.twig',[
               'status' => 'ok',
               'plans' => count($result['plan_persisted']),
               'persist_error' => count($result['plan_persist_error']),
-              'process_error' => count($result['plan_process_errors']) . " of contract employees has no registered schema data or not Active "
-              ]); */
+              'process_error' => count($result['plan_process_errors']) .$this->get('translator')->trans(" of contract employees has no registered schema data or not Active")
+              ]); 
         }
 
         return $this->render('attBundle:Planification:new.from.schema.html.twig', [
@@ -111,9 +124,9 @@ class PlanificationController extends Controller {
 
             return new JsonResponse(
                     ['status' => 'ok',
-                'errors' => "Errors founds: " . count($result['errors_persist']),
-                'plansNew' => "Persisted records: " . count($result['plansNew']),
-                'plansUpdate' => "Updated records: " . count($result['plansUpdate'])
+                'errors' => $this->get('translator')->trans("Errors founds").": ". count($result['errors_persist']),
+                'plansNew' => $this->get('translator')->trans("Persisted records").": " . count($result['plansNew']),
+                'plansUpdate' => $this->get('translator')->trans("Updated records").": " . count($result['plansUpdate'])
                     ], 200);
         }
 

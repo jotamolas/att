@@ -1,0 +1,34 @@
+<div id="show-content">
+    <div class="row">
+        {{ render(controller('attBundle:ManagerCertificate:timeLineWorkFlow',{ 'id': wf.id }))}}    
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'attBundle:Workflowmsg:table.html.twig' with {'msgs':msgs} %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="list-inline">
+                <a class="btn btn-sm btn-default" id="rectify" href="#">    
+                    <i class="fa fa-share fa-fw"></i>{% trans %} Rectify {% endtrans %}
+                </a>
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="row">    
+    {% include 'attBundle:Workflowmsg:modal.wfmsg.new.html.twig' %}
+</div> 
+
+<script>
+    $('#rectify').click(function () {
+        $('#show-content').load('{{ path('att_workflow_certificate_rectify' , { 'id': wf.id ,"mode": mode }) }}');
+    });
+</script>  
+
+
+

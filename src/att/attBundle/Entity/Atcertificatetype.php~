@@ -27,8 +27,16 @@ class Atcertificatetype
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+    
+     /**
+     * 
+     * @ORM\OneToMany(targetEntity="Atworkleavetype", mappedBy="certificatetype")
+     */
+    private $workleavetypes;
 
-
+    public function __construct() {
+        $this->workleavetypes = new \Doctrine\Common\Collections\ArrayCollection() ;
+    }
 
     /**
      * Set description
@@ -66,4 +74,5 @@ class Atcertificatetype
     }
     
     
+
 }

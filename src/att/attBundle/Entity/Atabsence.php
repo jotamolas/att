@@ -15,8 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="att\attBundle\Repository\AtabsenceRepository")
  * @UniqueEntity("attendance")
  */
-class Atabsence
-{
+class Atabsence {
+
     /**
      * @var integer
      *
@@ -25,9 +25,9 @@ class Atabsence
     private $certification;
 
     /**
-     * @var binary
+     * @var boolean
      *
-     * @ORM\Column(name="stateJustif", type="binary", nullable=true)
+     * @ORM\Column(name="stateJustif", type="boolean", nullable=true)
      */
     private $statejustif;
 
@@ -45,16 +45,13 @@ class Atabsence
      *
      * 
      *
-     * @ORM\OneToOne(targetEntity="\att\attBundle\Entity\Atattendance")
+     * @ORM\OneToOne(targetEntity="\att\attBundle\Entity\Atattendance", inversedBy="absence", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="attendance", referencedColumnName="id")
      * })
      */
     private $attendance;
 
-
-
-    
     /**
      * @var \att\attBundle\Entity\Atworkleave
      * @ORM\ManyToOne(targetEntity="\att\attBundle\Entity\Atworkleave",inversedBy="absences")
@@ -64,13 +61,21 @@ class Atabsence
     private $workleave;
 
     /**
+     * @var \att\medicalsrvBundle\Entity\Atmedicalorder
+     * @ORM\ManyToOne(targetEntity="\att\medicalsrvBundle\Entity\Atmedicalorder",inversedBy="absences")
+     * @ORM\JoinColumn(name="medicalorder", referencedColumnName="id")
+     * 
+     * @var type 
+     */
+    private $medicalorder;
+
+    /**
      * Set certification
      *
      * @param integer $certification
      * @return Atabsence
      */
-    public function setCertification($certification)
-    {
+    public function setCertification($certification) {
         $this->certification = $certification;
 
         return $this;
@@ -81,32 +86,8 @@ class Atabsence
      *
      * @return integer 
      */
-    public function getCertification()
-    {
+    public function getCertification() {
         return $this->certification;
-    }
-
-    /**
-     * Set statejustif
-     *
-     * @param binary $statejustif
-     * @return Atabsence
-     */
-    public function setStatejustif($statejustif)
-    {
-        $this->statejustif = $statejustif;
-
-        return $this;
-    }
-
-    /**
-     * Get statejustif
-     *
-     * @return binary 
-     */
-    public function getStatejustif()
-    {
-        return $this->statejustif;
     }
 
     /**
@@ -115,8 +96,7 @@ class Atabsence
      * @param integer $id
      * @return Atabsence
      */
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
 
         return $this;
@@ -127,8 +107,7 @@ class Atabsence
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -138,8 +117,7 @@ class Atabsence
      * @param \att\attBundle\Entity\Atattendance $attendance
      * @return Atabsence
      */
-    public function setAttendance(\att\attBundle\Entity\Atattendance $attendance)
-    {
+    public function setAttendance(\att\attBundle\Entity\Atattendance $attendance) {
         $this->attendance = $attendance;
 
         return $this;
@@ -150,15 +128,12 @@ class Atabsence
      *
      * @return \att\attBundle\Entity\Atattendance 
      */
-    public function getAttendance()
-    {
+    public function getAttendance() {
         return $this->attendance;
     }
 
-
-    
     public function __toString() {
-        return "Absence | ID:".$this->getId()." | Certification WorkFlow: ".$this->certification;
+        return "Absence | ID:" . $this->getId() . " | Certification Procedure: " . $this->certification;
     }
 
     /**
@@ -168,8 +143,7 @@ class Atabsence
      *
      * @return Atabsence
      */
-    public function setWorkleave(\att\attBundle\Entity\Atworkleave $workleave = null)
-    {
+    public function setWorkleave(\att\attBundle\Entity\Atworkleave $workleave = null) {
         $this->workleave = $workleave;
 
         return $this;
@@ -180,8 +154,54 @@ class Atabsence
      *
      * @return \att\attBundle\Entity\Atworkleave
      */
-    public function getWorkleave()
-    {
+    public function getWorkleave() {
         return $this->workleave;
+    }
+
+    /**
+     * Set statejustif
+     *
+     * @param boolean $statejustif
+     *
+     * @return Atabsence
+     */
+    public function setStatejustif($statejustif) {
+        $this->statejustif = $statejustif;
+
+        return $this;
+    }
+
+    /**
+     * Get statejustif
+     *
+     * @return boolean
+     */
+    public function getStatejustif() {
+        return $this->statejustif;
+    }
+
+
+    /**
+     * Set medicalorder
+     *
+     * @param \att\medicalsrvBundle\Entity\Atmedicalorder $medicalorder
+     *
+     * @return Atabsence
+     */
+    public function setMedicalorder(\att\medicalsrvBundle\Entity\Atmedicalorder $medicalorder = null)
+    {
+        $this->medicalorder = $medicalorder;
+
+        return $this;
+    }
+
+    /**
+     * Get medicalorder
+     *
+     * @return \att\medicalsrvBundle\Entity\Atmedicalorder
+     */
+    public function getMedicalorder()
+    {
+        return $this->medicalorder;
     }
 }

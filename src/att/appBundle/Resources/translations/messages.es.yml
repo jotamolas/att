@@ -1,12 +1,13 @@
 ## Dashboard
 id: ID
 Id: ID
-Start: Inicio   
+Start: Iniciar  
 User Profile: Perfil
 Logout: Cerrrar Sesion   
 Settings: Ajustes
 Dashboard: Escritorio
 Hello: Hola
+Welcome: Bienvenid@
 Welcome to the Att Dasboard panel. In this space, you can administer the application and manage the modules enabled in it. Att welcomes you and wishes you luck: Bienvenido al panel Att Dashboard. En este espacio, puede administrar la aplicación y administrar los módulos habilitados en ella. Att le da la bienvenida y le desea suerte 
 To start in the navigation bar you will find the modules of the system, clicking on them will display the corresponding menu in the sidebar to your left. : Para comenzar, en la barra de navegación encontrará los módulos del sistema, al hacer clic en ellos se mostrará el menú correspondiente en la barra lateral a su izquierda.
 Module Employee: Modulo Empleado
@@ -15,8 +16,27 @@ Surname: Apellido
 Last Name: Apellido
 List: Listar
 list: listar
+List Type: Listar Tipo
+New Type: Nuevo Tipo
 New: Nuevo
 new: nuevo
+Edit: Editar
+edit: editar
+Update: Actualizar
+update: actualizar
+Description: Descripcion
+Select: Seleccionar
+select: seleccionar
+view: ver
+View: Ver
+Show: Mostrar
+show: mostrar
+Contract Number: Número de Contrato
+Password: Contraseña
+password: contraseña
+Remember me: Recordarme
+Forgot your password: Olvido su contraseña
+Sign In: Ingresar
 Employee: Empleado
 Employees: Empleados
 employee: empleado
@@ -47,6 +67,7 @@ Status: Estado
 status: estado
 Rest Day: Franco
 Rest Days: Francos
+Rest days: Francos
 Actions: Acciones
 Action: Accion
 Genre: Genero
@@ -63,10 +84,26 @@ Person Id: DNI
 Person id: DNI
 File ID: Legajo
 File Id: Legajo
+File Number: Legajo
 Start Date: F.Inicio
 End Date: F.Fin
 In: H.Entrada
 Out: H.Egreso
+Errors when Persist: Errores al Persistir
+Validations Errors: Errores de Validación
+Errors in Validations: Errores de Validación
+One or more attendances could not be recorded. See reported errors.: Una o mas Asistencias no pudieron ser grabadas. Ver errores reportados.
+One or more attendances are saved: Una o más Asistencias fueron registradas.
+for the planification: para la planificación
+for employee: para el empleado
+The %value% could not be determined, verify the format.: El valor %value% no puede ser determinado, verificar el fomato indicado.
+Attendance Records: Registrando Asistencia
+List Attendances: Listar Asistencias
+Absences Detected: Ausencias Detectadas
+List Absences: Listar Ausencias
+Attendances Processed: Asistencias Procesadas
+List Attendances: Listar Asistencias
+
 Filter by Id File: Filtrar por Legajo
 Filter by Person ID: Filtrar por DNI
 Filter by Last Name: Filtrar por Apellido
@@ -76,6 +113,30 @@ Filter by Company: Filtrar por Compañia
 Filter by Schema: Filtrar por Esquema
 Filter by Agreement: Filtrar por Convenio
 Filter by Status: Filtrar por Estado
+File must have an image format JPG or JPEG digital PDF.: El archivo debe ser de formato JPG o JPEG o digital PDF.
+Complete Legal Information: Completar Información Legal
+New Department: Nuevo Departmento
+List of Department: Listado de Departamentos
+Inconsistency: Inconsistencia
+Inconsistencies: Inconsistencias
+List of Inconsistencies: Listado de Inconsistencias
+Showing: Mostrando
+Close: Cerrar
+Call Employee: Contactar Empleado
+Phone: Teléfono
+Cell Phone: Móvil
+
+
+New Contract: Nuevo Contrato
+Step: Paso
+Complete Personal Information: Complete su Información Personal
+Select one Business for New Contract: Seleccione un Negocio para el Nuevo Contrato
+Select a Employee: Seleccione un Empleado
+Complete Planning Information: Complete la Información de Planificación
+Skip: Saltar
+Next: Siguiente
+New - Wizard: Nuevo - Asistente
+Finish: Terminado
 
 Sunday: Domingo
 sunday: domingo
@@ -97,18 +158,46 @@ Register: Registrar
 Plan: Planificacion
 Planification: Planificacion
 
+January: Enero
+February: Febrero
+March: Marzo
+April: Abril
+May: Mayo
+June: Junio
+July: Julio
+August: Agosto
+September: Septiembre
+October: Octubre
+November: Noviembre
+December: Diciembre
+
+
+of contract employees has no registered schema data or not Active: de los contractos, no tiene registrado un Esquema o no se encuentra Activo.
+from: desde
+Plans Created From Schema: Planficaciones creadas desde su Esquema
+Planifications imported or updated: Planificaciones importadas o actualizadas
+Errors in Planifications: Error al crear Planificaciones
+
 Create Plan From Schema: Crear Planificacion desde el Esquema
 Select date range: Seleccione un rango de fechas
 Select employees to apply planning : Seleccione Empleados a Planificar
+Select time range: Seleccione un rango de horas
+Select Plan State: Seleccione un Estado Planficado
 Create: Crear
+Created: Creado
+Modified: Modificado
 Save: Guardar
 New: Nuevo
+Remove: Eliminar
+Delete: Borrar
 From File: Desde Archivo
 Planification Module: Modulo Planificacion
+In: Ingreso
+Out: Egreso
 
 
-
-
+My Address: Mi Dirección
+My Contact Data: Mis Datos de Contacto
 Employee Module: Modulo Empleado
 Import:	Importar
 Configuration: Configuracion
@@ -135,6 +224,10 @@ Rows updated: Lineas de Empleados actualizados
 Errors in rows: Errores en lineas del archivo
 Contraint Validation Errors: Errores de validacion
 Exceptions: Excepciones
+Errors founds: Errores Encontrados
+Updated records: Registros Actualizados
+Persisted records: Registros Persistidos
+
 
 Module: Modulo
 module: modulo
@@ -149,35 +242,144 @@ Absence: Ausencia
 absence: Ausencia
 Absents: Ausentes
 absents: ausentes
+Absences: Ausencias
+List of Absences: Listado de Ausencias
+List of Notifications: Listado de Notificaciones
+List of Attendances: Asistencias
+
+Absenteeism: Ausentismo
+Stats: Etadísticas
 
 Planned: Planificados
 planned: planificados
+Absences Notifications: Avisos de Ausencia
+
+Hs Worked: Hs. Trabajadas
+Hs Plan: Hs. Planificadas
+
+In Plan: Plan Ingreso
+Out Plan: Plan Egreso
+
+Search by Absence Type: Buscar por Tipo de ausencia
+From Date: Desde Fecha
+To Date: Hasta Fecha
+Prestation Date: Fecha Presentación
+Date From: Desde Fecha
+Date from: Desde Fecha
+Date To: Hasta Fecha
+Date to: Hasta Fecha
+Days: Días
+Edit Notification: Editar Notificación
+
 
 
 Attendance Module: Módulo Asistencia
-Notification: Notificacion
-notification: notificacion
+Notification: Notificación
+notification: notificación
+Register Notification: Registrar Notificación
+Absence Type: Tipo de Ausencia 
+Absence Manage: Gestionar Ausencia
+Subject: Asunto
+Date: Fecha
+Date Range: Rango de Fechas
+New Notification: Nueva Notificación
+Notify Absence: Notificar Ausencia
+The following absences will be approved if the procedure is approved: Las siguientes ausencias seran Justificadas en caso de aprobarse el trámite
+The procedure was rectyfied: El trámite fue rectificado
+The document is attached to the process. The certificate is pending analysis.: EL documento fue adjuntado al trámite. El certificado quedó pendiente de análisis.
+The procedure was authorized: El trámite fue autorizado. El certificado será aprobado.
+The procedure was canceled: El trámite fue cancelado.
+The procedure was created: El trámite fue creado.
+The procedure can not be canceled from the state %wf_status%: El trámite no puede ser cancelado desde el estado wf_status
+You can not access this option from the state %wf_status%: No puedes acceder a esta opción desde el estado wf_status
+The procedure can not be rectyfied from the state %wf_state% : El trámite no puede ser rectificado desde el estado wf_state
+The procedure was approved. You must update your assistance: ¡Éxito! Ha el tramite fue aprobado. Debes actualizar tu asistencia
+The procedure can not be approved from the state %wf_status%: El trámite no puede ser aprobado desde el estado wf_status
+
+
+Code: Código
+Qty Days: Cant. Días
+Range Days: Rango de Días
+to: hasta
+Certification: Certificación
 
 Make: Hacer
 make: hacer
 Process: Procesar
 process: procesar
+Inconsistencies: Inconsistencias
 
 Certificate Module: Modulo Certificado
-Certification Workflow: Workflow Certificación
+Certification Procedure: Tramite de Certificación
 Presentation Date: Fecha de Presentación
 From: Desde
 To: Hasta
 Approved: Aprobado
+Not Approved: Rechazado
 Type: Tipo
 Certificate: Certificado
+Certificate Show: Mostrar Certificado
+Certificate Edit: Editar Certificado
+The Certificate was updated: El Certificado fue actualizado.
+Procedure Detail: Detalle del Trámite
+Procedure List: Listado de Trámites
+Procedure: Tramite
+Messagges: Mensajes
+Message: Mensaje
+Digitization: Digitalización
+Observations: Observaciones
+Approved: Aprobado
+Presented: Presentado
+Recorded: Registrado
+Awaiting Analysis: Aguardando Análisis
+Analyzed: Analizado
+Cancelled: Cancelado
+Select a Certificate to Authorize: Seleccione un Certificado para Autorizar
+There are no registered certificates: No existen certificados sin proceso de justificación
+Manage Certification: Gestionar Certificación
+Call Medical Service: Llamar Servicios Médicos
+Create Work Leave: Crear Licencia
+Managing: Gestionando
+New Certificate: Nuevo Certificado
+Diagnostic: Diagnostico
+Sick Leave: Reposo
+Upload Scan File: Cargar Archivo Digitalizado
+form.medical.visit.rest: Indica reposo?
+form.medical.visit.confirmorder: Confirma la orden?
+
+
+
+
+Aprobation Status: Aprobado 
+Details: Detalles
+Attach Documentation: Documentación Presentada
+Scan: Digitalización
+Timeline: Linea de Tiempo
+Attach: Adjuntar
+Authorize: Autorizar
+Reject: Rechazar
+Rectify: Rectificar
+
 
 Id Person: DNI
 Last View: Ultima Vista
 State: Estado
 
 List of Certificates: Listado de Certificados
-List of Certificate Workflow: Listado de Workflows de Certificación
+List of Certificate Procedures: Listado de Trámites de Certificación
+My Procedures: Mis Trámites
+
+My Certificates: Mis Certificados
+Send Certificate: Enviar Certificado
+Justify Absence: Justificar Inasistencia
+Justify: Justificar
+Certificate Type: Tipo de Certificado
+
+Medical: Médico
+Stude: Estudio
+Other: Otro
+
+
 
 List of Planifications: Listado de Planes
 Day: Dia
@@ -187,11 +389,11 @@ Names: Nombres
 In: Ingreso
 Out: Salida
 Hs Work: Horas de Trabajo
-Plan State: Estado
+Plan State: Plan Estado
 Actions: Acciones
 
 WSDL - REST API Sync: WSDL - REST API Sicronización
-
+Syncronization: Sicronización
 Search by Date: Buscar por Fecha
 Search by Employee Name: Buscar por Nombre
 Search by Employee Last Name: Buscar por Apellido
@@ -205,3 +407,93 @@ Choose an Option: Elige una Opción
 
 Medical Service: Servicios Medicos
 medical service: servicios medicos
+
+Medical Service Module: Modulo Servicios Médicos
+Medical Order: Orden Médica
+List of Medical Services: Lista de Servicios Médicos
+List of Medical Order: Listado de Ordenes Médicas
+New Medical Order: Nueva Orden Médica
+Service: Servicio
+Externalsystem: Sistema Externo
+New Medical Service: Registrar Servicio Médico
+Add visit: Agregar visita
+Visits: Visitas
+Create Medical Order: Solicitar Medico Laboral
+Assigned: Asignado
+Pre Diagnostic: Pre Diagnostico
+Visit Date: Fecha de Visita
+Medical Rest: Reposo
+Rest Date From: Reposo Desde
+Rest Date To: Reposo Hasta
+
+#medical order status
+draft: borrador
+assigned: asignada
+in progress: en progreso
+accomplished: realizada
+canceled: cancelada
+
+Resume Last Month: Resumen Horas Mes Pasado
+made: realizada
+
+#CtrlAcc
+Control Access: Control de Acceso
+Control Access Module: Módulo Control Acceso
+Event: Evento
+Device: Dispositivo
+New Device: Nuevo Dispositivo
+Access Control: Control de Acceso
+
+Person: Persona
+Hours Worked: Horas Trabajadas
+Search by Person: Buscar por Persona
+List of Events: Lista de Eventos
+Id Device: Id Dispositivo
+Device: Dispositivo
+Devices: Dispositivos
+Port: Puerto
+Event Date: Fecha de Evento
+Event Time: Hora de Evento
+List of Device Types: Lista de Tipos de Dispositivos
+List of Devices: Lista de Dispositivos
+Configure: Configurar
+Table or Method: Tabla o Método
+Event Date Attribute: Atributo Fecha del Evento
+Event Time Attribute: Atributo Tiempo del Evento
+Employee Attribute: Atributo Empleado
+Event Attribute: Atributo Evento
+In Event Value: Valor Ingreso del Atributo Evento
+Out Event Value: Valor Egreso del Atributo Evento
+Sync Events from Database: Sincronizar Eventos desde Base de Datos
+Database: Base de Datos
+Database Syncronization: Sincronización de Base de Datos
+Sync Events from Database - Result: Sincronizar Eventos desde Base de Datos - Resultado
+No metadata configuration for this Database: La Base de Datos remota no tiene configurado sus Metadatos.
+There are no new events to synchronize: No existen nuevo eventos para sincronizar.
+Events found in remote system: Eventos encontrados en el Sistema Remoto
+Events Persisted in Control Access: Eventos persistidos en Control de Acceso.
+Errors Persisting: Errores Persistiendo
+Last Event ID Sync from Remote System: Último ID Sicronizado del System Remoto
+External System: Sistema Externo
+
+
+
+Work Leave: Licencia
+New Work Leave: Nueva Licencia
+Work Leave Type: Tipo de Licencia
+New Work Leave Type: Nuevo Tipo de Licencia
+Work Leave Type List: Lista de Tipos de Licencia
+Max Days: Días Máximos
+Maximum Days: Días Máximos
+Max Days Sequencial: Días Máximos Consecutivos
+Consecutive Maximum Days: Días Máximos Consecutivos
+Is justifiable?: Es Justificable?
+Is justifiable: Es Justificable
+Is_payable: Es Abonable?
+Is payable: Es Abonable?
+Yes: Si
+
+
+workflow.certificate.create: El Certificado Id %certificate_id% será analizado para su aprobación.
+workflow.certificate.create.absences: Inasistencia Id. %absence_id%, producida en la fecha %absence_date%, incluida en Trámite %absence_procedure%
+ 

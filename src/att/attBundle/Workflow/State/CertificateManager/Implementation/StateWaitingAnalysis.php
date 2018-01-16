@@ -20,7 +20,7 @@ class StateWaitingAnalysis extends AbstractCertificateState {
         return "Awaiting Analysis";
     }
     
-    public function setCertificateAsAnalizado(HasStateInterface $certificate)
+    public function setCertificateAsAnalyzed(HasStateInterface $certificate)
     {
         $newstate = $this->getStateFromStateId(StateAnalyzed::KEY, __METHOD__, $certificate);
         if ($newstate) {

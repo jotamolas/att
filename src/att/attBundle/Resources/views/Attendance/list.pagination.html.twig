@@ -1,81 +1,157 @@
 {% extends 'attBundle:Default:index.html.twig' %}
+{% block title %} {% trans %} Attendance {% endtrans %} - {% trans %} List {% endtrans %} {% endblock %}
 {% block content %}
-<ol class="breadcrumb">
-    <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
-    <li><a href="#">{% trans %}Attendance{% endtrans %}</a></li>                                
-    <li class="active">{% trans %}List{% endtrans %}</li>
-</ol>
+    <ol class="breadcrumb">
+        <li><a href="#">{% trans %}Dashboard{% endtrans %}</a></li> 
+        <li><a href="#">{% trans %}Attendance{% endtrans %}</a></li>                                
+        <li class="active">{% trans %}List{% endtrans %}</li>
+    </ol>
 
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <i class="fa fa-table"></i>
-            <span>{% trans %}List of Attendances{% endtrans %}</span>
-        </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-table"></i>
+                <span>{% trans %}List of Attendances{% endtrans %}</span>
+                <div class="dropdown pull-right">
+                    <a class="btn btn-default" href="{{path('att_attendance_export',{'mode': app.security.token.providerKey})}}">
+                        <span class="fa fa-file-excel-o"></span>
+                    </a>
+                </div>
+                <div class="clearfix">
 
-        <div class="panel-body">
-            <div class="table table-responsive">
-                <table class="table table-bordered table-hover" style="font-size: 11px;">
-                    <thead>
-                        <tr>
-                            <th>{{ sorter_link(atts, "p.date", "Date") }}</th>
-
-                            <th>{{ sorter_link(atts, "e.surname", "Surname" | trans) }}</th>
-                            <th>{{ sorter_link(atts, "e.name", "Names" | trans)}}</th> 
-                            <th>{{ sorter_link(atts, "p.inplan", "In Plan" | trans)}}</th>
-                            <th>{{ sorter_link(atts, "p.inatt", "In" | trans)}}</th> 
-                            <th>{{ sorter_link(atts, "p.outplan", "Out Plan" | trans)}}</th>
-                            <th>{{ sorter_link(atts, "p.outatt", "Out" | trans)}}</th>
-                            <th>{{ sorter_link(atts, "p.hsworkplan", "Hs Plan" | trans)}}</th> 
-                            <th>{{ sorter_link(atts, "a.hsworked", "Hs Worked" | trans)}}</th> 
-                            <th>{{ sorter_link(atts, "sp.description", "Plan State" | trans)}}</th> 
-                            <th>{{ sorter_link(atts, "sa.description", "State" | trans)}}</th> 
-
-                        </tr>
-
-                        <tr>                          
-                            <td>{{ filter_search(atts, "p.date")}}</td>
-
-                            <td>{{ filter_search(atts, "e.surname" )}}</td>
-                            <td>{{ filter_search(atts, "e.name")}}</td>
-                            <td>{{ filter_search(atts, "p.inplan")}}</td>
-                            <td>{{ filter_search(atts, "a.inatt")}}</td>
-                            <td>{{ filter_search(atts, "p.outplan")}}</td>
-                            <td>{{ filter_search(atts, "p.outatt")}}</td>
-                            <td>{{ filter_search(atts, "p.hsworkplan")}}</td>
-                            <td>{{ filter_search(atts, "a.hsworked")}}</td>
-                            <td>{{ filter_select(atts, "sp.description", states)}}</td>
-                            <td>{{ filter_select(atts, "sa.description", states)}}</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for att in atts %}
-                            <tr>
-                                <td>{{ att.plan.date | date('Y-m-d') }}</td>
-
-                                <td>{{ att.plan.employee.surname }}</td>
-                                <td>{{ att.plan.employee.name }}</td>
-                                <td>{{ att.plan.inplan | date('H:i')}}</td>
-                                <td>{% if att.inatt %}  {{ att.inatt | date('H:i:s')}}{% else %} - {% endif %}</td>
-                                <td>{{ att.plan.outplan | date('H:i') }}</td>
-                                <td>{% if att.outatt %} {{ att.outatt | date('H:i:s')}}{% else %} - {% endif %}</td>
-                                <td>{{ att.plan.hsworkplan }}</td>
-                                <td>{{ att.hsworked }}</td>
-                                <td>{{ att.plan.stateplan.description }}</td>
-                                <td>{% if att.stateattendance %} {{ att.stateattendance.description }} {% else %} - {% endif %}</td>
-
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                </div>
             </div>
-        </div>
-        <div class="panel-footer">
-            <div class="text-center">
-                {{ pagination(atts) }}
-            </div> 
-        </div>  
-    </div>
-</div>
-{% endblock %}
-        
+
+            <div class="panel-body">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-hover" style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{% trans %}Day {% endtrans%}</th>
+                                <th>{{ sorter_link(atts, "p.date", "Date" | trans) }}</th>
+                                <th>{{ sorter_link(atts, "e.surname", "Surname" | trans) }}</th>
+                                <th>{{ sorter_link(atts, "e.name", "Names" | trans)}}</th> 
+                                <th>{{ sorter_link(atts, "e.dni", "Person Id" | trans)}}</th> 
+                                <th>{{ sorter_link(atts, "p.inplan", "In Plan" | trans)}}</th>
+                                <th>{{ sorter_link(atts, "p.inatt", "In" | trans)}}</th> 
+                                <th>{{ sorter_link(atts, "p.outplan", "Out Plan" | trans)}}</th>
+                                <th>{{ sorter_link(atts, "p.outatt", "Out" | trans)}}</th>
+                                <th>{{ sorter_link(atts, "p.hsworkplan", "Hs Plan" | trans)}}</th> 
+                                <th>{{ sorter_link(atts, "a.hsworked", "Hs Worked" | trans)}}</th> 
+                                <th>{{ sorter_link(atts, "sp.description", "Plan State" | trans)}}</th> 
+                                <th>{{ sorter_link(atts, "sa.description", "State" | trans)}}</th> 
+                                <th>{% trans %} OverHour {% endtrans%} </th>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>{{ filter_search(atts, "p.date")}}</td>
+                                <td>{{ filter_search(atts, "e.surname" )}}</td>
+                                <td>{{ filter_search(atts, "e.name")}}</td>
+                                <td>{{ filter_search(atts, "e.dni")}}</td>
+                                <td>{{ filter_search(atts, "p.inplan")}}</td>
+                                <td>{{ filter_search(atts, "a.inatt")}}</td>
+                                <td>{{ filter_search(atts, "p.outplan")}}</td>
+                                <td>{{ filter_search(atts, "p.outatt")}}</td>
+                                <td>{{ filter_search(atts, "p.hsworkplan")}}</td>
+                                <td>{{ filter_search(atts, "a.hsworked")}}</td>
+                                <td>{{ filter_select(atts, "sp.description", states)}}</td>
+                                <td>{{ filter_select(atts, "sa.description", states)}}</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for att in atts %}
+                                {% if att.stateattendance is not null %}
+                                    {% if att.stateattendance.description == 'Ausente' %}
+                                        <tr class="danger">
+                                        {% else %}
+                                        <tr class="success">              
+                                        {% endif %}  
+                                    {% else %}
+                                    <tr>
+                                    {% endif %}
+                                    <td>{{att.id}}</td>
+                                    <td>{{ att.plan.date | date('l')  | trans }}</td>
+                                    <td>{{ att.plan.date | date('Y-m-d') }}</td>
+
+                                    <td>{{ att.plan.employee.surname }}</td>
+                                    <td>{{ att.plan.employee.name }}</a></td>
+                                    <td><a href="#employee_modal" data-toggle="modal" data-target="#employee_modal" data-id="{{ att.plan.employee.id }}" data-mode="{{ app.security.token.providerKey }}"><span class="glyphicon glyphicon-modal-window"></span> {{ att.plan.employee.dni }}<a></td>
+                                                <td>{{ att.plan.inplan | date('H:i')}}</td>
+                                                <td>{% if att.inatt %}  {{ att.inatt | date('H:i:s')}}{% else %} - {% endif %}</td>
+                                                <td>{{ att.plan.outplan | date('H:i') }}</td>
+                                                <td>{% if att.outatt %} {{ att.outatt | date('H:i:s')}}{% else %} - {% endif %}</td>
+                                                <td>{{ att.plan.hsworkplan }}</td>
+                                                <td>{% if att.hsworked %} {{ att.hsworked | date('h:i')}} {% else %} - {% endif %} </td>
+                                                <td>{{ att.plan.stateplan.description }}</td>
+                                                <td>{% if att.stateattendance %} {{ att.stateattendance.description }} {% else %} - {% endif %}</td>
+
+                                                {% if att.aditionalhours %}
+                                                    {% if not att.aditionalhours.isapproved %}
+                                                        <td class="text-center danger">
+                                                        {% else %} 
+                                                        <td class="text-center">
+                                                        {% endif %}                                    
+                                                        <div class="btn-group" role="group" >
+                                                            <a data-toggle="modal" href="{{ path('att_attendance_auth_aditionalhours',{'mode': app.security.token.providerKey, 'aditionalhours' : att.aditionalhours.id })}}">
+                                                                <span class="fa fa-cogs"></span>
+                                                            </a> 
+                                                        </div>   
+                                                    {% else %}
+                                                    <td class="text-center">
+                                                        - 
+                                                    {% endif %}  
+                                                </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                            </table>
+                                            </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <div class="text-center">
+                                                    {{ pagination(atts) }}
+                                                </div> 
+                                            </div>  
+                                            </div>
+                                            </div>
+                                            <div class="modal fade" id="employee_modal" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">{%trans%}Employee {% endtrans %}:</h4>
+                                                        </div>
+
+                                                        <div class="modal-body" id="modal-body-employee">
+
+
+                                                        </div>                
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endblock %}
+
+                                        {%  block javascripts %}
+
+                                            <script type="text/javascript">
+
+                                                $('#employee_modal').on('show.bs.modal', function (e) {
+
+                                                    //get data-id attribute of the clicked element
+                                                    var employeeid = $(e.relatedTarget).data('id');
+                                                    var mode = $(e.relatedTarget).data('mode');
+                                                    $('#modal-body-employee').load(Routing.generate('employee_contract_active_show',
+                                                            {
+                                                                'mode': mode,
+                                                                'employee': employeeid
+                                                            }));
+
+
+                                                });
+                                            </script>
+                                        {% endblock %}

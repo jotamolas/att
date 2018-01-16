@@ -89,7 +89,7 @@ class Atrestday
      */
     public function getDescription()
     {
-        return $this->description;
+        return ucfirst($this->description);
     }
     
     
@@ -99,8 +99,6 @@ class Atrestday
             return;
         }
         $this->contracts[] = $contract;
-        $contract->addRestDay($this);
-        
         
     }
     

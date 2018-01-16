@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-group ">
-                    <label for="">Select date range:</label>
+                    <label for="">{% trans %}Select date range{% endtrans %}:</label>
                     <div class="input-group input-daterange">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -50,7 +50,7 @@
                     </div>   
                 </div>   
                 <div class="form-group ">
-                    <label for="">Select employees to apply planning : </label>
+                    <label for="">{% trans %}Select employees to apply planning{% endtrans %}: </label>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-user"></span>
@@ -72,7 +72,7 @@
 {% endblock content %}        
    
 {% block javascripts %}
-    {{ parent() }}
+    
     
     <script>
         $('.input-daterange input').each(function () {

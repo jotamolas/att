@@ -17,7 +17,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *      indexes={
  *          @ORM\Index(name="IDX_6316C3561CD9BF62", columns={"employee"}),
  *          @ORM\Index(name="IDX_6316C3563847FA69", columns={"business"}),
- *          @ORM\Index(name="AtContract_ibfk_3", columns={"status"})
+ *          @ORM\Index(name="AtContract_ibfk_3", columns={"status"}),
+ *          @ORM\Index(name="id", columns={"id"})
+ *
  *      }
  *     )
  * 
@@ -90,7 +92,7 @@ class Atcontract implements UserInterface {
      * 
      * @var \att\employeeBundle\Entity\Atschema
      * @ORM\ManyToOne(targetEntity="\att\employeeBundle\Entity\Atschema")
-     * @ORM\JoinColumn(name="sch", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="sch", referencedColumnName="id")
      * @Type("att\employeeBundle\Entity\Atschema")
      * @Groups({"getSchema"})
      * 
@@ -165,9 +167,7 @@ class Atcontract implements UserInterface {
 
     /**
      * @var integer
-     * 
-     * @ORM\Column(name="id", type="integer")
-     * 
+     * @ORM\Column(name="id", type="integer")     
      */
     private $id;
 
@@ -414,47 +414,7 @@ class Atcontract implements UserInterface {
         return $this;
     }
 
-    /**
-     * Set in_time
-     *
-     * @param \DateTime $inTime
-     * @return Atcontract
-     */
-    public function setInTime($inTime) {
-        $this->in_time = $inTime;
-
-        return $this;
-    }
-
-    /**
-     * Get in_time
-     *
-     * @return \DateTime 
-     */
-    public function getInTime() {
-        return $this->in_time;
-    }
-
-    /**
-     * Set out_time
-     *
-     * @param \DateTime $outTime
-     * @return Atcontract
-     */
-    public function setOutTime($outTime) {
-        $this->out_time = $outTime;
-
-        return $this;
-    }
-
-    /**
-     * Get out_time
-     *
-     * @return \DateTime 
-     */
-    public function getOutTime() {
-        return $this->out_time;
-    }
+    
 
     /**
      * 
@@ -527,5 +487,63 @@ class Atcontract implements UserInterface {
     public function removeRestDay(\att\employeeBundle\Entity\Atrestday $restDay)
     {
         $this->restDays->removeElement($restDay);
+    }
+
+    /**
+     * Set inTime
+     *
+     * @param \DateTime $inTime
+     *
+     * @return Atcontract
+     */
+    public function setInTime($inTime)
+    {
+        $this->in_time = $inTime;
+
+        return $this;
+    }
+
+    /**
+     * Get inTime
+     *
+     * @return \DateTime
+     */
+    public function getInTime()
+    {
+        return $this->in_time;
+    }
+
+    /**
+     * Set outTime
+     *
+     * @param \DateTime $outTime
+     *
+     * @return Atcontract
+     */
+    public function setOutTime($outTime)
+    {
+        $this->out_time = $outTime;
+
+        return $this;
+    }
+
+    /**
+     * Get outTime
+     *
+     * @return \DateTime
+     */
+    public function getOutTime()
+    {
+        return $this->out_time;
+    }
+
+    public function getArrayRestDays(){
+
+        $arrayRestDays = array();
+        foreach ($this->getRestDays() as $restday ) {
+            $arrayRestDays[] = $restday->getDescription();
+        }
+        return $arrayRestDays;
+        
     }
 }

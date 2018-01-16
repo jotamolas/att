@@ -17,7 +17,8 @@
                 <i class="fa fa-table"></i>
                 <span>{% trans %}List of Department{% endtrans %}</span>
                 <!-- button group --> 
-                <button id="new" data-toggle="modal"  data-target="#newDepartmentModal" type="button" class="btn btn-default pull-right">
+                <button  data-toggle="modal"  data-target="#new_modal" type="button" data-mode="{{ app.security.token.providerKey }}"class="btn btn-default pull-right">
+                  
                     <span class="fa fa-plus"></span>
                 </button> 
                 <div class="clearfix"></div>                     
@@ -25,60 +26,166 @@
 
             <div class="panel-body">
                 <div class="panel-body">
-                    <div class="table table-responsive">
-                        <table class="table table-bordered table-hover" style="font-size: 12px;">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>{% trans %}Name{% endtrans %}</th>
-                                    <th>{% trans %}Business{% endtrans %}</th>
-                                    <th>{% trans %}Company{% endtrans %}</th>
-                                    <th>{% trans %}Actions{% endtrans %}</th>
-                                </tr>
-                                </tr>                    
-                            </thead>
-                            <tbody>
-                                {% for department in departments %}  
-                                    <tr>
-                                        <td>{{ department.id }}</td>
-                                        <td>{{ department.name }}</td>
-                                        <td>{{ department.business.description }}</td>
-                                        <td>{{ department.business.company.description }}</td>
-
-                                        <td class="text-center">
-                                            <div class="btn-group" role="group" >
-                                                <button type="button" data-toggle="modal" data-target="#editModal" data-mode="{{mode}}" class="btn btn-xs btn-default" data-id="{{ department.id }}" id="edit">
-                                                    <span class="fa fa-edit"></span>
-                                                </button>
-                                                <button type="button" class="btn btn-xs btn-default" id="remove" data-id="{{ department.id }}" data-mode="{{mode}}">
-                                                    <span class="fa fa-remove"></span>
-                                                </button>     
-                                            </div>           
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="table table-responsive" id="table_list">
+                        {% include 'employeeBundle:Department:list.table.html.twig' with {
+                                'departments' : departments,
+                                'mode': app.security.token.providerKey
+                            } only 
+                        %}
                     </div>
                 </div> 
             </div>        
         </div>
     </div>
 
-    <div class="modal fade" id="newDepartmentModal" role="dialog">
+    <div class="modal fade" id="new_modal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{%trans%}New Department{% endtrans %}</h4>
+                    <h4 class="modal-title">{% trans %} New Department {% endtrans %} </h4>
                 </div>
-                <div class="modal-body"  id="modal-body-Department-new" >
-                    {{ render(controller('employeeBundle:Department:new' )) }}
+
+                <div class="modal-body" id="modal-body-new">
+
                 </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-default" id="new_submit" value="{%trans%} Save {% endtrans %}">
+                </div>
+
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="edit_modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{% trans %} Edit {% endtrans %}{% trans %} Department {% endtrans %} </h4>
+                </div>
+
+                <div class="modal-body" id="modal-body-edit">
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-default" id="edit_submit" value="{%trans%} Save {% endtrans %}">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent()}}
+    <script type="text/javascript">
+
+        
+        $('#new_modal').on('show.bs.modal', function (e) {   
+
+            var mode = $(e.relatedTarget).data('mode');        
+            $.ajax({
+                url: Routing.generate('employee_department_new', {
+                    mode: mode,
+                }),
+                type: 'POST',
+                success: function (data) {
+                    $('#modal-body-new').html(data['form']);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                }
+            });
+        });
+
+        $('#edit_modal').on('show.bs.modal', function (e) {   
+            var department = $(e.relatedTarget).data('id');
+            var mode = $(e.relatedTarget).data('mode');        
+            $.ajax({
+                url: Routing.generate('employee_department_edit', {
+                    mode: mode,
+                    department: department
+
+                }),
+                type: 'POST',
+                success: function (data) {
+                    $('#modal-body-edit').html(data['form']);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                }
+            });
+        });
+
+
+        $(document).on('click', '#new_submit', function (e) {
+            e.preventDefault();
+            var formElement = document.getElementById('department-form');
+            var formData = new FormData(formElement);
+            
+            $.ajax({
+                cache: false,
+                type: formElement.method,
+                url: formElement.action,
+                data: formData,
+                contentType: false,
+                processData: false
+            }).done(function (data) {
+                if (data['status'] !== true) {
+                    $('#modal-body-new').html(data['form']);
+                } else {
+                    $('#successMsg').html("\
+            <div class='alert alert-success'>\n\
+                <strong>" + data['message'] + "</strong>\n\
+            </div>");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                    $('#new_modal').modal('hide');
+                    $('#table_list').html(data['table']);
+                    $('.alert-success').fadeOut(7000, function () {
+                        $('.alert-success').remove();
+                    });
+                }
+            });
+        });
+
+
+        $(document).on('click', '#edit_submit', function (e) {
+            e.preventDefault();
+            var formElement = document.getElementById('department-form');
+            var formData = new FormData(formElement);
+            
+            $.ajax({
+                cache: false,
+                type: formElement.method,
+                url: formElement.action,
+                data: formData,
+                contentType: false,
+                processData: false
+            }).done(function (data) {
+                if (data['status'] !== true) {
+                    $('#modal-body-edit').html(data['form']);
+                } else {
+                    $('#successMsg').html("\
+            <div class='alert alert-success'>\n\
+                <strong>" + data['message'] + "</strong>\n\
+            </div>");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                    $('#edit_modal').modal('hide');
+                    $('#table_list').html(data['table']);
+                    $('.alert-success').fadeOut(7000, function () {
+                        $('.alert-success').remove();
+                    });
+                }
+            });
+        });
+
+    </script>
 
 {% endblock %}
 

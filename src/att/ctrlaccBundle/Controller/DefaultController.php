@@ -2,90 +2,78 @@
 
 namespace att\ctrlaccBundle\Controller;
 
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use att\ctrlaccBundle\Entity\Device;
 
 /**
- * @Route("/ctrlacc")
+ * @Route("{mode}/ctrlacc", requirements={"mode":"frontend|backend"})
  */
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/prueba")
-     */
-    public function pruebas(){
-        
-       /* 
-       $now = new \DateTime();
-       
-       ($now->format('H:i:s') >= $this->container->getParameter('ctrlacc.attendance.workingday.end') 
-               ? $now
-               : $now->modify('-1 Day')); 
-       
-       $dates = $this->get('util.workingday.service')->checkWorkingDay($now->format('Ymd'));
-       
-       $range = $dates['start']->diff($dates['end']);
-       
-       print "<pre>";
-       var_dump($dates);
-       var_dump($range);
-       print "</pre>";       
-       // $startRange = date_create_from_format(n)
-        
-        */
-       $ctrlacc = $this->getDoctrine()->getEntityManager('ctrlacc');
-        $atts = $ctrlacc->getRepository('ctrlaccBundle:Attendance')->findAll();
-        //print $atts;
-        foreach ($atts as $att){
-            return new \Symfony\Component\HttpFoundation\Response($att . "\n");
-            
-        }
-       //$logger = $this->get('monolog.logger.ctrlacc');
-      // var_dump($logger->info('probando el loggerrrrrr'));
+
+   /**
+   * @Route("/", name="ctrlacc_index")
+   * @param Request $request
+   */
+    public function indexAction(Request $request)
+    {
+
+      return $this->render('ctrlaccBundle:Default:index.html.twig');
       
     }
     
+    
     /**
-     * 
-     * @Route("/devicetype/new/{description}")
-     * 
+     * @Route("/sync/from/database", name="ctrlacc_sync_from_database")
      */
-    public function createDeviceTypeAction($description){
+    public function syncFromDatabaseAction(Request $request){
         
-        $deviceType = new \att\BundlectrlaccBundle\Entity\DeviceType();
-        $deviceType->setDescription($description);
+        $form = $this->createFormBuilder()
+                ->add('Database', \Symfony\Bridge\Doctrine\Form\Type\EntityType::class,[
+                    'class' => 'ctrlaccBundle:Device',
+                    'choice_label' => 'description',
+                    'query_builder' => function(\Doctrine\ORM\EntityRepository $er){
+                      return $er->createQueryBuilder('d')
+                         ->leftJoin('d.system', 's')
+                         ->leftJoin('s.type', 't')
+                         ->where("t.description = 'Database'");     
+                    },                    
+                ])
+                ->getForm();          
+                            
+                            
+         $form->handleRequest($request);
+         if($form->isSubmitted() && $form->isValid()){
+             $data =$form->getData('Database');
+             $device = $data['Database'];
+             $metadata = $device->getMetadata();
+             
+             if($metadata){
+                $result = $this->container->get('sync.remote.service')->syncEvents($device->getSystem(), $metadata);
+                dump($result);
+                return $this->render('ctrlaccBundle:Syncronization:sync.result.html.twig', ['result' => $result]);
+                
+             }else{
+                 
+                 $result['status'] = false;
+                 $result['message']= $this->get('translator')->trans('No metadata configuration for this Database');
+                 dump($result);
+                 return $this->render('ctrlaccBundle:Syncronization:sync.result.html.twig', ['result' => $result]);
+                 
+             }
+             
+         }
+                    
+         return $this->render('ctrlaccBundle:Syncronization:sync.database.form.html.twig',[
+            'form' => $form->createView() 
+         ]);           
         
-        $em = $this->getDoctrine()->getManager('ctrlacc');
-        $em->persist($deviceType);
-        $em->flush();
-        $em->clear();
-        
-        return new \Symfony\Component\HttpFoundation\Response("<h1>Se agrego el Device Type con Exito</h1>");
         
     }
     
-    
-    /**
-     * @Route("/device/new/{description}/{ip}/{port}/{destype}")
-     * @param type $destype
-     * @param type $description
-     * @param type $ip
-     * @param type $port
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function createDeviceAction($description,$ip,$port,$destype){
-        $device = new \att\ctrlaccBundle\Entity\Device();
-        
-        $device->setDescription($description)
-                ->setIp($ip)
-                ->setPort($port)
-                ->setType($this->getDoctrine()->getRepository('ctrlaccBundle:DeviceType', 'ctrlacc')->findOneByDescription($destype));
-        
-        $em = $this->getDoctrine()->getManager('ctrlacc');
-        $em->persist($device);
-        $em->flush();
-        $em->clear();
-                return new \Symfony\Component\HttpFoundation\Response("<h1>Se agrego el Device con Exito</h1>");
 
-    }
+
 }

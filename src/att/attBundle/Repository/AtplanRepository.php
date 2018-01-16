@@ -11,12 +11,30 @@ class AtplanRepository extends EntityRepository {
        
        $qb = $this->createQueryBuilder('p');
        $qb->where($qb->expr()->between('p.date', ':from', ':to'))
-          ->setParameter('from', $from)
-          ->setParameter('to', $to);
+          ->setParameters([
+              'from' => $from,
+              'to' => $to
+                  ])
+          ;
        
        return $qb->getQuery()->getResult();
                
    }
+   public function findByEmployeeAndBetweenDates(\att\employeeBundle\Entity\Atemployee $employee, \DateTime $from, \DateTime $to){
+       
+       $qb = $this->createQueryBuilder('p');
+       $qb->where($qb->expr()->between('p.date', ':from', ':to'))
+          ->setParameters([
+              'from' => $from,
+              'to' => $to
+                  ])
+          ->andWhere($qb->expr()->eq('p.employee', ':employee'))
+          ->setParameter('employee', $employee);
+       
+       return $qb->getQuery()->getResult();
+               
+   }
+   
     
     
 }

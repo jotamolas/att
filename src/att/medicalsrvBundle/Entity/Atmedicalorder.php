@@ -4,20 +4,35 @@ namespace att\medicalsrvBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+
 /**
  * Atmedicalorder
  *
  * @ORM\Table(name="ms_medical_order", indexes={@ORM\Index(name="FK_serMed_idx", columns={"service"}), @ORM\Index(name="FK_empl_idx", columns={"employee"})})
  * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"date", "date"},
+ *     errorPath="date",
+ *     message="medical.order.unique"
+ * )
  */
 class Atmedicalorder {
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="date", type="datetime", nullable=false)
+     * @ORM\Column(name="date", type="date", nullable=false)
      */
     private $date;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="time", type="datetime", nullable=false)
+     */
+    private $time;
 
     /**
      * @var string
@@ -63,15 +78,22 @@ class Atmedicalorder {
      * })
      */
     private $status;
+
     
     /**
      * One Product has Many Features.
-     * @ORM\OneToMany(targetEntity="Atmedicalvisit", mappedBy="medicalOrder")
+     * @ORM\OneToMany(targetEntity="Atmedicalvisit", mappedBy="medicalOrder", cascade={"persist", "remove"})
      */
     private $medicalvisits;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="\att\attBundle\Entity\Atabsence", mappedBy="medicalorder", cascade={"persist", "remove"})
+     */
+    private $absences;
 
     public function __construct() {
         $this->medicalvisits = new ArrayCollection();
+        $this->absences = new ArrayCollection();
     }
 
     /**
@@ -231,5 +253,63 @@ class Atmedicalorder {
         return "Date: ".$this->getDate()->format('Y-m-d').""
                 . " | Employee: ".$this->getEmployee()->getSurname().", ".$this->getEmployee()->getName().""
                 . " | Status: ".$this->getStatus()->getDescription();
+    }
+
+    /**
+     * Set time
+     *
+     * @param \DateTime $time
+     *
+     * @return Atmedicalorder
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    /**
+     * Get time
+     *
+     * @return \DateTime
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * Add absence
+     *
+     * @param \att\attBundle\Entity\Atabsence $absence
+     *
+     * @return Atmedicalorder
+     */
+    public function addAbsence(\att\attBundle\Entity\Atabsence $absence)
+    {
+        $this->absences[] = $absence;
+
+        return $this;
+    }
+
+    /**
+     * Remove absence
+     *
+     * @param \att\attBundle\Entity\Atabsence $absence
+     */
+    public function removeAbsence(\att\attBundle\Entity\Atabsence $absence)
+    {
+        $this->absences->removeElement($absence);
+    }
+
+    /**
+     * Get absences
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAbsences()
+    {
+        return $this->absences;
     }
 }

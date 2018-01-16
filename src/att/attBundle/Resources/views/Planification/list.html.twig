@@ -9,15 +9,15 @@
                 <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th class="text-center"> Day </th>
-                        <th class="text-center">{{ sorter_link(plans, "p.date", "Date") }}</th>
-                        <th class="text-center">{{ sorter_link(plans, "e.surname", "Surname") }}</th>
-                        <th class="text-center">{{ sorter_link(plans, "e.name", "Names")}}</th> 
-                        <th class="text-center">{{ sorter_link(plans, "p.inplan", "In")}}</th> 
-                        <th class="text-center">{{ sorter_link(plans, "p.outplan", "Out")}}</th>
-                        <th class="text-center">{{ sorter_link(plans, "p.hsworkplan", "Hs Work")}}</th> 
-                        <th class="text-center">{{ sorter_link(plans, "sp.description", "Plan State")}}</th> 
-                        <th class="text-center"> Actions </th> 
+                        <th class="text-center">{% trans %} Day {% endtrans %} </th>
+                        <th class="text-center">{{ sorter_link(plans, "p.date", "Date" | trans) }}</th>
+                        <th class="text-center">{{ sorter_link(plans, "e.surname", "Surname"| trans) }}</th>
+                        <th class="text-center">{{ sorter_link(plans, "e.name", "Names"| trans)}}</th> 
+                        <th class="text-center">{{ sorter_link(plans, "p.inplan", "In"| trans)}}</th> 
+                        <th class="text-center">{{ sorter_link(plans, "p.outplan", "Out"| trans)}}</th>
+                        <th class="text-center">{{ sorter_link(plans, "p.hsworkplan", "Hs Work"| trans)}}</th> 
+                        <th class="text-center">{{ sorter_link(plans, "sp.description", "Plan State"| trans)}}</th> 
+                        <th class="text-center"> {% trans %} Actions {% endtrans %} </th> 
                       </tr>
 
                       <tr> 
@@ -34,7 +34,7 @@
                     <tbody>
                       {% for plan in plans %}
                         <tr>
-                          <td>{{ plan.date | date('l') }}</td>  
+                          <td>{{ plan.date | date('l') | trans }}</td>  
                           <td class="text-center">{{ plan.date | date('Y-m-d') }}</td>
                           <td>{{ plan.employee.surname }}</td>
                           <td>{{ plan.employee.name }}</td>

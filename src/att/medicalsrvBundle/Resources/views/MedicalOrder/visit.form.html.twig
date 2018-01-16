@@ -1,0 +1,116 @@
+<div class="row">
+    <div class="col-md-12">
+        {{ form_start(form,{'attr':{'id':'medical_visit','novalidate': 'novalidate'} }) }}
+        {{ form_errors(form) }}
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">    
+                    {{ form_label(form.visitdate) }}
+                    <div class="input-group">
+                        {{ form_errors(form.visitdate) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        {{ form_widget(form.visitdate) }} 
+                    </div>
+                </div>                
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">    
+                    {{ form_label(form.medicalrest) }}
+                    {{ form_errors(form.medicalrest) }}
+                    {{ form_widget(form.medicalrest) }} 
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">    
+                    {{ form_label(form.matricula) }}
+                    <div class="input-group">
+                        {{ form_errors(form.matricula) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-pencil"></i>
+                        </div>
+                        {{ form_widget(form.matricula) }} 
+                    </div>
+                </div>  
+            </div>   
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">    
+                    {{ form_label(form.status) }}
+                    <div class="input-group">
+                        {{ form_errors(form.status) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        {{ form_widget(form.status) }} 
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">    
+                    {{ form_label(form.diagnostic) }}
+                    <div class="input-group">
+                        {{ form_errors(form.diagnostic) }}
+                        <div class="input-group-addon">
+                            <i class="fa fa-pencil"></i>
+                        </div>
+                        {{ form_widget(form.diagnostic) }} 
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_errors(form.restdatefrom) }}
+                    {{ form_label(form.restdatefrom) }}
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <span class="fa fa-th"></span>
+                        </div>
+                        {{ form_widget(form.restdatefrom)}} 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">    
+                    {{ form_errors(form.restdateto) }}
+                    {{ form_label(form.restdateto) }}
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <span class="fa fa-th"></span>
+                        </div>
+                        {{ form_widget(form.restdateto)}} 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-md-offset-4">
+                <div class="form-group">    
+                    {{ form_label(form.confirmOrder) }}
+                    {{ form_errors(form.confirmOrder) }}
+                    {{ form_widget(form.confirmOrder) }} 
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>  
+</div>   
+
+
+<script>
+    $(".datepicker").datepicker({
+        format: 'yyyy-mm-dd',
+        todayHighlight: true,
+
+    }).on('show.bs.modal', function (event) {
+        // prevent datepicker from firing bootstrap modal "show.bs.modal"
+        event.stopPropagation();
+    });
+
+</script>
